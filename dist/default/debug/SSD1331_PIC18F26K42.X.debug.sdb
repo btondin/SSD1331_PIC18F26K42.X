@@ -1,0 +1,1070 @@
+[p GLOBOPT AUTOSTATIC IEEE_FLT IEEE_DBL LFSROK EMI_WORD ]
+[d version 1.1 ]
+[d edition pro ]
+[d chip 18F26K42 ]
+[d frameptr 16353 ]
+"79 D:\G_Drive_Pessoal\Projetos\Botão OLED NKK\PIC\SSD1331_PIC18F26K42.X\mcc_generated_files/spi1.c
+[e E358 . `uc
+SPI1_DEFAULT 0
+]
+"34 D:\G_Drive_Pessoal\Projetos\Botão OLED NKK\PIC\SSD1331_PIC18F26K42.X\main.c
+[e E15957 . `uc
+SPI1_DEFAULT 0
+]
+"61 D:\G_Drive_Pessoal\Projetos\Botão OLED NKK\PIC\SSD1331_PIC18F26K42.X\ssd1331.c
+[e E15957 . `uc
+SPI1_DEFAULT 0
+]
+"1 D:\Program Files\Microchip\xc8\v3.00\pic\sources\c99\common\abs.c
+[v _abs abs `(i  1 e 2 0 ]
+"7 D:\Program Files\Microchip\xc8\v3.00\pic\sources\c99\common\awdiv.c
+[v ___awdiv __awdiv `(i  1 e 2 0 ]
+"193 D:\Program Files\Microchip\xc8\v3.00\pic\sources\c99\common\doprnt.c
+[v _pad pad `(v  1 s 1 pad ]
+"1001
+[v _utoa utoa `(v  1 s 1 utoa ]
+"1158
+[v _read_prec_or_width read_prec_or_width `(i  1 s 2 read_prec_or_width ]
+"1177
+[v _vfpfcnvrt vfpfcnvrt `(v  1 s 1 vfpfcnvrt ]
+"1817
+[v _vfprintf vfprintf `(i  1 e 2 0 ]
+"4 D:\Program Files\Microchip\xc8\v3.00\pic\sources\c99\common\fleq.c
+[v ___fleq __fleq `(b  1 e 0 0 ]
+"62 D:\Program Files\Microchip\xc8\v3.00\pic\sources\c99\common\float.c
+[v ___ftpack __ftpack `(f  1 e 4 0 ]
+"86 D:\Program Files\Microchip\xc8\v3.00\pic\sources\c99\common\ftadd.c
+[v ___ftadd __ftadd `(f  1 e 4 0 ]
+"54 D:\Program Files\Microchip\xc8\v3.00\pic\sources\c99\common\ftdiv.c
+[v ___ftdiv __ftdiv `(f  1 e 4 0 ]
+"62 D:\Program Files\Microchip\xc8\v3.00\pic\sources\c99\common\ftmul.c
+[v ___ftmul __ftmul `(f  1 e 4 0 ]
+"19 D:\Program Files\Microchip\xc8\v3.00\pic\sources\c99\common\ftsub.c
+[v ___ftsub __ftsub `(f  1 e 4 0 ]
+"7 D:\Program Files\Microchip\xc8\v3.00\pic\sources\c99\common\lwdiv.c
+[v ___lwdiv __lwdiv `(ui  1 e 2 0 ]
+"7 D:\Program Files\Microchip\xc8\v3.00\pic\sources\c99\common\lwmod.c
+[v ___lwmod __lwmod `(ui  1 e 2 0 ]
+"8 D:\Program Files\Microchip\xc8\v3.00\pic\sources\c99\common\nf_fputc.c
+[v _fputc fputc `(i  1 e 2 0 ]
+"8 D:\Program Files\Microchip\xc8\v3.00\pic\sources\c99\common\nf_fputs.c
+[v _fputs fputs `(i  1 e 2 0 ]
+"9 D:\Program Files\Microchip\xc8\v3.00\pic\sources\c99\common\nf_sprintf.c
+[v _sprintf sprintf `(i  1 e 2 0 ]
+"7 D:\Program Files\Microchip\xc8\v3.00\pic\sources\c99\common\putch.c
+[v _putch putch `(v  1 e 1 0 ]
+"10 D:\Program Files\Microchip\xc8\v3.00\pic\sources\c99\common\sprcadd.c
+[v ___fladd __fladd `(d  1 e 4 0 ]
+"245
+[v ___flsub __flsub `(d  1 e 4 0 ]
+"11 D:\Program Files\Microchip\xc8\v3.00\pic\sources\c99\common\sprcdiv.c
+[v ___fldiv __fldiv `(d  1 e 4 0 ]
+"8 D:\Program Files\Microchip\xc8\v3.00\pic\sources\c99\common\sprcmul.c
+[v ___flmul __flmul `(d  1 e 4 0 ]
+"15 D:\Program Files\Microchip\xc8\v3.00\pic\sources\c99\common\Umul32.c
+[v ___lmul __lmul `(ul  1 e 4 0 ]
+"91 D:\Program Files\Microchip\xc8\v3.00\pic\sources\c99\common\Umul64.c
+[v ___omul __omul `(uo  1 e 8 0 ]
+"113 D:\G_Drive_Pessoal\Projetos\Botão OLED NKK\PIC\SSD1331_PIC18F26K42.X\gfx_pic.c
+[v _GFX_Swap GFX_Swap `(v  1 e 1 0 ]
+"119
+[v _GFX_Init GFX_Init `(v  1 e 1 0 ]
+"139
+[v _GFX_DrawPixel GFX_DrawPixel `(v  1 e 1 0 ]
+"153
+[v _GFX_DrawLine GFX_DrawLine `(v  1 e 1 0 ]
+"184
+[v _GFX_DrawFastVLine GFX_DrawFastVLine `(v  1 e 1 0 ]
+"192
+[v _GFX_DrawFastHLine GFX_DrawFastHLine `(v  1 e 1 0 ]
+"200
+[v _GFX_DrawRect GFX_DrawRect `(v  1 e 1 0 ]
+"207
+[v _GFX_FillRect GFX_FillRect `(v  1 e 1 0 ]
+"217
+[v _GFX_DrawCircle GFX_DrawCircle `(v  1 e 1 0 ]
+"250
+[v _GFX_FillCircle GFX_FillCircle `(v  1 e 1 0 ]
+"255
+[v _GFX_FillCircleHelper GFX_FillCircleHelper `(v  1 e 1 0 ]
+"287
+[v _GFX_DrawChar GFX_DrawChar `(v  1 e 1 0 ]
+"335
+[v _GFX_DrawBitmapRGB GFX_DrawBitmapRGB `(v  1 e 1 0 ]
+"350
+[v _GFX_Write GFX_Write `(v  1 e 1 0 ]
+"369
+[v _GFX_Print GFX_Print `(v  1 e 1 0 ]
+"378
+[v _GFX_PrintAt GFX_PrintAt `(v  1 e 1 0 ]
+"386
+[v _GFX_SetCursor GFX_SetCursor `(v  1 e 1 0 ]
+"394
+[v _GFX_SetTextColor GFX_SetTextColor `(v  1 e 1 0 ]
+"403
+[v _GFX_SetTextColorBg GFX_SetTextColorBg `(v  1 e 1 0 ]
+"411
+[v _GFX_SetTextSize GFX_SetTextSize `(v  1 e 1 0 ]
+"26 D:\G_Drive_Pessoal\Projetos\Botão OLED NKK\PIC\SSD1331_PIC18F26K42.X\main.c
+[v _main main `(v  1 e 1 0 ]
+"50 D:\G_Drive_Pessoal\Projetos\Botão OLED NKK\PIC\SSD1331_PIC18F26K42.X\mcc_generated_files/mcc.c
+[v _SYSTEM_Initialize SYSTEM_Initialize `(v  1 e 1 0 ]
+"58
+[v _OSCILLATOR_Initialize OSCILLATOR_Initialize `(v  1 e 1 0 ]
+"72
+[v _PMD_Initialize PMD_Initialize `(v  1 e 1 0 ]
+"55 D:\G_Drive_Pessoal\Projetos\Botão OLED NKK\PIC\SSD1331_PIC18F26K42.X\mcc_generated_files/pin_manager.c
+[v _PIN_MANAGER_Initialize PIN_MANAGER_Initialize `(v  1 e 1 0 ]
+"64 D:\G_Drive_Pessoal\Projetos\Botão OLED NKK\PIC\SSD1331_PIC18F26K42.X\mcc_generated_files/spi1.c
+[v _SPI1_Initialize SPI1_Initialize `(v  1 e 1 0 ]
+"79
+[v _SPI1_Open SPI1_Open `(a  1 e 1 0 ]
+"99
+[v _SPI1_ExchangeByte SPI1_ExchangeByte `(uc  1 e 1 0 ]
+"107
+[v _SPI1_ExchangeBlock SPI1_ExchangeBlock `(v  1 e 1 0 ]
+"28 D:\G_Drive_Pessoal\Projetos\Botão OLED NKK\PIC\SSD1331_PIC18F26K42.X\ssd1331.c
+[v _SSD1331_Delay SSD1331_Delay `(v  1 e 1 0 ]
+"37
+[v _SSD1331_Init SSD1331_Init `(v  1 e 1 0 ]
+"60
+[v _SSD1331_Begin SSD1331_Begin `(v  1 e 1 0 ]
+"129
+[v _SSD1331_SetAddrWindow SSD1331_SetAddrWindow `(v  1 e 1 0 ]
+"162
+[v _SSD1331_DrawPixel SSD1331_DrawPixel `(v  1 e 1 0 ]
+"187
+[v _SSD1331_FillScreen SSD1331_FillScreen `(v  1 e 1 0 ]
+"194
+[v _SSD1331_DrawLine SSD1331_DrawLine `(v  1 e 1 0 ]
+"250
+[v _SSD1331_FillRect SSD1331_FillRect `(v  1 e 1 0 ]
+"276
+[v _SSD1331_WriteCommand SSD1331_WriteCommand `(v  1 e 1 0 ]
+"296
+[v _SSD1331_WriteData16 SSD1331_WriteData16 `(v  1 e 1 0 ]
+"328
+[v _SSD1331_HardwareReset SSD1331_HardwareReset `(v  1 s 1 SSD1331_HardwareReset ]
+"337
+[v _SSD1331_Select SSD1331_Select `(v  1 s 1 SSD1331_Select ]
+"341
+[v _SSD1331_Deselect SSD1331_Deselect `(v  1 s 1 SSD1331_Deselect ]
+"345
+[v _SSD1331_SetDataMode SSD1331_SetDataMode `(v  1 s 1 SSD1331_SetDataMode ]
+"349
+[v _SSD1331_SetCommandMode SSD1331_SetCommandMode `(v  1 s 1 SSD1331_SetCommandMode ]
+"1 D:\G_Drive_Pessoal\Projetos\Botão OLED NKK\PIC\SSD1331_PIC18F26K42.X/screens.h
+[v _bunmi_img bunmi_img `C[6144]us  1 s 12288 bunmi_img ]
+"520
+[v _manas manas `C[6144]us  1 e 12288 0 ]
+[s S88 . 1 `uc 1 DMA1SCNTIF 1 0 :1:0 
+`uc 1 DMA1DCNTIF 1 0 :1:1 
+`uc 1 DMA1ORIF 1 0 :1:2 
+`uc 1 DMA1AIF 1 0 :1:3 
+`uc 1 SPI1RXIF 1 0 :1:4 
+`uc 1 SPI1TXIF 1 0 :1:5 
+`uc 1 SPI1IF 1 0 :1:6 
+`uc 1 I2C1RXIF 1 0 :1:7 
+]
+"4036 D:/Program Files/Microchip/MPLABX/v6.20/packs/Microchip/PIC18F-K_DFP/1.13.292/xc8\pic\include\proc/pic18f26k42.h
+[u S97 . 1 `S88 1 . 1 0 ]
+[v _PIR2bits PIR2bits `VES97  1 e 1 @14754 ]
+"4460
+[v _PMD0 PMD0 `VEuc  1 e 1 @14784 ]
+"4522
+[v _PMD1 PMD1 `VEuc  1 e 1 @14785 ]
+"4584
+[v _PMD2 PMD2 `VEuc  1 e 1 @14786 ]
+"4629
+[v _PMD3 PMD3 `VEuc  1 e 1 @14787 ]
+"4691
+[v _PMD4 PMD4 `VEuc  1 e 1 @14788 ]
+"4724
+[v _PMD5 PMD5 `VEuc  1 e 1 @14789 ]
+"4769
+[v _PMD6 PMD6 `VEuc  1 e 1 @14790 ]
+"4819
+[v _PMD7 PMD7 `VEuc  1 e 1 @14791 ]
+"4958
+[v _OSCCON1 OSCCON1 `VEuc  1 e 1 @14809 ]
+"5098
+[v _OSCCON3 OSCCON3 `VEuc  1 e 1 @14811 ]
+"5250
+[v _OSCEN OSCEN `VEuc  1 e 1 @14813 ]
+"5301
+[v _OSCTUNE OSCTUNE `VEuc  1 e 1 @14814 ]
+"5405
+[v _OSCFRQ OSCFRQ `VEuc  1 e 1 @14815 ]
+"7167
+[v _RC2PPS RC2PPS `VEuc  1 e 1 @14866 ]
+"7217
+[v _RC3PPS RC3PPS `VEuc  1 e 1 @14867 ]
+"7467
+[v _ANSELA ANSELA `VEuc  1 e 1 @14912 ]
+"7529
+[v _WPUA WPUA `VEuc  1 e 1 @14913 ]
+"7591
+[v _ODCONA ODCONA `VEuc  1 e 1 @14914 ]
+"7653
+[v _SLRCONA SLRCONA `VEuc  1 e 1 @14915 ]
+"7715
+[v _INLVLA INLVLA `VEuc  1 e 1 @14916 ]
+"8087
+[v _ANSELB ANSELB `VEuc  1 e 1 @14928 ]
+"8149
+[v _WPUB WPUB `VEuc  1 e 1 @14929 ]
+"8211
+[v _ODCONB ODCONB `VEuc  1 e 1 @14930 ]
+"8273
+[v _SLRCONB SLRCONB `VEuc  1 e 1 @14931 ]
+"8335
+[v _INLVLB INLVLB `VEuc  1 e 1 @14932 ]
+"8707
+[v _RB1I2C RB1I2C `VEuc  1 e 1 @14938 ]
+"8815
+[v _RB2I2C RB2I2C `VEuc  1 e 1 @14939 ]
+"8923
+[v _ANSELC ANSELC `VEuc  1 e 1 @14944 ]
+"8985
+[v _WPUC WPUC `VEuc  1 e 1 @14945 ]
+"9047
+[v _ODCONC ODCONC `VEuc  1 e 1 @14946 ]
+"9109
+[v _SLRCONC SLRCONC `VEuc  1 e 1 @14947 ]
+"9171
+[v _INLVLC INLVLC `VEuc  1 e 1 @14948 ]
+"9543
+[v _RC3I2C RC3I2C `VEuc  1 e 1 @14954 ]
+"9651
+[v _RC4I2C RC4I2C `VEuc  1 e 1 @14955 ]
+"9759
+[v _WPUE WPUE `VEuc  1 e 1 @14977 ]
+"9780
+[v _INLVLE INLVLE `VEuc  1 e 1 @14980 ]
+"10540
+[v _SPI1SCKPPS SPI1SCKPPS `VEuc  1 e 1 @15070 ]
+"10560
+[v _SPI1SDIPPS SPI1SDIPPS `VEuc  1 e 1 @15071 ]
+"21254
+[v _SPI1RXB SPI1RXB `VEuc  1 e 1 @15632 ]
+"21324
+[v _SPI1TXB SPI1TXB `VEuc  1 e 1 @15633 ]
+"21401
+[v _SPI1TCNTL SPI1TCNTL `VEuc  1 e 1 @15634 ]
+"21441
+[v _SPI1CON0 SPI1CON0 `VEuc  1 e 1 @15636 ]
+[s S58 . 1 `uc 1 BMODE 1 0 :1:0 
+`uc 1 MST 1 0 :1:1 
+`uc 1 LSBF 1 0 :1:2 
+`uc 1 . 1 0 :4:3 
+`uc 1 EN 1 0 :1:7 
+]
+"21462
+[s S64 . 1 `uc 1 SPI1BMODE 1 0 :1:0 
+`uc 1 SPI1MST 1 0 :1:1 
+`uc 1 SPI1LSBF 1 0 :1:2 
+`uc 1 . 1 0 :4:3 
+`uc 1 SPI1SPIEN 1 0 :1:7 
+]
+[u S70 . 1 `S58 1 . 1 0 `S64 1 . 1 0 ]
+[v _SPI1CON0bits SPI1CON0bits `VES70  1 e 1 @15636 ]
+"21507
+[v _SPI1CON1 SPI1CON1 `VEuc  1 e 1 @15637 ]
+"21609
+[v _SPI1CON2 SPI1CON2 `VEuc  1 e 1 @15638 ]
+"21809
+[v _SPI1BAUD SPI1BAUD `VEuc  1 e 1 @15641 ]
+"22063
+[v _SPI1CLK SPI1CLK `VEuc  1 e 1 @15644 ]
+"45198
+[v _LATA LATA `VEuc  1 e 1 @16314 ]
+[s S1273 . 1 `uc 1 LATA0 1 0 :1:0 
+`uc 1 LATA1 1 0 :1:1 
+`uc 1 LATA2 1 0 :1:2 
+`uc 1 LATA3 1 0 :1:3 
+`uc 1 LATA4 1 0 :1:4 
+`uc 1 LATA5 1 0 :1:5 
+`uc 1 LATA6 1 0 :1:6 
+`uc 1 LATA7 1 0 :1:7 
+]
+"45225
+[s S1282 . 1 `uc 1 LA0 1 0 :1:0 
+`uc 1 LA1 1 0 :1:1 
+`uc 1 LA2 1 0 :1:2 
+`uc 1 LA3 1 0 :1:3 
+`uc 1 LA4 1 0 :1:4 
+`uc 1 LA5 1 0 :1:5 
+`uc 1 LA6 1 0 :1:6 
+`uc 1 LA7 1 0 :1:7 
+]
+"45225
+[u S1291 . 1 `S1273 1 . 1 0 `S1282 1 . 1 0 ]
+"45225
+"45225
+[v _LATAbits LATAbits `VES1291  1 e 1 @16314 ]
+"45310
+[v _LATB LATB `VEuc  1 e 1 @16315 ]
+[s S376 . 1 `uc 1 LATB0 1 0 :1:0 
+`uc 1 LATB1 1 0 :1:1 
+`uc 1 LATB2 1 0 :1:2 
+`uc 1 LATB3 1 0 :1:3 
+`uc 1 LATB4 1 0 :1:4 
+`uc 1 LATB5 1 0 :1:5 
+`uc 1 LATB6 1 0 :1:6 
+`uc 1 LATB7 1 0 :1:7 
+]
+"45337
+[s S385 . 1 `uc 1 LB0 1 0 :1:0 
+`uc 1 LB1 1 0 :1:1 
+`uc 1 LB2 1 0 :1:2 
+`uc 1 LB3 1 0 :1:3 
+`uc 1 LB4 1 0 :1:4 
+`uc 1 LB5 1 0 :1:5 
+`uc 1 LB6 1 0 :1:6 
+`uc 1 LB7 1 0 :1:7 
+]
+"45337
+[u S394 . 1 `S376 1 . 1 0 `S385 1 . 1 0 ]
+"45337
+"45337
+[v _LATBbits LATBbits `VES394  1 e 1 @16315 ]
+"45422
+[v _LATC LATC `VEuc  1 e 1 @16316 ]
+[s S1233 . 1 `uc 1 LATC0 1 0 :1:0 
+`uc 1 LATC1 1 0 :1:1 
+`uc 1 LATC2 1 0 :1:2 
+`uc 1 LATC3 1 0 :1:3 
+`uc 1 LATC4 1 0 :1:4 
+`uc 1 LATC5 1 0 :1:5 
+`uc 1 LATC6 1 0 :1:6 
+`uc 1 LATC7 1 0 :1:7 
+]
+"45449
+[s S1242 . 1 `uc 1 LC0 1 0 :1:0 
+`uc 1 LC1 1 0 :1:1 
+`uc 1 LC2 1 0 :1:2 
+`uc 1 LC3 1 0 :1:3 
+`uc 1 LC4 1 0 :1:4 
+`uc 1 LC5 1 0 :1:5 
+`uc 1 LC6 1 0 :1:6 
+`uc 1 LC7 1 0 :1:7 
+]
+"45449
+[u S1251 . 1 `S1233 1 . 1 0 `S1242 1 . 1 0 ]
+"45449
+"45449
+[v _LATCbits LATCbits `VES1251  1 e 1 @16316 ]
+"45534
+[v _TRISA TRISA `VEuc  1 e 1 @16322 ]
+[s S1212 . 1 `uc 1 TRISA0 1 0 :1:0 
+`uc 1 TRISA1 1 0 :1:1 
+`uc 1 TRISA2 1 0 :1:2 
+`uc 1 TRISA3 1 0 :1:3 
+`uc 1 TRISA4 1 0 :1:4 
+`uc 1 TRISA5 1 0 :1:5 
+`uc 1 TRISA6 1 0 :1:6 
+`uc 1 TRISA7 1 0 :1:7 
+]
+"45551
+[u S1221 . 1 `S1212 1 . 1 0 ]
+"45551
+"45551
+[v _TRISAbits TRISAbits `VES1221  1 e 1 @16322 ]
+"45596
+[v _TRISB TRISB `VEuc  1 e 1 @16323 ]
+"45658
+[v _TRISC TRISC `VEuc  1 e 1 @16324 ]
+[s S35 . 1 `uc 1 TRISC0 1 0 :1:0 
+`uc 1 TRISC1 1 0 :1:1 
+`uc 1 TRISC2 1 0 :1:2 
+`uc 1 TRISC3 1 0 :1:3 
+`uc 1 TRISC4 1 0 :1:4 
+`uc 1 TRISC5 1 0 :1:5 
+`uc 1 TRISC6 1 0 :1:6 
+`uc 1 TRISC7 1 0 :1:7 
+]
+"45675
+[u S44 . 1 `S35 1 . 1 0 ]
+"45675
+"45675
+[v _TRISCbits TRISCbits `VES44  1 e 1 @16324 ]
+"153 D:\Program Files\Microchip\xc8\v3.00\pic\sources\c99\common\doprnt.c
+[v _prec prec `i  1 s 2 prec ]
+[v _width width `i  1 s 2 width ]
+"154
+[v _flags flags `uc  1 s 1 flags ]
+"185
+[v _dbuf dbuf `[32]uc  1 s 32 dbuf ]
+"14 D:\G_Drive_Pessoal\Projetos\Botão OLED NKK\PIC\SSD1331_PIC18F26K42.X\gfx_pic.c
+[v _font font `C[480]uc  1 s 480 font ]
+[s S194 . 27 `s 1 width 2 0 `s 1 height 2 2 `s 1 cursor_x 2 4 `s 1 cursor_y 2 6 `us 1 textcolor 2 8 `us 1 textbgcolor 2 10 `uc 1 textsize_x 1 12 `uc 1 textsize_y 1 13 `uc 1 rotation 1 14 `a 1 wrap 1 15 `a 1 cp437 1 16 `*.37(v 1 drawPixel 2 17 `*.37(v 1 fillScreen 2 19 `*.37(v 1 drawFastVLine 2 21 `*.37(v 1 drawFastHLine 2 23 `*.37(v 1 fillRect 2 25 ]
+"17 D:\G_Drive_Pessoal\Projetos\Botão OLED NKK\PIC\SSD1331_PIC18F26K42.X\main.c
+[s S248 . 28 `S194 1 gfx 27 0 `uc 1 rotation 1 27 ]
+[v _oled oled `S248  1 e 28 0 ]
+[s S24 . 5 `uc 1 con0 1 0 `uc 1 con1 1 1 `uc 1 con2 1 2 `uc 1 baud 1 3 `uc 1 operation 1 4 ]
+"60 D:\G_Drive_Pessoal\Projetos\Botão OLED NKK\PIC\SSD1331_PIC18F26K42.X\mcc_generated_files/spi1.c
+[v _spi1_configuration spi1_configuration `C[1]S24  1 s 5 spi1_configuration ]
+"16 D:\G_Drive_Pessoal\Projetos\Botão OLED NKK\PIC\SSD1331_PIC18F26K42.X\ssd1331.c
+[v _SPI_dummy SPI_dummy `uc  1 e 1 0 ]
+"26 D:\G_Drive_Pessoal\Projetos\Botão OLED NKK\PIC\SSD1331_PIC18F26K42.X\main.c
+[v _main main `(v  1 e 1 0 ]
+{
+"109
+[v main@color color `us  1 a 2 88 ]
+"107
+[v main@y y `i  1 a 2 95 ]
+"106
+[v main@x x `i  1 a 2 93 ]
+"142
+[v main@buffer buffer `[16]uc  1 a 16 70 ]
+"140
+[v main@counter counter `us  1 a 2 91 ]
+"141
+[v main@progress progress `uc  1 a 1 90 ]
+"166
+} 0
+"9 D:\Program Files\Microchip\xc8\v3.00\pic\sources\c99\common\nf_sprintf.c
+[v _sprintf sprintf `(i  1 e 2 0 ]
+{
+[u S2150 . 2 `*.30uc 1 buffer 1 0 `*.39Cuc 1 source 2 0 ]
+"13
+[s S2153 _IO_FILE 11 `S2150 1 . 2 0 `i 1 count 2 2 `[3]uc 1 ungetbuf 3 4 `i 1 ungetcnt 2 7 `i 1 limit 2 9 ]
+[v sprintf@f f `S2153  1 a 11 54 ]
+"12
+[v sprintf@ap ap `[1]*.30v  1 a 1 53 ]
+"9
+[v sprintf@s s `*.30uc  1 p 1 48 ]
+[v sprintf@fmt fmt `*.32Cuc  1 p 2 49 ]
+"23
+} 0
+"1817 D:\Program Files\Microchip\xc8\v3.00\pic\sources\c99\common\doprnt.c
+[v _vfprintf vfprintf `(i  1 e 2 0 ]
+{
+"1820
+[v vfprintf@cfmt cfmt `*.32uc  1 a 2 46 ]
+[s S2185 _IO_FILE 0 ]
+"1817
+[v vfprintf@fp fp `*.30S2185  1 p 1 42 ]
+[v vfprintf@fmt fmt `*.32Cuc  1 p 2 43 ]
+[v vfprintf@ap ap `*.30*.30v  1 p 1 45 ]
+"1840
+} 0
+"1177
+[v _vfpfcnvrt vfpfcnvrt `(v  1 s 1 vfpfcnvrt ]
+{
+[u S2204 . 4 `i 1 sint 2 0 `ui 1 uint 2 0 `d 1 f 4 0 ]
+"1188
+[v vfpfcnvrt@convarg convarg `S2204  1 a 4 35 ]
+"1179
+[v vfpfcnvrt@cp cp `*.32uc  1 a 2 40 ]
+"1180
+[v vfpfcnvrt@done done `a  1 a 1 39 ]
+[s S2185 _IO_FILE 0 ]
+"1177
+[v vfpfcnvrt@fp fp `*.30S2185  1 p 1 30 ]
+[v vfpfcnvrt@fmt fmt `*.30*.32uc  1 p 1 31 ]
+[v vfpfcnvrt@ap ap `*.30*.30v  1 p 1 32 ]
+"1814
+} 0
+"1001
+[v _utoa utoa `(v  1 s 1 utoa ]
+{
+"1003
+[v utoa@i i `i  1 a 2 28 ]
+[v utoa@w w `i  1 a 2 26 ]
+"1007
+[v utoa@p p `a  1 a 1 25 ]
+[s S2185 _IO_FILE 0 ]
+"1001
+[v utoa@fp fp `*.30S2185  1 p 1 22 ]
+[v utoa@d d `ui  1 p 2 23 ]
+"1047
+} 0
+"193
+[v _pad pad `(v  1 s 1 pad ]
+{
+"195
+[v pad@i i `i  1 a 2 20 ]
+[s S2185 _IO_FILE 0 ]
+"193
+[v pad@fp fp `*.30S2185  1 p 1 14 ]
+[v pad@buf buf `*.39uc  1 p 2 15 ]
+[v pad@p p `i  1 p 2 17 ]
+"226
+} 0
+"8 D:\Program Files\Microchip\xc8\v3.00\pic\sources\c99\common\nf_fputs.c
+[v _fputs fputs `(i  1 e 2 0 ]
+{
+"11
+[v fputs@i i `i  1 a 2 12 ]
+"10
+[v fputs@c c `uc  1 a 1 11 ]
+"8
+[v fputs@s s `*.39Cuc  1 p 2 8 ]
+[u S2150 . 2 `*.30uc 1 buffer 1 0 `*.39Cuc 1 source 2 0 ]
+[s S2153 _IO_FILE 11 `S2150 1 . 2 0 `i 1 count 2 2 `[3]uc 1 ungetbuf 3 4 `i 1 ungetcnt 2 7 `i 1 limit 2 9 ]
+[v fputs@fp fp `*.30S2153  1 p 1 10 ]
+"19
+} 0
+"8 D:\Program Files\Microchip\xc8\v3.00\pic\sources\c99\common\nf_fputc.c
+[v _fputc fputc `(i  1 e 2 0 ]
+{
+[v fputc@c c `i  1 p 2 0 ]
+[u S2150 . 2 `*.30uc 1 buffer 1 0 `*.39Cuc 1 source 2 0 ]
+[s S2153 _IO_FILE 11 `S2150 1 . 2 0 `i 1 count 2 2 `[3]uc 1 ungetbuf 3 4 `i 1 ungetcnt 2 7 `i 1 limit 2 9 ]
+[v fputc@fp fp `*.30S2153  1 p 1 2 ]
+"24
+} 0
+"7 D:\Program Files\Microchip\xc8\v3.00\pic\sources\c99\common\putch.c
+[v _putch putch `(v  1 e 1 0 ]
+{
+"9
+} 0
+"7 D:\Program Files\Microchip\xc8\v3.00\pic\sources\c99\common\lwmod.c
+[v ___lwmod __lwmod `(ui  1 e 2 0 ]
+{
+"10
+[v ___lwmod@counter counter `uc  1 a 1 4 ]
+"7
+[v ___lwmod@dividend dividend `ui  1 p 2 0 ]
+[v ___lwmod@divisor divisor `ui  1 p 2 2 ]
+"25
+} 0
+"7 D:\Program Files\Microchip\xc8\v3.00\pic\sources\c99\common\lwdiv.c
+[v ___lwdiv __lwdiv `(ui  1 e 2 0 ]
+{
+"10
+[v ___lwdiv@quotient quotient `ui  1 a 2 4 ]
+"11
+[v ___lwdiv@counter counter `uc  1 a 1 6 ]
+"7
+[v ___lwdiv@dividend dividend `ui  1 p 2 0 ]
+[v ___lwdiv@divisor divisor `ui  1 p 2 2 ]
+"30
+} 0
+"1158 D:\Program Files\Microchip\xc8\v3.00\pic\sources\c99\common\doprnt.c
+[v _read_prec_or_width read_prec_or_width `(i  1 s 2 read_prec_or_width ]
+{
+"1164
+[v read_prec_or_width@c c `uc  1 a 1 4 ]
+"1159
+[v read_prec_or_width@n n `i  1 a 2 5 ]
+"1158
+[v read_prec_or_width@fmt fmt `*.30*.32Cuc  1 p 1 0 ]
+[v read_prec_or_width@ap ap `*.30[1]*.30v  1 p 1 1 ]
+"1171
+} 0
+"50 D:\G_Drive_Pessoal\Projetos\Botão OLED NKK\PIC\SSD1331_PIC18F26K42.X\mcc_generated_files/mcc.c
+[v _SYSTEM_Initialize SYSTEM_Initialize `(v  1 e 1 0 ]
+{
+"56
+} 0
+"64 D:\G_Drive_Pessoal\Projetos\Botão OLED NKK\PIC\SSD1331_PIC18F26K42.X\mcc_generated_files/spi1.c
+[v _SPI1_Initialize SPI1_Initialize `(v  1 e 1 0 ]
+{
+"77
+} 0
+"72 D:\G_Drive_Pessoal\Projetos\Botão OLED NKK\PIC\SSD1331_PIC18F26K42.X\mcc_generated_files/mcc.c
+[v _PMD_Initialize PMD_Initialize `(v  1 e 1 0 ]
+{
+"90
+} 0
+"55 D:\G_Drive_Pessoal\Projetos\Botão OLED NKK\PIC\SSD1331_PIC18F26K42.X\mcc_generated_files/pin_manager.c
+[v _PIN_MANAGER_Initialize PIN_MANAGER_Initialize `(v  1 e 1 0 ]
+{
+"127
+} 0
+"58 D:\G_Drive_Pessoal\Projetos\Botão OLED NKK\PIC\SSD1331_PIC18F26K42.X\mcc_generated_files/mcc.c
+[v _OSCILLATOR_Initialize OSCILLATOR_Initialize `(v  1 e 1 0 ]
+{
+"70
+} 0
+"37 D:\G_Drive_Pessoal\Projetos\Botão OLED NKK\PIC\SSD1331_PIC18F26K42.X\ssd1331.c
+[v _SSD1331_Init SSD1331_Init `(v  1 e 1 0 ]
+{
+[s S194 . 27 `s 1 width 2 0 `s 1 height 2 2 `s 1 cursor_x 2 4 `s 1 cursor_y 2 6 `us 1 textcolor 2 8 `us 1 textbgcolor 2 10 `uc 1 textsize_x 1 12 `uc 1 textsize_y 1 13 `uc 1 rotation 1 14 `a 1 wrap 1 15 `a 1 cp437 1 16 `*.37(v 1 drawPixel 2 17 `*.37(v 1 fillScreen 2 19 `*.37(v 1 drawFastVLine 2 21 `*.37(v 1 drawFastHLine 2 23 `*.37(v 1 fillRect 2 25 ]
+[s S248 . 28 `S194 1 gfx 27 0 `uc 1 rotation 1 27 ]
+[v SSD1331_Init@ssd ssd `*.30S248  1 p 1 5 ]
+"55
+} 0
+"119 D:\G_Drive_Pessoal\Projetos\Botão OLED NKK\PIC\SSD1331_PIC18F26K42.X\gfx_pic.c
+[v _GFX_Init GFX_Init `(v  1 e 1 0 ]
+{
+[s S194 . 27 `s 1 width 2 0 `s 1 height 2 2 `s 1 cursor_x 2 4 `s 1 cursor_y 2 6 `us 1 textcolor 2 8 `us 1 textbgcolor 2 10 `uc 1 textsize_x 1 12 `uc 1 textsize_y 1 13 `uc 1 rotation 1 14 `a 1 wrap 1 15 `a 1 cp437 1 16 `*.37(v 1 drawPixel 2 17 `*.37(v 1 fillScreen 2 19 `*.37(v 1 drawFastVLine 2 21 `*.37(v 1 drawFastHLine 2 23 `*.37(v 1 fillRect 2 25 ]
+[v GFX_Init@gfx gfx `*.30S194  1 p 1 0 ]
+[v GFX_Init@w w `s  1 p 2 1 ]
+[v GFX_Init@h h `s  1 p 2 3 ]
+"137
+} 0
+"194 D:\G_Drive_Pessoal\Projetos\Botão OLED NKK\PIC\SSD1331_PIC18F26K42.X\ssd1331.c
+[v _SSD1331_DrawLine SSD1331_DrawLine `(v  1 e 1 0 ]
+{
+[s S194 . 27 `s 1 width 2 0 `s 1 height 2 2 `s 1 cursor_x 2 4 `s 1 cursor_y 2 6 `us 1 textcolor 2 8 `us 1 textbgcolor 2 10 `uc 1 textsize_x 1 12 `uc 1 textsize_y 1 13 `uc 1 rotation 1 14 `a 1 wrap 1 15 `a 1 cp437 1 16 `*.37(v 1 drawPixel 2 17 `*.37(v 1 fillScreen 2 19 `*.37(v 1 drawFastVLine 2 21 `*.37(v 1 drawFastHLine 2 23 `*.37(v 1 fillRect 2 25 ]
+[s S248 . 28 `S194 1 gfx 27 0 `uc 1 rotation 1 27 ]
+[v SSD1331_DrawLine@ssd ssd `*.30S248  1 p 1 80 ]
+[v SSD1331_DrawLine@x0 x0 `s  1 p 2 81 ]
+[v SSD1331_DrawLine@y0 y0 `s  1 p 2 83 ]
+[v SSD1331_DrawLine@x1 x1 `s  1 p 2 85 ]
+[v SSD1331_DrawLine@y1 y1 `s  1 p 2 87 ]
+[v SSD1331_DrawLine@color color `us  1 p 2 89 ]
+"215
+} 0
+"60
+[v _SSD1331_Begin SSD1331_Begin `(v  1 e 1 0 ]
+{
+[s S194 . 27 `s 1 width 2 0 `s 1 height 2 2 `s 1 cursor_x 2 4 `s 1 cursor_y 2 6 `us 1 textcolor 2 8 `us 1 textbgcolor 2 10 `uc 1 textsize_x 1 12 `uc 1 textsize_y 1 13 `uc 1 rotation 1 14 `a 1 wrap 1 15 `a 1 cp437 1 16 `*.37(v 1 drawPixel 2 17 `*.37(v 1 fillScreen 2 19 `*.37(v 1 drawFastVLine 2 21 `*.37(v 1 drawFastHLine 2 23 `*.37(v 1 fillRect 2 25 ]
+[s S248 . 28 `S194 1 gfx 27 0 `uc 1 rotation 1 27 ]
+[v SSD1331_Begin@ssd ssd `*.30S248  1 p 1 24 ]
+"103
+} 0
+"328
+[v _SSD1331_HardwareReset SSD1331_HardwareReset `(v  1 s 1 SSD1331_HardwareReset ]
+{
+[s S194 . 27 `s 1 width 2 0 `s 1 height 2 2 `s 1 cursor_x 2 4 `s 1 cursor_y 2 6 `us 1 textcolor 2 8 `us 1 textbgcolor 2 10 `uc 1 textsize_x 1 12 `uc 1 textsize_y 1 13 `uc 1 rotation 1 14 `a 1 wrap 1 15 `a 1 cp437 1 16 `*.37(v 1 drawPixel 2 17 `*.37(v 1 fillScreen 2 19 `*.37(v 1 drawFastVLine 2 21 `*.37(v 1 drawFastHLine 2 23 `*.37(v 1 fillRect 2 25 ]
+[s S248 . 28 `S194 1 gfx 27 0 `uc 1 rotation 1 27 ]
+[v SSD1331_HardwareReset@ssd ssd `*.30S248  1 p 1 5 ]
+"335
+} 0
+"28
+[v _SSD1331_Delay SSD1331_Delay `(v  1 e 1 0 ]
+{
+"29
+[v SSD1331_Delay@i i `us  1 a 2 3 ]
+"28
+[v SSD1331_Delay@ms ms `us  1 p 2 0 ]
+"32
+} 0
+"187
+[v _SSD1331_FillScreen SSD1331_FillScreen `(v  1 e 1 0 ]
+{
+[s S194 . 27 `s 1 width 2 0 `s 1 height 2 2 `s 1 cursor_x 2 4 `s 1 cursor_y 2 6 `us 1 textcolor 2 8 `us 1 textbgcolor 2 10 `uc 1 textsize_x 1 12 `uc 1 textsize_y 1 13 `uc 1 rotation 1 14 `a 1 wrap 1 15 `a 1 cp437 1 16 `*.37(v 1 drawPixel 2 17 `*.37(v 1 fillScreen 2 19 `*.37(v 1 drawFastVLine 2 21 `*.37(v 1 drawFastHLine 2 23 `*.37(v 1 fillRect 2 25 ]
+[s S248 . 28 `S194 1 gfx 27 0 `uc 1 rotation 1 27 ]
+[v SSD1331_FillScreen@ssd ssd `*.30S248  1 p 1 21 ]
+[v SSD1331_FillScreen@color color `us  1 p 2 22 ]
+"189
+} 0
+"79 D:\G_Drive_Pessoal\Projetos\Botão OLED NKK\PIC\SSD1331_PIC18F26K42.X\mcc_generated_files/spi1.c
+[v _SPI1_Open SPI1_Open `(a  1 e 1 0 ]
+{
+[v SPI1_Open@spi1UniqueConfiguration spi1UniqueConfiguration `E358  1 p 1 wreg ]
+[v SPI1_Open@spi1UniqueConfiguration spi1UniqueConfiguration `E358  1 p 1 wreg ]
+"81
+[v SPI1_Open@spi1UniqueConfiguration spi1UniqueConfiguration `E358  1 p 1 1 ]
+"92
+} 0
+"411 D:\G_Drive_Pessoal\Projetos\Botão OLED NKK\PIC\SSD1331_PIC18F26K42.X\gfx_pic.c
+[v _GFX_SetTextSize GFX_SetTextSize `(v  1 e 1 0 ]
+{
+[s S194 . 27 `s 1 width 2 0 `s 1 height 2 2 `s 1 cursor_x 2 4 `s 1 cursor_y 2 6 `us 1 textcolor 2 8 `us 1 textbgcolor 2 10 `uc 1 textsize_x 1 12 `uc 1 textsize_y 1 13 `uc 1 rotation 1 14 `a 1 wrap 1 15 `a 1 cp437 1 16 `*.37(v 1 drawPixel 2 17 `*.37(v 1 fillScreen 2 19 `*.37(v 1 drawFastVLine 2 21 `*.37(v 1 drawFastHLine 2 23 `*.37(v 1 fillRect 2 25 ]
+[v GFX_SetTextSize@gfx gfx `*.30S194  1 p 1 0 ]
+[v GFX_SetTextSize@s s `uc  1 p 1 1 ]
+"414
+} 0
+"403
+[v _GFX_SetTextColorBg GFX_SetTextColorBg `(v  1 e 1 0 ]
+{
+[s S194 . 27 `s 1 width 2 0 `s 1 height 2 2 `s 1 cursor_x 2 4 `s 1 cursor_y 2 6 `us 1 textcolor 2 8 `us 1 textbgcolor 2 10 `uc 1 textsize_x 1 12 `uc 1 textsize_y 1 13 `uc 1 rotation 1 14 `a 1 wrap 1 15 `a 1 cp437 1 16 `*.37(v 1 drawPixel 2 17 `*.37(v 1 fillScreen 2 19 `*.37(v 1 drawFastVLine 2 21 `*.37(v 1 drawFastHLine 2 23 `*.37(v 1 fillRect 2 25 ]
+[v GFX_SetTextColorBg@gfx gfx `*.30S194  1 p 1 0 ]
+[v GFX_SetTextColorBg@c c `us  1 p 2 1 ]
+[v GFX_SetTextColorBg@bg bg `us  1 p 2 3 ]
+"406
+} 0
+"394
+[v _GFX_SetTextColor GFX_SetTextColor `(v  1 e 1 0 ]
+{
+[s S194 . 27 `s 1 width 2 0 `s 1 height 2 2 `s 1 cursor_x 2 4 `s 1 cursor_y 2 6 `us 1 textcolor 2 8 `us 1 textbgcolor 2 10 `uc 1 textsize_x 1 12 `uc 1 textsize_y 1 13 `uc 1 rotation 1 14 `a 1 wrap 1 15 `a 1 cp437 1 16 `*.37(v 1 drawPixel 2 17 `*.37(v 1 fillScreen 2 19 `*.37(v 1 drawFastVLine 2 21 `*.37(v 1 drawFastHLine 2 23 `*.37(v 1 fillRect 2 25 ]
+[v GFX_SetTextColor@gfx gfx `*.30S194  1 p 1 0 ]
+[v GFX_SetTextColor@c c `us  1 p 2 1 ]
+"397
+} 0
+"378
+[v _GFX_PrintAt GFX_PrintAt `(v  1 e 1 0 ]
+{
+[s S194 . 27 `s 1 width 2 0 `s 1 height 2 2 `s 1 cursor_x 2 4 `s 1 cursor_y 2 6 `us 1 textcolor 2 8 `us 1 textbgcolor 2 10 `uc 1 textsize_x 1 12 `uc 1 textsize_y 1 13 `uc 1 rotation 1 14 `a 1 wrap 1 15 `a 1 cp437 1 16 `*.37(v 1 drawPixel 2 17 `*.37(v 1 fillScreen 2 19 `*.37(v 1 drawFastVLine 2 21 `*.37(v 1 drawFastHLine 2 23 `*.37(v 1 fillRect 2 25 ]
+[v GFX_PrintAt@gfx gfx `*.30S194  1 p 1 60 ]
+[v GFX_PrintAt@display display `*.30v  1 p 1 61 ]
+[v GFX_PrintAt@x x `s  1 p 2 62 ]
+[v GFX_PrintAt@y y `s  1 p 2 64 ]
+[v GFX_PrintAt@str str `*.34Cuc  1 p 2 66 ]
+"381
+} 0
+"386
+[v _GFX_SetCursor GFX_SetCursor `(v  1 e 1 0 ]
+{
+[s S194 . 27 `s 1 width 2 0 `s 1 height 2 2 `s 1 cursor_x 2 4 `s 1 cursor_y 2 6 `us 1 textcolor 2 8 `us 1 textbgcolor 2 10 `uc 1 textsize_x 1 12 `uc 1 textsize_y 1 13 `uc 1 rotation 1 14 `a 1 wrap 1 15 `a 1 cp437 1 16 `*.37(v 1 drawPixel 2 17 `*.37(v 1 fillScreen 2 19 `*.37(v 1 drawFastVLine 2 21 `*.37(v 1 drawFastHLine 2 23 `*.37(v 1 fillRect 2 25 ]
+[v GFX_SetCursor@gfx gfx `*.30S194  1 p 1 0 ]
+[v GFX_SetCursor@x x `s  1 p 2 1 ]
+[v GFX_SetCursor@y y `s  1 p 2 3 ]
+"389
+} 0
+"369
+[v _GFX_Print GFX_Print `(v  1 e 1 0 ]
+{
+[s S194 . 27 `s 1 width 2 0 `s 1 height 2 2 `s 1 cursor_x 2 4 `s 1 cursor_y 2 6 `us 1 textcolor 2 8 `us 1 textbgcolor 2 10 `uc 1 textsize_x 1 12 `uc 1 textsize_y 1 13 `uc 1 rotation 1 14 `a 1 wrap 1 15 `a 1 cp437 1 16 `*.37(v 1 drawPixel 2 17 `*.37(v 1 fillScreen 2 19 `*.37(v 1 drawFastVLine 2 21 `*.37(v 1 drawFastHLine 2 23 `*.37(v 1 fillRect 2 25 ]
+[v GFX_Print@gfx gfx `*.30S194  1 p 1 56 ]
+[v GFX_Print@display display `*.30v  1 p 1 57 ]
+[v GFX_Print@str str `*.34Cuc  1 p 2 58 ]
+"373
+} 0
+"350
+[v _GFX_Write GFX_Write `(v  1 e 1 0 ]
+{
+[s S194 . 27 `s 1 width 2 0 `s 1 height 2 2 `s 1 cursor_x 2 4 `s 1 cursor_y 2 6 `us 1 textcolor 2 8 `us 1 textbgcolor 2 10 `uc 1 textsize_x 1 12 `uc 1 textsize_y 1 13 `uc 1 rotation 1 14 `a 1 wrap 1 15 `a 1 cp437 1 16 `*.37(v 1 drawPixel 2 17 `*.37(v 1 fillScreen 2 19 `*.37(v 1 drawFastVLine 2 21 `*.37(v 1 drawFastHLine 2 23 `*.37(v 1 fillRect 2 25 ]
+[v GFX_Write@gfx gfx `*.30S194  1 p 1 42 ]
+[v GFX_Write@display display `*.30v  1 p 1 43 ]
+[v GFX_Write@c c `uc  1 p 1 44 ]
+"364
+} 0
+"287
+[v _GFX_DrawChar GFX_DrawChar `(v  1 e 1 0 ]
+{
+"295
+[v GFX_DrawChar@j j `c  1 a 1 40 ]
+"294
+[v GFX_DrawChar@line line `uc  1 a 1 39 ]
+"293
+[v GFX_DrawChar@i i `c  1 a 1 41 ]
+[s S194 . 27 `s 1 width 2 0 `s 1 height 2 2 `s 1 cursor_x 2 4 `s 1 cursor_y 2 6 `us 1 textcolor 2 8 `us 1 textbgcolor 2 10 `uc 1 textsize_x 1 12 `uc 1 textsize_y 1 13 `uc 1 rotation 1 14 `a 1 wrap 1 15 `a 1 cp437 1 16 `*.37(v 1 drawPixel 2 17 `*.37(v 1 fillScreen 2 19 `*.37(v 1 drawFastVLine 2 21 `*.37(v 1 drawFastHLine 2 23 `*.37(v 1 fillRect 2 25 ]
+"287
+[v GFX_DrawChar@gfx gfx `*.30S194  1 p 1 14 ]
+[v GFX_DrawChar@display display `*.30v  1 p 1 15 ]
+[v GFX_DrawChar@x x `s  1 p 2 16 ]
+[v GFX_DrawChar@y y `s  1 p 2 18 ]
+[v GFX_DrawChar@c c `uc  1 p 1 20 ]
+[v GFX_DrawChar@color color `us  1 p 2 21 ]
+[v GFX_DrawChar@bg bg `us  1 p 2 23 ]
+[v GFX_DrawChar@size_x size_x `uc  1 p 1 25 ]
+[v GFX_DrawChar@size_y size_y `uc  1 p 1 26 ]
+"319
+} 0
+"207
+[v _GFX_FillRect GFX_FillRect `(v  1 e 1 0 ]
+{
+"211
+[v GFX_FillRect@i i `s  1 a 2 12 ]
+[s S194 . 27 `s 1 width 2 0 `s 1 height 2 2 `s 1 cursor_x 2 4 `s 1 cursor_y 2 6 `us 1 textcolor 2 8 `us 1 textbgcolor 2 10 `uc 1 textsize_x 1 12 `uc 1 textsize_y 1 13 `uc 1 rotation 1 14 `a 1 wrap 1 15 `a 1 cp437 1 16 `*.37(v 1 drawPixel 2 17 `*.37(v 1 fillScreen 2 19 `*.37(v 1 drawFastVLine 2 21 `*.37(v 1 drawFastHLine 2 23 `*.37(v 1 fillRect 2 25 ]
+"207
+[v GFX_FillRect@gfx gfx `*.30S194  1 p 1 0 ]
+[v GFX_FillRect@display display `*.30v  1 p 1 1 ]
+[v GFX_FillRect@x x `s  1 p 2 2 ]
+[v GFX_FillRect@y y `s  1 p 2 4 ]
+[v GFX_FillRect@w w `s  1 p 2 6 ]
+[v GFX_FillRect@h h `s  1 p 2 8 ]
+[v GFX_FillRect@color color `us  1 p 2 10 ]
+"215
+} 0
+"250 D:\G_Drive_Pessoal\Projetos\Botão OLED NKK\PIC\SSD1331_PIC18F26K42.X\ssd1331.c
+[v _SSD1331_FillRect SSD1331_FillRect `(v  1 e 1 0 ]
+{
+[s S194 . 27 `s 1 width 2 0 `s 1 height 2 2 `s 1 cursor_x 2 4 `s 1 cursor_y 2 6 `us 1 textcolor 2 8 `us 1 textbgcolor 2 10 `uc 1 textsize_x 1 12 `uc 1 textsize_y 1 13 `uc 1 rotation 1 14 `a 1 wrap 1 15 `a 1 cp437 1 16 `*.37(v 1 drawPixel 2 17 `*.37(v 1 fillScreen 2 19 `*.37(v 1 drawFastVLine 2 21 `*.37(v 1 drawFastHLine 2 23 `*.37(v 1 fillRect 2 25 ]
+[s S248 . 28 `S194 1 gfx 27 0 `uc 1 rotation 1 27 ]
+[v SSD1331_FillRect@ssd ssd `*.30S248  1 p 1 3 ]
+[v SSD1331_FillRect@x x `s  1 p 2 4 ]
+[v SSD1331_FillRect@y y `s  1 p 2 6 ]
+[v SSD1331_FillRect@w w `s  1 p 2 8 ]
+[v SSD1331_FillRect@h h `s  1 p 2 10 ]
+[v SSD1331_FillRect@color color `us  1 p 2 12 ]
+"271
+} 0
+"250 D:\G_Drive_Pessoal\Projetos\Botão OLED NKK\PIC\SSD1331_PIC18F26K42.X\gfx_pic.c
+[v _GFX_FillCircle GFX_FillCircle `(v  1 e 1 0 ]
+{
+[s S194 . 27 `s 1 width 2 0 `s 1 height 2 2 `s 1 cursor_x 2 4 `s 1 cursor_y 2 6 `us 1 textcolor 2 8 `us 1 textbgcolor 2 10 `uc 1 textsize_x 1 12 `uc 1 textsize_y 1 13 `uc 1 rotation 1 14 `a 1 wrap 1 15 `a 1 cp437 1 16 `*.37(v 1 drawPixel 2 17 `*.37(v 1 fillScreen 2 19 `*.37(v 1 drawFastVLine 2 21 `*.37(v 1 drawFastHLine 2 23 `*.37(v 1 fillRect 2 25 ]
+[v GFX_FillCircle@gfx gfx `*.30S194  1 p 1 23 ]
+[v GFX_FillCircle@display display `*.30v  1 p 1 24 ]
+[v GFX_FillCircle@x0 x0 `s  1 p 2 25 ]
+[v GFX_FillCircle@y0 y0 `s  1 p 2 27 ]
+[v GFX_FillCircle@r r `s  1 p 2 29 ]
+[v GFX_FillCircle@color color `us  1 p 2 31 ]
+"253
+} 0
+"255
+[v _GFX_FillCircleHelper GFX_FillCircleHelper `(v  1 e 1 0 ]
+{
+"261
+[v GFX_FillCircleHelper@y y `s  1 a 2 21 ]
+"260
+[v GFX_FillCircleHelper@x x `s  1 a 2 19 ]
+"257
+[v GFX_FillCircleHelper@f f `s  1 a 2 17 ]
+"259
+[v GFX_FillCircleHelper@ddF_y ddF_y `s  1 a 2 15 ]
+"258
+[v GFX_FillCircleHelper@ddF_x ddF_x `s  1 a 2 13 ]
+[s S194 . 27 `s 1 width 2 0 `s 1 height 2 2 `s 1 cursor_x 2 4 `s 1 cursor_y 2 6 `us 1 textcolor 2 8 `us 1 textbgcolor 2 10 `uc 1 textsize_x 1 12 `uc 1 textsize_y 1 13 `uc 1 rotation 1 14 `a 1 wrap 1 15 `a 1 cp437 1 16 `*.37(v 1 drawPixel 2 17 `*.37(v 1 fillScreen 2 19 `*.37(v 1 drawFastVLine 2 21 `*.37(v 1 drawFastHLine 2 23 `*.37(v 1 fillRect 2 25 ]
+"255
+[v GFX_FillCircleHelper@gfx gfx `*.30S194  1 p 1 0 ]
+[v GFX_FillCircleHelper@display display `*.30v  1 p 1 1 ]
+[v GFX_FillCircleHelper@x0 x0 `s  1 p 2 2 ]
+[v GFX_FillCircleHelper@y0 y0 `s  1 p 2 4 ]
+[v GFX_FillCircleHelper@r r `s  1 p 2 6 ]
+"256
+[v GFX_FillCircleHelper@corners corners `uc  1 p 1 8 ]
+[v GFX_FillCircleHelper@delta delta `s  1 p 2 9 ]
+[v GFX_FillCircleHelper@color color `us  1 p 2 11 ]
+"282
+} 0
+"200
+[v _GFX_DrawRect GFX_DrawRect `(v  1 e 1 0 ]
+{
+[s S194 . 27 `s 1 width 2 0 `s 1 height 2 2 `s 1 cursor_x 2 4 `s 1 cursor_y 2 6 `us 1 textcolor 2 8 `us 1 textbgcolor 2 10 `uc 1 textsize_x 1 12 `uc 1 textsize_y 1 13 `uc 1 rotation 1 14 `a 1 wrap 1 15 `a 1 cp437 1 16 `*.37(v 1 drawPixel 2 17 `*.37(v 1 fillScreen 2 19 `*.37(v 1 drawFastVLine 2 21 `*.37(v 1 drawFastHLine 2 23 `*.37(v 1 fillRect 2 25 ]
+[v GFX_DrawRect@gfx gfx `*.30S194  1 p 1 0 ]
+[v GFX_DrawRect@display display `*.30v  1 p 1 1 ]
+[v GFX_DrawRect@x x `s  1 p 2 2 ]
+[v GFX_DrawRect@y y `s  1 p 2 4 ]
+[v GFX_DrawRect@w w `s  1 p 2 6 ]
+[v GFX_DrawRect@h h `s  1 p 2 8 ]
+[v GFX_DrawRect@color color `us  1 p 2 10 ]
+"205
+} 0
+"184
+[v _GFX_DrawFastVLine GFX_DrawFastVLine `(v  1 e 1 0 ]
+{
+[s S194 . 27 `s 1 width 2 0 `s 1 height 2 2 `s 1 cursor_x 2 4 `s 1 cursor_y 2 6 `us 1 textcolor 2 8 `us 1 textbgcolor 2 10 `uc 1 textsize_x 1 12 `uc 1 textsize_y 1 13 `uc 1 rotation 1 14 `a 1 wrap 1 15 `a 1 cp437 1 16 `*.37(v 1 drawPixel 2 17 `*.37(v 1 fillScreen 2 19 `*.37(v 1 drawFastVLine 2 21 `*.37(v 1 drawFastHLine 2 23 `*.37(v 1 fillRect 2 25 ]
+[v GFX_DrawFastVLine@gfx gfx `*.30S194  1 p 1 80 ]
+[v GFX_DrawFastVLine@display display `*.30v  1 p 1 81 ]
+[v GFX_DrawFastVLine@x x `s  1 p 2 82 ]
+[v GFX_DrawFastVLine@y y `s  1 p 2 84 ]
+[v GFX_DrawFastVLine@h h `s  1 p 2 86 ]
+[v GFX_DrawFastVLine@color color `us  1 p 2 88 ]
+"190
+} 0
+"192
+[v _GFX_DrawFastHLine GFX_DrawFastHLine `(v  1 e 1 0 ]
+{
+[s S194 . 27 `s 1 width 2 0 `s 1 height 2 2 `s 1 cursor_x 2 4 `s 1 cursor_y 2 6 `us 1 textcolor 2 8 `us 1 textbgcolor 2 10 `uc 1 textsize_x 1 12 `uc 1 textsize_y 1 13 `uc 1 rotation 1 14 `a 1 wrap 1 15 `a 1 cp437 1 16 `*.37(v 1 drawPixel 2 17 `*.37(v 1 fillScreen 2 19 `*.37(v 1 drawFastVLine 2 21 `*.37(v 1 drawFastHLine 2 23 `*.37(v 1 fillRect 2 25 ]
+[v GFX_DrawFastHLine@gfx gfx `*.30S194  1 p 1 80 ]
+[v GFX_DrawFastHLine@display display `*.30v  1 p 1 81 ]
+[v GFX_DrawFastHLine@x x `s  1 p 2 82 ]
+[v GFX_DrawFastHLine@y y `s  1 p 2 84 ]
+[v GFX_DrawFastHLine@w w `s  1 p 2 86 ]
+[v GFX_DrawFastHLine@color color `us  1 p 2 88 ]
+"198
+} 0
+"153
+[v _GFX_DrawLine GFX_DrawLine `(v  1 e 1 0 ]
+{
+"165
+[v GFX_DrawLine@dx dx `s  1 a 2 78 ]
+"154
+[v GFX_DrawLine@steep steep `s  1 a 2 76 ]
+"167
+[v GFX_DrawLine@err err `s  1 a 2 74 ]
+"168
+[v GFX_DrawLine@ystep ystep `s  1 a 2 72 ]
+"166
+[v GFX_DrawLine@dy dy `s  1 a 2 70 ]
+[s S194 . 27 `s 1 width 2 0 `s 1 height 2 2 `s 1 cursor_x 2 4 `s 1 cursor_y 2 6 `us 1 textcolor 2 8 `us 1 textbgcolor 2 10 `uc 1 textsize_x 1 12 `uc 1 textsize_y 1 13 `uc 1 rotation 1 14 `a 1 wrap 1 15 `a 1 cp437 1 16 `*.37(v 1 drawPixel 2 17 `*.37(v 1 fillScreen 2 19 `*.37(v 1 drawFastVLine 2 21 `*.37(v 1 drawFastHLine 2 23 `*.37(v 1 fillRect 2 25 ]
+"153
+[v GFX_DrawLine@gfx gfx `*.30S194  1 p 1 55 ]
+[v GFX_DrawLine@display display `*.30v  1 p 1 56 ]
+[v GFX_DrawLine@x0 x0 `s  1 p 2 57 ]
+[v GFX_DrawLine@y0 y0 `s  1 p 2 59 ]
+[v GFX_DrawLine@x1 x1 `s  1 p 2 61 ]
+[v GFX_DrawLine@y1 y1 `s  1 p 2 63 ]
+[v GFX_DrawLine@color color `us  1 p 2 65 ]
+"182
+} 0
+"1 D:\Program Files\Microchip\xc8\v3.00\pic\sources\c99\common\abs.c
+[v _abs abs `(i  1 e 2 0 ]
+{
+[v abs@a a `i  1 p 2 0 ]
+"4
+} 0
+"7 D:\Program Files\Microchip\xc8\v3.00\pic\sources\c99\common\awdiv.c
+[v ___awdiv __awdiv `(i  1 e 2 0 ]
+{
+"10
+[v ___awdiv@quotient quotient `i  1 a 2 6 ]
+"11
+[v ___awdiv@sign sign `uc  1 a 1 5 ]
+[v ___awdiv@counter counter `uc  1 a 1 4 ]
+"7
+[v ___awdiv@dividend dividend `i  1 p 2 0 ]
+[v ___awdiv@divisor divisor `i  1 p 2 2 ]
+"41
+} 0
+"113 D:\G_Drive_Pessoal\Projetos\Botão OLED NKK\PIC\SSD1331_PIC18F26K42.X\gfx_pic.c
+[v _GFX_Swap GFX_Swap `(v  1 e 1 0 ]
+{
+"114
+[v GFX_Swap@t t `s  1 a 2 2 ]
+"113
+[v GFX_Swap@a a `*.30s  1 p 1 0 ]
+[v GFX_Swap@b b `*.30s  1 p 1 1 ]
+"117
+} 0
+"217
+[v _GFX_DrawCircle GFX_DrawCircle `(v  1 e 1 0 ]
+{
+"222
+[v GFX_DrawCircle@y y `s  1 a 2 75 ]
+"221
+[v GFX_DrawCircle@x x `s  1 a 2 73 ]
+"218
+[v GFX_DrawCircle@f f `s  1 a 2 71 ]
+"220
+[v GFX_DrawCircle@ddF_y ddF_y `s  1 a 2 69 ]
+"219
+[v GFX_DrawCircle@ddF_x ddF_x `s  1 a 2 67 ]
+[s S194 . 27 `s 1 width 2 0 `s 1 height 2 2 `s 1 cursor_x 2 4 `s 1 cursor_y 2 6 `us 1 textcolor 2 8 `us 1 textbgcolor 2 10 `uc 1 textsize_x 1 12 `uc 1 textsize_y 1 13 `uc 1 rotation 1 14 `a 1 wrap 1 15 `a 1 cp437 1 16 `*.37(v 1 drawPixel 2 17 `*.37(v 1 fillScreen 2 19 `*.37(v 1 drawFastVLine 2 21 `*.37(v 1 drawFastHLine 2 23 `*.37(v 1 fillRect 2 25 ]
+"217
+[v GFX_DrawCircle@gfx gfx `*.30S194  1 p 1 55 ]
+[v GFX_DrawCircle@display display `*.30v  1 p 1 56 ]
+[v GFX_DrawCircle@x0 x0 `s  1 p 2 57 ]
+[v GFX_DrawCircle@y0 y0 `s  1 p 2 59 ]
+[v GFX_DrawCircle@r r `s  1 p 2 61 ]
+[v GFX_DrawCircle@color color `us  1 p 2 63 ]
+"248
+} 0
+"139
+[v _GFX_DrawPixel GFX_DrawPixel `(v  1 e 1 0 ]
+{
+[s S194 . 27 `s 1 width 2 0 `s 1 height 2 2 `s 1 cursor_x 2 4 `s 1 cursor_y 2 6 `us 1 textcolor 2 8 `us 1 textbgcolor 2 10 `uc 1 textsize_x 1 12 `uc 1 textsize_y 1 13 `uc 1 rotation 1 14 `a 1 wrap 1 15 `a 1 cp437 1 16 `*.37(v 1 drawPixel 2 17 `*.37(v 1 fillScreen 2 19 `*.37(v 1 drawFastVLine 2 21 `*.37(v 1 drawFastHLine 2 23 `*.37(v 1 fillRect 2 25 ]
+[v GFX_DrawPixel@gfx gfx `*.30S194  1 p 1 45 ]
+[v GFX_DrawPixel@display display `*.30v  1 p 1 46 ]
+[v GFX_DrawPixel@x x `s  1 p 2 47 ]
+[v GFX_DrawPixel@y y `s  1 p 2 49 ]
+[v GFX_DrawPixel@color color `us  1 p 2 51 ]
+"143
+} 0
+"335
+[v _GFX_DrawBitmapRGB GFX_DrawBitmapRGB `(v  1 e 1 0 ]
+{
+"340
+[v GFX_DrawBitmapRGB@color color `us  1 a 2 63 ]
+"339
+[v GFX_DrawBitmapRGB@index index `s  1 a 2 61 ]
+"338
+[v GFX_DrawBitmapRGB@i i `s  1 a 2 67 ]
+"337
+[v GFX_DrawBitmapRGB@j j `s  1 a 2 65 ]
+[s S194 . 27 `s 1 width 2 0 `s 1 height 2 2 `s 1 cursor_x 2 4 `s 1 cursor_y 2 6 `us 1 textcolor 2 8 `us 1 textbgcolor 2 10 `uc 1 textsize_x 1 12 `uc 1 textsize_y 1 13 `uc 1 rotation 1 14 `a 1 wrap 1 15 `a 1 cp437 1 16 `*.37(v 1 drawPixel 2 17 `*.37(v 1 fillScreen 2 19 `*.37(v 1 drawFastVLine 2 21 `*.37(v 1 drawFastHLine 2 23 `*.37(v 1 fillRect 2 25 ]
+"335
+[v GFX_DrawBitmapRGB@gfx gfx `*.30S194  1 p 1 45 ]
+[v GFX_DrawBitmapRGB@display display `*.30v  1 p 1 46 ]
+[v GFX_DrawBitmapRGB@x x `s  1 p 2 47 ]
+[v GFX_DrawBitmapRGB@y y `s  1 p 2 49 ]
+"336
+[v GFX_DrawBitmapRGB@bitmap bitmap `*.32Cus  1 p 2 51 ]
+[v GFX_DrawBitmapRGB@w w `s  1 p 2 53 ]
+[v GFX_DrawBitmapRGB@h h `s  1 p 2 55 ]
+"344
+} 0
+"162 D:\G_Drive_Pessoal\Projetos\Botão OLED NKK\PIC\SSD1331_PIC18F26K42.X\ssd1331.c
+[v _SSD1331_DrawPixel SSD1331_DrawPixel `(v  1 e 1 0 ]
+{
+"175
+[v SSD1331_DrawPixel@t_1548 t `s  1 a 2 43 ]
+"167
+[v SSD1331_DrawPixel@t t `s  1 a 2 41 ]
+[s S194 . 27 `s 1 width 2 0 `s 1 height 2 2 `s 1 cursor_x 2 4 `s 1 cursor_y 2 6 `us 1 textcolor 2 8 `us 1 textbgcolor 2 10 `uc 1 textsize_x 1 12 `uc 1 textsize_y 1 13 `uc 1 rotation 1 14 `a 1 wrap 1 15 `a 1 cp437 1 16 `*.37(v 1 drawPixel 2 17 `*.37(v 1 fillScreen 2 19 `*.37(v 1 drawFastVLine 2 21 `*.37(v 1 drawFastHLine 2 23 `*.37(v 1 fillRect 2 25 ]
+"162
+[s S248 . 28 `S194 1 gfx 27 0 `uc 1 rotation 1 27 ]
+[v SSD1331_DrawPixel@ssd ssd `*.30S248  1 p 1 31 ]
+[v SSD1331_DrawPixel@x x `s  1 p 2 32 ]
+[v SSD1331_DrawPixel@y y `s  1 p 2 34 ]
+[v SSD1331_DrawPixel@color color `us  1 p 2 36 ]
+"182
+} 0
+"296
+[v _SSD1331_WriteData16 SSD1331_WriteData16 `(v  1 e 1 0 ]
+{
+"297
+[v SSD1331_WriteData16@buffer buffer `[2]uc  1 a 2 7 ]
+[s S194 . 27 `s 1 width 2 0 `s 1 height 2 2 `s 1 cursor_x 2 4 `s 1 cursor_y 2 6 `us 1 textcolor 2 8 `us 1 textbgcolor 2 10 `uc 1 textsize_x 1 12 `uc 1 textsize_y 1 13 `uc 1 rotation 1 14 `a 1 wrap 1 15 `a 1 cp437 1 16 `*.37(v 1 drawPixel 2 17 `*.37(v 1 fillScreen 2 19 `*.37(v 1 drawFastVLine 2 21 `*.37(v 1 drawFastHLine 2 23 `*.37(v 1 fillRect 2 25 ]
+"296
+[s S248 . 28 `S194 1 gfx 27 0 `uc 1 rotation 1 27 ]
+[v SSD1331_WriteData16@ssd ssd `*.30S248  1 p 1 4 ]
+[v SSD1331_WriteData16@data data `us  1 p 2 5 ]
+"305
+} 0
+"345
+[v _SSD1331_SetDataMode SSD1331_SetDataMode `(v  1 s 1 SSD1331_SetDataMode ]
+{
+[s S194 . 27 `s 1 width 2 0 `s 1 height 2 2 `s 1 cursor_x 2 4 `s 1 cursor_y 2 6 `us 1 textcolor 2 8 `us 1 textbgcolor 2 10 `uc 1 textsize_x 1 12 `uc 1 textsize_y 1 13 `uc 1 rotation 1 14 `a 1 wrap 1 15 `a 1 cp437 1 16 `*.37(v 1 drawPixel 2 17 `*.37(v 1 fillScreen 2 19 `*.37(v 1 drawFastVLine 2 21 `*.37(v 1 drawFastHLine 2 23 `*.37(v 1 fillRect 2 25 ]
+[s S248 . 28 `S194 1 gfx 27 0 `uc 1 rotation 1 27 ]
+[v SSD1331_SetDataMode@ssd ssd `*.30S248  1 p 1 0 ]
+"347
+} 0
+"107 D:\G_Drive_Pessoal\Projetos\Botão OLED NKK\PIC\SSD1331_PIC18F26K42.X\mcc_generated_files/spi1.c
+[v _SPI1_ExchangeBlock SPI1_ExchangeBlock `(v  1 e 1 0 ]
+{
+"109
+[v SPI1_ExchangeBlock@data data `*.30uc  1 a 1 3 ]
+"107
+[v SPI1_ExchangeBlock@block block `*.30v  1 p 1 0 ]
+[v SPI1_ExchangeBlock@blockSize blockSize `ui  1 p 2 1 ]
+"117
+} 0
+"129 D:\G_Drive_Pessoal\Projetos\Botão OLED NKK\PIC\SSD1331_PIC18F26K42.X\ssd1331.c
+[v _SSD1331_SetAddrWindow SSD1331_SetAddrWindow `(v  1 e 1 0 ]
+{
+"147
+[v SSD1331_SetAddrWindow@t_1507 t `s  1 a 2 25 ]
+"146
+[v SSD1331_SetAddrWindow@t_1506 t `s  1 a 2 23 ]
+"143
+[v SSD1331_SetAddrWindow@t_1505 t `s  1 a 2 21 ]
+"142
+[v SSD1331_SetAddrWindow@t t `s  1 a 2 19 ]
+"137
+[v SSD1331_SetAddrWindow@y2 y2 `uc  1 a 1 30 ]
+"136
+[v SSD1331_SetAddrWindow@x2 x2 `uc  1 a 1 29 ]
+"131
+[v SSD1331_SetAddrWindow@y1 y1 `uc  1 a 1 28 ]
+"130
+[v SSD1331_SetAddrWindow@x1 x1 `uc  1 a 1 27 ]
+[s S194 . 27 `s 1 width 2 0 `s 1 height 2 2 `s 1 cursor_x 2 4 `s 1 cursor_y 2 6 `us 1 textcolor 2 8 `us 1 textbgcolor 2 10 `uc 1 textsize_x 1 12 `uc 1 textsize_y 1 13 `uc 1 rotation 1 14 `a 1 wrap 1 15 `a 1 cp437 1 16 `*.37(v 1 drawPixel 2 17 `*.37(v 1 fillScreen 2 19 `*.37(v 1 drawFastVLine 2 21 `*.37(v 1 drawFastHLine 2 23 `*.37(v 1 fillRect 2 25 ]
+"129
+[s S248 . 28 `S194 1 gfx 27 0 `uc 1 rotation 1 27 ]
+[v SSD1331_SetAddrWindow@ssd ssd `*.30S248  1 p 1 3 ]
+[v SSD1331_SetAddrWindow@x x `us  1 p 2 4 ]
+[v SSD1331_SetAddrWindow@y y `us  1 p 2 6 ]
+[v SSD1331_SetAddrWindow@w w `us  1 p 2 8 ]
+[v SSD1331_SetAddrWindow@h h `us  1 p 2 10 ]
+"157
+} 0
+"276
+[v _SSD1331_WriteCommand SSD1331_WriteCommand `(v  1 e 1 0 ]
+{
+[s S194 . 27 `s 1 width 2 0 `s 1 height 2 2 `s 1 cursor_x 2 4 `s 1 cursor_y 2 6 `us 1 textcolor 2 8 `us 1 textbgcolor 2 10 `uc 1 textsize_x 1 12 `uc 1 textsize_y 1 13 `uc 1 rotation 1 14 `a 1 wrap 1 15 `a 1 cp437 1 16 `*.37(v 1 drawPixel 2 17 `*.37(v 1 fillScreen 2 19 `*.37(v 1 drawFastVLine 2 21 `*.37(v 1 drawFastHLine 2 23 `*.37(v 1 fillRect 2 25 ]
+[s S248 . 28 `S194 1 gfx 27 0 `uc 1 rotation 1 27 ]
+[v SSD1331_WriteCommand@ssd ssd `*.30S248  1 p 1 1 ]
+[v SSD1331_WriteCommand@cmd cmd `uc  1 p 1 2 ]
+"281
+} 0
+"349
+[v _SSD1331_SetCommandMode SSD1331_SetCommandMode `(v  1 s 1 SSD1331_SetCommandMode ]
+{
+[s S194 . 27 `s 1 width 2 0 `s 1 height 2 2 `s 1 cursor_x 2 4 `s 1 cursor_y 2 6 `us 1 textcolor 2 8 `us 1 textbgcolor 2 10 `uc 1 textsize_x 1 12 `uc 1 textsize_y 1 13 `uc 1 rotation 1 14 `a 1 wrap 1 15 `a 1 cp437 1 16 `*.37(v 1 drawPixel 2 17 `*.37(v 1 fillScreen 2 19 `*.37(v 1 drawFastVLine 2 21 `*.37(v 1 drawFastHLine 2 23 `*.37(v 1 fillRect 2 25 ]
+[s S248 . 28 `S194 1 gfx 27 0 `uc 1 rotation 1 27 ]
+[v SSD1331_SetCommandMode@ssd ssd `*.30S248  1 p 1 0 ]
+"351
+} 0
+"337
+[v _SSD1331_Select SSD1331_Select `(v  1 s 1 SSD1331_Select ]
+{
+[s S194 . 27 `s 1 width 2 0 `s 1 height 2 2 `s 1 cursor_x 2 4 `s 1 cursor_y 2 6 `us 1 textcolor 2 8 `us 1 textbgcolor 2 10 `uc 1 textsize_x 1 12 `uc 1 textsize_y 1 13 `uc 1 rotation 1 14 `a 1 wrap 1 15 `a 1 cp437 1 16 `*.37(v 1 drawPixel 2 17 `*.37(v 1 fillScreen 2 19 `*.37(v 1 drawFastVLine 2 21 `*.37(v 1 drawFastHLine 2 23 `*.37(v 1 fillRect 2 25 ]
+[s S248 . 28 `S194 1 gfx 27 0 `uc 1 rotation 1 27 ]
+[v SSD1331_Select@ssd ssd `*.30S248  1 p 1 0 ]
+"339
+} 0
+"341
+[v _SSD1331_Deselect SSD1331_Deselect `(v  1 s 1 SSD1331_Deselect ]
+{
+[s S194 . 27 `s 1 width 2 0 `s 1 height 2 2 `s 1 cursor_x 2 4 `s 1 cursor_y 2 6 `us 1 textcolor 2 8 `us 1 textbgcolor 2 10 `uc 1 textsize_x 1 12 `uc 1 textsize_y 1 13 `uc 1 rotation 1 14 `a 1 wrap 1 15 `a 1 cp437 1 16 `*.37(v 1 drawPixel 2 17 `*.37(v 1 fillScreen 2 19 `*.37(v 1 drawFastVLine 2 21 `*.37(v 1 drawFastHLine 2 23 `*.37(v 1 fillRect 2 25 ]
+[s S248 . 28 `S194 1 gfx 27 0 `uc 1 rotation 1 27 ]
+[v SSD1331_Deselect@ssd ssd `*.30S248  1 p 1 0 ]
+"343
+} 0
+"99 D:\G_Drive_Pessoal\Projetos\Botão OLED NKK\PIC\SSD1331_PIC18F26K42.X\mcc_generated_files/spi1.c
+[v _SPI1_ExchangeByte SPI1_ExchangeByte `(uc  1 e 1 0 ]
+{
+[v SPI1_ExchangeByte@data data `uc  1 p 1 wreg ]
+[v SPI1_ExchangeByte@data data `uc  1 p 1 wreg ]
+"101
+[v SPI1_ExchangeByte@data data `uc  1 p 1 0 ]
+"105
+} 0

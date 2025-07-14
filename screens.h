@@ -1,3 +1,13 @@
+/**
+ * @file    screens.h
+ * @brief   Images arrays in RGB 565 format
+ *
+ *
+ * @author  @btondin 
+ * @date    2025
+ */
+
+
 static const uint16_t bunmi_img[6144] = 
 {
     0x3204, 0x29E3, 0x2904, 0x3985, 0x31E4, 0x52E7, 0x84AB, 0x3265, 0x4266, 0x742B, 0x742C, 0x4AE8, 

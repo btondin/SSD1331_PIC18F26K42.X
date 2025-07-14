@@ -6,6 +6,8 @@
  * This application initializes and tests the SSD1331 96x64 RGB OLED display.
  * It demonstrates various graphics operations such as color fill, shape drawing,
  * text rendering, and simple animations using the GFX and SSD1331 libraries.
+ * 
+ * Author @btondin   2025
  */
 
 #include "mcc_generated_files/mcc.h"

@@ -5,8 +5,8 @@
  * This driver is based on the Adafruit_SSD1331 library,
  * adapted for PIC microcontrollers using MPLAB's SPI1.h
  *
- * @author Adapted for PIC
- * @date   2025
+ * @author  @btondin 
+ * @date    2025
  */
 
 #ifndef SSD1331_H

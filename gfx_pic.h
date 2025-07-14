@@ -3,6 +3,9 @@
  * @brief Basic graphics library header for PIC18F26K42 (Adafruit_GFX style)
  *
  * Provides drawing primitives and text rendering using a hardware abstraction layer.
+ * 
+ * @author  @btondin 
+ * @date    2025
  */
 
 #ifndef GFX_PIC_H

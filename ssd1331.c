@@ -2,7 +2,7 @@
  * @file    ssd1331_pic.c
  * @brief   Driver implementation for SSD1331 96x64 RGB OLED display for PIC18F26K42
  * 
- * @author  Adapted for PIC
+ * @author  @btondin 
  * @date    2025
  */
 

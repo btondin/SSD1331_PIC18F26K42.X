@@ -17,6 +17,17 @@
 #include "mcc_generated_files/mcc.h"
 #include "gfx_pic.h"
 
+
+/*!
+ * @brief Select one of these defines to set the pixel color order
+ */
+#define SSD1331_COLORORDER_RGB
+// #define SSD1331_COLORORDER_BGR
+
+#if defined SSD1331_COLORORDER_RGB && defined SSD1331_COLORORDER_BGR
+#error "RGB and BGR can not both be defined for SSD1331_COLORORDER."
+#endif
+
 /* Display dimensions */
 #define SSD1331_WIDTH         96
 #define SSD1331_HEIGHT        64

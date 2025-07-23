@@ -61,66 +61,110 @@ void SSD1331_Begin(SSD1331_t *ssd) {
     SPI1_Open(SPI1_DEFAULT);
     SSD1331_HardwareReset(ssd);
 
-    SSD1331_WriteCommand(ssd, SSD1331_CMD_DISPLAYOFF);
-    SSD1331_WriteCommand(ssd, SSD1331_CMD_SETREMAP);
-    SSD1331_WriteCommand(ssd, 0x72);
-    SSD1331_WriteCommand(ssd, SSD1331_CMD_STARTLINE);
+    // Initialization Sequence
+    SSD1331_WriteCommand(ssd, SSD1331_CMD_DISPLAYOFF);      // 0xAE
+    SSD1331_WriteCommand(ssd, SSD1331_CMD_SETREMAP);        // 0xA0
+    SSD1331_WriteCommand(ssd, SSD1331_CMD_STARTLINE);       // 0xA1
     SSD1331_WriteCommand(ssd, 0x00);
-    SSD1331_WriteCommand(ssd, SSD1331_CMD_DISPLAYOFFSET);
+    SSD1331_WriteCommand(ssd, SSD1331_CMD_DISPLAYOFFSET);   // 0xA2
     SSD1331_WriteCommand(ssd, 0x00);
-    SSD1331_WriteCommand(ssd, SSD1331_CMD_NORMALDISPLAY);
-    SSD1331_WriteCommand(ssd, SSD1331_CMD_SETMULTIPLEX);
-    SSD1331_WriteCommand(ssd, 0x3F);
-    SSD1331_WriteCommand(ssd, SSD1331_CMD_SETMASTER);
+    SSD1331_WriteCommand(ssd, SSD1331_CMD_NORMALDISPLAY);   // 0xA4
+    SSD1331_WriteCommand(ssd, SSD1331_CMD_SETMULTIPLEX);    // 0xA8
+    SSD1331_WriteCommand(ssd, 0x3F);                        // 0x3F 1/64 duty
+    SSD1331_WriteCommand(ssd, SSD1331_CMD_SETMASTER);       // 0xAD
     SSD1331_WriteCommand(ssd, 0x8E);
-    SSD1331_WriteCommand(ssd, SSD1331_CMD_POWERMODE);
+    SSD1331_WriteCommand(ssd, SSD1331_CMD_POWERMODE);       // 0xB0
     SSD1331_WriteCommand(ssd, 0x0B);
-    SSD1331_WriteCommand(ssd, SSD1331_CMD_PRECHARGE);
+    SSD1331_WriteCommand(ssd, SSD1331_CMD_PRECHARGE);       // 0xB1
     SSD1331_WriteCommand(ssd, 0x31);
-    SSD1331_WriteCommand(ssd, SSD1331_CMD_CLOCKDIV);
-    SSD1331_WriteCommand(ssd, 0xF0);
-    SSD1331_WriteCommand(ssd, SSD1331_CMD_PRECHARGEA);
+    SSD1331_WriteCommand(ssd, SSD1331_CMD_CLOCKDIV);        // 0xB3
+    SSD1331_WriteCommand(ssd, 0xF0);                        // 7:4 = Oscillator Frequency, 3:0 = CLK Div Ratio
+                                                            // (A[3:0]+1 = 1..16)
+    SSD1331_WriteCommand(ssd, SSD1331_CMD_PRECHARGEA);      // 0x8A
     SSD1331_WriteCommand(ssd, 0x64);
-    SSD1331_WriteCommand(ssd, SSD1331_CMD_PRECHARGEB);
+    SSD1331_WriteCommand(ssd, SSD1331_CMD_PRECHARGEB);      // 0x8B
     SSD1331_WriteCommand(ssd, 0x78);
-    SSD1331_WriteCommand(ssd, SSD1331_CMD_PRECHARGEC);
+    SSD1331_WriteCommand(ssd, SSD1331_CMD_PRECHARGEC);      // 0x8C
     SSD1331_WriteCommand(ssd, 0x64);
-    SSD1331_WriteCommand(ssd, SSD1331_CMD_PRECHARGELEVEL);
+    SSD1331_WriteCommand(ssd, SSD1331_CMD_PRECHARGELEVEL);  // 0xBB
     SSD1331_WriteCommand(ssd, 0x3A);
-    SSD1331_WriteCommand(ssd, SSD1331_CMD_VCOMH);
+    SSD1331_WriteCommand(ssd, SSD1331_CMD_VCOMH);           // 0xBE
     SSD1331_WriteCommand(ssd, 0x3E);
-    SSD1331_WriteCommand(ssd, SSD1331_CMD_MASTERCURRENT);
+    SSD1331_WriteCommand(ssd, SSD1331_CMD_MASTERCURRENT);   // 0x87
     SSD1331_WriteCommand(ssd, 0x06);
-    SSD1331_WriteCommand(ssd, SSD1331_CMD_CONTRASTA);
+    SSD1331_WriteCommand(ssd, SSD1331_CMD_CONTRASTA);       // 0x81
     SSD1331_WriteCommand(ssd, 0x91);
-    SSD1331_WriteCommand(ssd, SSD1331_CMD_CONTRASTB);
+    SSD1331_WriteCommand(ssd, SSD1331_CMD_CONTRASTB);       // 0x82
     SSD1331_WriteCommand(ssd, 0x50);
-    SSD1331_WriteCommand(ssd, SSD1331_CMD_CONTRASTC);
+    SSD1331_WriteCommand(ssd, SSD1331_CMD_CONTRASTC);       // 0x83
     SSD1331_WriteCommand(ssd, 0x7D);
-    SSD1331_WriteCommand(ssd, SSD1331_CMD_DISPLAYON);
-
-    SSD1331_FillScreen(ssd, SSD1331_CYAN);
+    SSD1331_WriteCommand(ssd, SSD1331_CMD_DISPLAYON);       // --turn on oled panel
+    
+    // Set width and height
+    ssd->gfx.width = SSD1331_WIDTH;
+    ssd->gfx.height = SSD1331_HEIGHT;
+    
+    // Set rotation 0 (like Arduino does)
+    SSD1331_SetRotation(ssd, SSD1331_INIT_ROTATION);
 }
 
 /**
- * @brief Sets display rotation
+ * @brief Sets origin of (0,0) and orientation of OLED display
+ * @param ssd Pointer to SSD1331 structure
+ * @param r Rotation index (0-3)
+ * @note SSD1331 works differently than most other displays. With certain 
+ *       rotation changes the screen contents may change immediately into a 
+ *       peculiar format (mirrored, not necessarily rotated). Therefore, it's 
+ *       recommended to clear the screen (fillScreen(0)) before changing rotation.
  */
-void SSD1331_SetRotation(SSD1331_t *ssd, uint8_t rotation) {
-    ssd->rotation = rotation & 3;
+void SSD1331_SetRotation(SSD1331_t *ssd, uint8_t r) {
+    // madctl bits:
+    // 6,7 Color depth (01 = 64K)
+    // 5   Odd/even split COM (0: disable, 1: enable)
+    // 4   Scan direction (0: top-down, 1: bottom-up)
+    // 3   Left-Right swapping on COM (0: disable, 1: enable)
+    // 2   Color remap (0: A->B->C, 1: C->B->A)
+    // 1   Column remap (0: 0-95, 1: 95-0)
+    // 0   Address increment (0: horizontal, 1: vertical)
+    
+    #ifdef SSD1331_COLORORDER_RGB
+        uint8_t madctl = 0b01100000; // 64K, enable split, ABC
+    #else
+        uint8_t madctl = 0b01100100; // 64K, enable split, CBA (default)
+    #endif
+    
+    ssd->rotation = r & 3;  // Clip input to valid range
     ssd->gfx.rotation = ssd->rotation;
-
+    
     switch (ssd->rotation) {
         case 0:
-        case 2:
+            madctl |= 0b00010010;  // Scan bottom-up, column remap 95-0
             ssd->gfx.width = SSD1331_WIDTH;
             ssd->gfx.height = SSD1331_HEIGHT;
             break;
+            
         case 1:
+            madctl |= 0b00000011;  // Column remap 95-0, vertical
+            ssd->gfx.width = SSD1331_HEIGHT;
+            ssd->gfx.height = SSD1331_WIDTH;
+            break;
+            
+        case 2:
+            madctl |= 0b00000000;  // None
+            ssd->gfx.width = SSD1331_WIDTH;
+            ssd->gfx.height = SSD1331_HEIGHT;
+            break;
+            
         case 3:
+            madctl |= 0b00010001;  // Scan bottom-up, vertical
             ssd->gfx.width = SSD1331_HEIGHT;
             ssd->gfx.height = SSD1331_WIDTH;
             break;
     }
+    
+    // Send the configuration to the display
+    SSD1331_WriteCommand(ssd, SSD1331_CMD_SETREMAP);
+    SSD1331_WriteCommand(ssd, madctl);
 }
 
 /**

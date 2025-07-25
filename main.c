@@ -57,6 +57,8 @@ void main(void) {
     GFX_FillScreen(&oled.gfx, &oled, SSD1331_BLACK);
     __delay_ms(DELAY_SHORT);
 
+    
+    
     lcdTestPattern();
     __delay_ms(DELAY_MEDIUM);
 
@@ -67,17 +69,19 @@ void main(void) {
     GFX_Print(&oled.gfx, &oled, "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur adipiscing ante sed nibh tincidunt feugiat. Maecenas enim massa");
     __delay_ms(DELAY_MEDIUM);
     
-    
+    /*
 
     // tft print function!
     tftPrintTest();
     __delay_ms(DELAY_LONG);
     
-    while(1);
+    */
 
     // a single pixel
     GFX_DrawPixel(&oled.gfx, &oled, oled.gfx.width / 2, oled.gfx.height / 2, SSD1331_GREEN);
     __delay_ms(DELAY_SHORT);
+    
+    while(1);
 
     // line draw test
     testlines(SSD1331_YELLOW);
@@ -234,6 +238,9 @@ void testtriangles(void) {
     }
 }
 
+// 2. Crie um buffer para armazenar o texto formatado
+    char buffer[20]; 
+
 void tftPrintTest(void) {
     GFX_FillScreen(&oled.gfx, &oled, SSD1331_BLACK);
     GFX_SetCursor(&oled.gfx, 0, 5);
@@ -247,7 +254,10 @@ void tftPrintTest(void) {
     
     GFX_SetTextColor(&oled.gfx, SSD1331_BLUE);
     GFX_SetTextSize(&oled.gfx, 3);
-    GFX_Print(&oled.gfx, &oled, "123.45"); // PIC doesn't have easy float printing, using string
+    sprintf(buffer, "%3.2f", 123.45);
+    GFX_Print(&oled.gfx, &oled, buffer); // PIC doesn't have easy float printing, using string
+    
+    
     
     __delay_ms(DELAY_LONG);
 
@@ -257,16 +267,27 @@ void tftPrintTest(void) {
     GFX_SetTextSize(&oled.gfx, 1); // NOTE: Adafruit GFX treats size 0 as 1
     GFX_Print(&oled.gfx, &oled, "Hello World!\n");
     
+    float pi = 3.14159;
+
+    // 2. Crie um buffer para armazenar o texto formatado
+    char buffer[20]; 
+
+    // 3. Use sprintf para "imprimir" o float dentro do buffer
+    sprintf(buffer, "%.5f Want pi?\n", pi);
+    
     GFX_SetTextSize(&oled.gfx, 1);
     GFX_SetTextColor(&oled.gfx, SSD1331_GREEN);
-    GFX_Print(&oled.gfx, &oled, "3.14159\n");
-    GFX_Print(&oled.gfx, &oled, "Want pi?\n");
+    GFX_Print(&oled.gfx, &oled, buffer);
+
+       
     
     // Printing numbers requires a buffer in C
-    char buffer[20];
-    sprintf(buffer, "0x%lX", 8675309L); // C requires explicit hex conversion
+    //char buffer[20];
+    sprintf(buffer, "%lX", 8675309L); // C requires explicit hex conversion
     GFX_Print(&oled.gfx, &oled, buffer);
     GFX_Print(&oled.gfx, &oled, " Print HEX\n");
+    
+    
 
     GFX_SetTextColor(&oled.gfx, SSD1331_WHITE);
     GFX_Print(&oled.gfx, &oled, "Sketch has been\n");
@@ -274,9 +295,13 @@ void tftPrintTest(void) {
     
     GFX_SetTextColor(&oled.gfx, SSD1331_MAGENTA);
     // millis() is not available, we can just print a static number for the test
-    GFX_Print(&oled.gfx, &oled, "1234 "); 
+    uint8_t sim_millis = 6;
+    sprintf(buffer, "%d ", sim_millis);
+    GFX_Print(&oled.gfx, &oled, buffer); 
     GFX_SetTextColor(&oled.gfx, SSD1331_WHITE);
     GFX_Print(&oled.gfx, &oled, "seconds.");
+    
+    
 }
 
 

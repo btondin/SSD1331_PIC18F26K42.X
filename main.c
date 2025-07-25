@@ -1,36 +1,49 @@
 /**
  * @file main.c
  * @brief Main application for SSD1331 OLED display test using PIC18F26K42
- * 
- * @details
+ * * @details
  * This application initializes and tests the SSD1331 96x64 RGB OLED display.
- * It demonstrates various graphics operations such as color fill, shape drawing,
- * text rendering, and simple animations using the GFX and SSD1331 libraries.
- * 
- * Author @btondin   2025
+ * It is a direct port of the Adafruit SSD1331 library example sketch to
+ * ensure identical graphical output.
+ * * Author @btondin, with conversion logic by Gemini
+ * @date    2025
  */
 
 #include "mcc_generated_files/mcc.h"
 #include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
 #include "ssd1331.h"
-#include "screens.h"
+// #include "screens.h" // Not needed for this test
 
 // Global instance of the OLED display driver
 SSD1331_t oled;
 
+// Test delay times from Arduino example
+#define DELAY_SHORT 500
+#define DELAY_MEDIUM 1000
+#define DELAY_LONG 2000
+
+// Function prototypes for all tests from test.cpp
+void testlines(uint16_t color);
+void testfastlines(uint16_t color1, uint16_t color2);
+void testdrawrects(uint16_t color);
+void testfillrects(uint16_t color1, uint16_t color2);
+void testfillcircles(uint8_t radius, uint16_t color);
+void testdrawcircles(uint8_t radius, uint16_t color);
+void testroundrects(void);
+void testtriangles(void);
+void tftPrintTest(void);
+void mediabuttons(void);
+void lcdTestPattern(void);
+
+
 /**
  * @brief Main entry point of the application.
- * 
- * Initializes system and SPI, sets up the SSD1331 OLED display, and runs
- * a series of graphical tests, including colors, shapes, text, pixels,
- * and bitmap display. Finally, runs a simple counter animation.
  */
 void main(void) {
     // Initialize device and system peripherals
     SYSTEM_Initialize();
-
-    // Short delay to stabilize power supply
-    __delay_ms(100);
 
     // Open SPI1 with default settings
     SPI1_Open(SPI1_DEFAULT);
@@ -38,131 +51,269 @@ void main(void) {
     // Initialize and start the OLED display
     SSD1331_Init(&oled);
     SSD1331_Begin(&oled);
-
-    // ==========================
-    // TEST 1: BASIC COLORS
-    // ==========================
-    SSD1331_FillScreen(&oled, SSD1331_RED);
-    __delay_ms(500);
-    SSD1331_FillScreen(&oled, SSD1331_GREEN);
-    __delay_ms(500);
-    SSD1331_FillScreen(&oled, SSD1331_BLUE);
-    __delay_ms(500);
-    SSD1331_FillScreen(&oled, SSD1331_WHITE);
-    __delay_ms(500);
-    SSD1331_FillScreen(&oled, SSD1331_BLACK);
-    __delay_ms(500);
     
+    // This is the PIC equivalent of the setup() function in test.cpp
     
-    // ==========================
-    // TEST 2: RGB COLOR STRIPES
-    // ==========================
-    // Draw 3 vertical stripes: red, green, blue
-    GFX_FillRect(&oled.gfx, &oled, 0, 0, 32, 64, SSD1331_RED);
-    GFX_FillRect(&oled.gfx, &oled, 32, 0, 32, 64, SSD1331_GREEN);
-    GFX_FillRect(&oled.gfx, &oled, 64, 0, 32, 64, SSD1331_BLUE);
-    __delay_ms(1000);
+    GFX_FillScreen(&oled.gfx, &oled, SSD1331_BLACK);
+    __delay_ms(DELAY_SHORT);
 
-    // ==========================
-    // TEST 3: CROSS LINES
-    // ==========================
-    SSD1331_FillScreen(&oled, SSD1331_BLACK);
-    SSD1331_DrawLine(&oled, 0, 0, 95, 63, SSD1331_WHITE);    // Diagonal from top-left to bottom-right
-    SSD1331_DrawLine(&oled, 95, 0, 0, 63, SSD1331_WHITE);    // Diagonal from top-right to bottom-left
-    GFX_DrawRect(&oled.gfx, &oled, 0, 0, 96, 64, SSD1331_YELLOW); // Yellow rectangle border
-    __delay_ms(1000);
+    lcdTestPattern();
+    __delay_ms(DELAY_MEDIUM);
 
-    // ==========================
-    // TEST 4: TEXT RENDERING
-    // ==========================
-    SSD1331_FillScreen(&oled, SSD1331_BLACK);
-
-    GFX_SetTextSize(&oled.gfx, 1);
+    GFX_FillScreen(&oled.gfx, &oled, SSD1331_BLACK);
+    GFX_SetCursor(&oled.gfx, 0, 0);
     GFX_SetTextColor(&oled.gfx, SSD1331_WHITE);
-    GFX_PrintAt(&oled.gfx, &oled, 0, 0, "SSD1331 OK!");
+    GFX_SetTextWrap(&oled.gfx, true);
+    GFX_Print(&oled.gfx, &oled, "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur adipiscing ante sed nibh tincidunt feugiat. Maecenas enim massa");
+    __delay_ms(DELAY_MEDIUM);
+    
+    
 
-    GFX_SetTextColorBg(&oled.gfx, SSD1331_YELLOW, SSD1331_BLUE);
-    GFX_PrintAt(&oled.gfx, &oled, 0, 16, "PIC18F26K42");
+    // tft print function!
+    tftPrintTest();
+    __delay_ms(DELAY_LONG);
+    
+    while(1);
 
-    GFX_SetTextSize(&oled.gfx, 2);
-    GFX_SetTextColor(&oled.gfx, SSD1331_GREEN);
-    GFX_PrintAt(&oled.gfx, &oled, 10, 35, "TESTE");
-    __delay_ms(2000);
+    // a single pixel
+    GFX_DrawPixel(&oled.gfx, &oled, oled.gfx.width / 2, oled.gfx.height / 2, SSD1331_GREEN);
+    __delay_ms(DELAY_SHORT);
 
-    // ==========================
-    // TEST 5: GEOMETRIC SHAPES
-    // ==========================
-    SSD1331_FillScreen(&oled, SSD1331_BLACK);
+    // line draw test
+    testlines(SSD1331_YELLOW);
+    __delay_ms(DELAY_SHORT);
 
-    GFX_DrawRect(&oled.gfx, &oled, 5, 5, 40, 25, SSD1331_RED);
-    GFX_FillRect(&oled.gfx, &oled, 50, 5, 40, 25, SSD1331_GREEN);
-    GFX_DrawCircle(&oled.gfx, &oled, 25, 45, 15, SSD1331_BLUE);
-    GFX_FillCircle(&oled.gfx, &oled, 70, 45, 15, SSD1331_YELLOW);
-    __delay_ms(2000);
+    // optimized lines
+    testfastlines(SSD1331_RED, SSD1331_BLUE);
+    __delay_ms(DELAY_SHORT);
 
-    // ==========================
-    // TEST 6: INDIVIDUAL PIXELS PATTERN
-    // ==========================
-    SSD1331_FillScreen(&oled, SSD1331_BLACK);
+    testdrawrects(SSD1331_GREEN);
+    __delay_ms(DELAY_MEDIUM);
 
-    for (int x = 0; x < 96; x += 2) {
-        for (int y = 0; y < 64; y += 2) {
-            // Create a checkerboard pattern with white and black pixels
-            uint16_t color = ((x / 2) % 2 == (y / 2) % 2) ? SSD1331_WHITE : SSD1331_BLACK;
-            SSD1331_DrawPixel(&oled, x, y, color);
+    testfillrects(SSD1331_YELLOW, SSD1331_MAGENTA);
+    __delay_ms(DELAY_MEDIUM);
+
+    GFX_FillScreen(&oled.gfx, &oled, SSD1331_BLACK);
+    testfillcircles(10, SSD1331_BLUE);
+    testdrawcircles(10, SSD1331_WHITE);
+    __delay_ms(DELAY_MEDIUM);
+
+    testroundrects();
+    __delay_ms(DELAY_SHORT);
+
+    testtriangles();
+    __delay_ms(DELAY_SHORT);
+    
+    mediabuttons();
+    __delay_ms(DELAY_MEDIUM);
+
+
+    // Loop forever after tests are done
+    while (1) {
+        // The tests run only once, like in Arduino's setup()
+        // You can add your main application logic here.
+        LED0_Toggle();
+        __delay_ms(100);
+    }
+}
+
+void testlines(uint16_t color) {
+    GFX_FillScreen(&oled.gfx, &oled, SSD1331_BLACK);
+    for (int16_t x = 0; x < oled.gfx.width; x += 6) {
+        GFX_DrawLine(&oled.gfx, &oled, 0, 0, x, oled.gfx.height - 1, color);
+    }
+    for (int16_t y = 0; y < oled.gfx.height; y += 6) {
+        GFX_DrawLine(&oled.gfx, &oled, 0, 0, oled.gfx.width - 1, y, color);
+    }
+    __delay_ms(DELAY_SHORT);
+
+    GFX_FillScreen(&oled.gfx, &oled, SSD1331_BLACK);
+    for (int16_t x = 0; x < oled.gfx.width; x += 6) {
+        GFX_DrawLine(&oled.gfx, &oled, oled.gfx.width - 1, 0, x, oled.gfx.height - 1, color);
+    }
+    for (int16_t y = 0; y < oled.gfx.height; y += 6) {
+        GFX_DrawLine(&oled.gfx, &oled, oled.gfx.width - 1, 0, 0, y, color);
+    }
+    __delay_ms(DELAY_SHORT);
+
+    GFX_FillScreen(&oled.gfx, &oled, SSD1331_BLACK);
+    for (int16_t x = 0; x < oled.gfx.width; x += 6) {
+        GFX_DrawLine(&oled.gfx, &oled, 0, oled.gfx.height - 1, x, 0, color);
+    }
+    for (int16_t y = 0; y < oled.gfx.height; y += 6) {
+        GFX_DrawLine(&oled.gfx, &oled, 0, oled.gfx.height - 1, oled.gfx.width - 1, y, color);
+    }
+    __delay_ms(DELAY_SHORT);
+
+    GFX_FillScreen(&oled.gfx, &oled, SSD1331_BLACK);
+    for (int16_t x = 0; x < oled.gfx.width; x += 6) {
+        GFX_DrawLine(&oled.gfx, &oled, oled.gfx.width - 1, oled.gfx.height - 1, x, 0, color);
+    }
+    for (int16_t y = 0; y < oled.gfx.height; y += 6) {
+        GFX_DrawLine(&oled.gfx, &oled, oled.gfx.width - 1, oled.gfx.height - 1, 0, y, color);
+    }
+}
+
+void testfastlines(uint16_t color1, uint16_t color2) {
+    GFX_FillScreen(&oled.gfx, &oled, SSD1331_BLACK);
+    for (int16_t y = 0; y < oled.gfx.height; y += 5) {
+        GFX_DrawFastHLine(&oled.gfx, &oled, 0, y, oled.gfx.width, color1);
+    }
+    for (int16_t x = 0; x < oled.gfx.width; x += 5) {
+        GFX_DrawFastVLine(&oled.gfx, &oled, x, 0, oled.gfx.height, color2);
+    }
+}
+
+void testdrawrects(uint16_t color) {
+    GFX_FillScreen(&oled.gfx, &oled, SSD1331_BLACK);
+    for (int16_t x = 0; x < oled.gfx.width; x += 6) {
+        GFX_DrawRect(&oled.gfx, &oled, (oled.gfx.width - 1) / 2 - x / 2, (oled.gfx.height - 1) / 2 - x / 2, x, x, color);
+    }
+}
+
+void testfillrects(uint16_t color1, uint16_t color2) {
+    GFX_FillScreen(&oled.gfx, &oled, SSD1331_BLACK);
+    for (int16_t x = oled.gfx.width - 1; x > 6; x -= 6) {
+        GFX_FillRect(&oled.gfx, &oled, (oled.gfx.width - 1) / 2 - x / 2, (oled.gfx.height - 1) / 2 - x / 2, x, x, color1);
+        GFX_DrawRect(&oled.gfx, &oled, (oled.gfx.width - 1) / 2 - x / 2, (oled.gfx.height - 1) / 2 - x / 2, x, x, color2);
+    }
+}
+
+void testfillcircles(uint8_t radius, uint16_t color) {
+    for (int16_t x = radius; x < oled.gfx.width; x += radius * 2) {
+        for (int16_t y = radius; y < oled.gfx.height; y += radius * 2) {
+            GFX_FillCircle(&oled.gfx, &oled, x, y, radius, color);
         }
     }
-    __delay_ms(1000);
+}
 
-    // ==========================
-    // TEST 7: DISPLAY RGB565 IMAGE
-    // ==========================
-    // Display the bunmi_img bitmap for 2 seconds
-    GFX_DrawBitmapRGB(&oled.gfx, &oled, 0, 0, bunmi_img, SSD1331_WIDTH, SSD1331_HEIGHT);
-    __delay_ms(2000);
-    __delay_ms(2000);    
-    
-    GFX_DrawBitmapRGB(&oled.gfx, &oled, 0, 0, manas, SSD1331_WIDTH, SSD1331_HEIGHT);
-    __delay_ms(2000);
-    __delay_ms(2000);
+void testdrawcircles(uint8_t radius, uint16_t color) {
+    for (int16_t x = 0; x < oled.gfx.width + radius; x += radius * 2) {
+        for (int16_t y = 0; y < oled.gfx.height + radius; y += radius * 2) {
+            GFX_DrawCircle(&oled.gfx, &oled, x, y, radius, color);
+        }
+    }
+}
 
-    // ==========================
-    // MAIN LOOP: SIMPLE COUNTER
-    // ==========================
-    // This part is unreachable due to the infinite loop above,
-    // but kept here for reference or future use.
+void testroundrects(void) {
+    GFX_FillScreen(&oled.gfx, &oled, SSD1331_BLACK);
+    uint16_t color = 100; // Mude de 'int' para 'uint16_t'
+    int i;
+    int t;
+    for (t = 0; t <= 4; t += 1) {
+        int x = 0;
+        int y = 0;
+        int w = oled.gfx.width;
+        int h = oled.gfx.height;
+        for (i = 0; i <= 16; i += 1) {
+            GFX_DrawRoundRect(&oled.gfx, &oled, x, y, w, h, 5, color);
+            x += 2;
+            y += 3;
+            w -= 4;
+            h -= 6;
+            color += 1100;
+        }
+        color += 100;
+    }
+}
 
-    SSD1331_FillScreen(&oled, SSD1331_BLACK);
+void testtriangles(void) {
+    GFX_FillScreen(&oled.gfx, &oled, SSD1331_BLACK);
+    uint16_t color = 0xF800; // Mude de 'int' para 'uint16_t'
+    int t;
+    int w = oled.gfx.width / 2;
+    int x = oled.gfx.height - 1;
+    int y = 0;
+    int z = oled.gfx.width - 1;
+    for (t = 0; t <= 15; t++) {
+        GFX_DrawTriangle(&oled.gfx, &oled, w, y, y, x, z, x, color);
+        x -= 4;
+        y += 4;
+        z -= 4;
+        color += 100;
+    }
+}
 
+void tftPrintTest(void) {
+    GFX_FillScreen(&oled.gfx, &oled, SSD1331_BLACK);
+    GFX_SetCursor(&oled.gfx, 0, 5);
+    GFX_SetTextColor(&oled.gfx, SSD1331_RED);
     GFX_SetTextSize(&oled.gfx, 1);
-    GFX_SetTextColor(&oled.gfx, SSD1331_WHITE);
-    GFX_PrintAt(&oled.gfx, &oled, 25, 0, "Counter:");
+    GFX_Print(&oled.gfx, &oled, "Hello World!\n");
 
-        
-    uint16_t counter = 0;
-    uint8_t progress = 0;
-    char buffer[16];
+    GFX_SetTextColorBg(&oled.gfx, SSD1331_YELLOW, SSD1331_GREEN);
+    GFX_SetTextSize(&oled.gfx, 2);
+    GFX_Print(&oled.gfx, &oled, "Hello Wo");
     
-    GFX_DrawRect(&oled.gfx, &oled, 10, 40, 76, 10, SSD1331_WHITE);  // Progress bar border
+    GFX_SetTextColor(&oled.gfx, SSD1331_BLUE);
+    GFX_SetTextSize(&oled.gfx, 3);
+    GFX_Print(&oled.gfx, &oled, "123.45"); // PIC doesn't have easy float printing, using string
+    
+    __delay_ms(DELAY_LONG);
 
-    while (1) {
-        LED0_Toggle();
+    GFX_FillScreen(&oled.gfx, &oled, SSD1331_BLACK);
+    GFX_SetCursor(&oled.gfx, 0, 5);
+    GFX_SetTextColor(&oled.gfx, SSD1331_WHITE);
+    GFX_SetTextSize(&oled.gfx, 1); // NOTE: Adafruit GFX treats size 0 as 1
+    GFX_Print(&oled.gfx, &oled, "Hello World!\n");
+    
+    GFX_SetTextSize(&oled.gfx, 1);
+    GFX_SetTextColor(&oled.gfx, SSD1331_GREEN);
+    GFX_Print(&oled.gfx, &oled, "3.14159\n");
+    GFX_Print(&oled.gfx, &oled, "Want pi?\n");
+    
+    // Printing numbers requires a buffer in C
+    char buffer[20];
+    sprintf(buffer, "0x%lX", 8675309L); // C requires explicit hex conversion
+    GFX_Print(&oled.gfx, &oled, buffer);
+    GFX_Print(&oled.gfx, &oled, " Print HEX\n");
 
-        sprintf(buffer, "%05u", counter);
+    GFX_SetTextColor(&oled.gfx, SSD1331_WHITE);
+    GFX_Print(&oled.gfx, &oled, "Sketch has been\n");
+    GFX_Print(&oled.gfx, &oled, "running for: \n");
+    
+    GFX_SetTextColor(&oled.gfx, SSD1331_MAGENTA);
+    // millis() is not available, we can just print a static number for the test
+    GFX_Print(&oled.gfx, &oled, "1234 "); 
+    GFX_SetTextColor(&oled.gfx, SSD1331_WHITE);
+    GFX_Print(&oled.gfx, &oled, "seconds.");
+}
 
-        GFX_FillRect(&oled.gfx, &oled, 30, 20, 36, 8, SSD1331_BLACK);  // Clear previous number
-        GFX_SetTextColor(&oled.gfx, SSD1331_CYAN);
-        GFX_PrintAt(&oled.gfx, &oled, 30, 20, buffer);                  // Print counter value
 
-        progress = (counter % 100);
+void mediabuttons(void) {
+    // play
+    GFX_FillScreen(&oled.gfx, &oled, SSD1331_BLACK);
+    GFX_FillRoundRect(&oled.gfx, &oled, 25, 10, 78, 60, 8, SSD1331_WHITE);
+    GFX_FillTriangle(&oled.gfx, &oled, 42, 20, 42, 60, 90, 40, SSD1331_RED);
+    __delay_ms(DELAY_SHORT);
+    // pause
+    GFX_FillRoundRect(&oled.gfx, &oled, 25, 10, 78, 60, 8, SSD1331_WHITE);
+    GFX_FillRect(&oled.gfx, &oled, 39, 28, 20, 45, SSD1331_GREEN);
+    GFX_FillRect(&oled.gfx, &oled, 69, 28, 20, 45, SSD1331_GREEN);
+    __delay_ms(DELAY_SHORT);
+    // play color
+    GFX_FillTriangle(&oled.gfx, &oled, 42, 20, 42, 60, 90, 40, SSD1331_BLUE);
+    __delay_ms(50);
+    // pause color
+    GFX_FillRect(&oled.gfx, &oled, 39, 28, 20, 45, SSD1331_RED);
+    GFX_FillRect(&oled.gfx, &oled, 69, 28, 20, 45, SSD1331_RED);
+    // play color
+    GFX_FillTriangle(&oled.gfx, &oled, 42, 20, 42, 60, 90, 40, SSD1331_GREEN);
+}
 
-        
-        GFX_FillRect(&oled.gfx, &oled, 12, 42, ((progress * 72) / 100)+1, 6, SSD1331_GREEN);  // Progress bar fill
-        if (progress == 99) GFX_FillRect(&oled.gfx, &oled, 12, 42, 72 , 6, SSD1331_BLACK);  // Progress bar clear
+void lcdTestPattern(void) {
+    static const uint16_t colors[] = {
+        SSD1331_BLACK, SSD1331_YELLOW, SSD1331_MAGENTA, SSD1331_RED,
+        SSD1331_CYAN, SSD1331_GREEN, SSD1331_BLUE, SSD1331_WHITE
+    };
 
-        counter++;
-        if (counter > 9999) counter = 0;
-
-        __delay_ms(100);
+    for (uint8_t h = 0; h < oled.gfx.height; h++) {
+        for (uint8_t w = 0; w < oled.gfx.width; w++) {
+            // This logic is a bit different from Adafruit's which uses writePixel
+            // To be identical, we must use the GFX drawPixel
+            int band = w / 12;
+            if (band > 7) band = 7;
+            GFX_DrawPixel(&oled.gfx, &oled, w, h, colors[band]);
+        }
     }
 }

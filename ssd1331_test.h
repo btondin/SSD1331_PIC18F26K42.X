@@ -32,34 +32,62 @@
 #define	XC_HEADER_TEMPLATE_H
 
 #include <xc.h> // include processor files - each processor file is guarded.  
+#include "ssd1331.h" // include processor files - each processor file is guarded. 
+#include "gfx_pic.h" // include processor files - each processor file is guarded. 
 
 // TODO Insert appropriate #include <>
 
-// TODO Insert C++ class definitions if appropriate
-
-// TODO Insert declarations
-
-// Comment a function and leverage automatic documentation with slash star star
 /**
-    <p><b>Function prototype:</b></p>
-  
-    <p><b>Summary:</b></p>
-
-    <p><b>Description:</b></p>
-
-    <p><b>Precondition:</b></p>
-
-    <p><b>Parameters:</b></p>
-
-    <p><b>Returns:</b></p>
-
-    <p><b>Example:</b></p>
-    <code>
- 
-    </code>
-
-    <p><b>Remarks:</b></p>
+ * @brief Write a pixel to the current address window position
+ * @note Must be called after SSD1331_SetAddrWindow and between Select/Deselect
  */
+static void SSD1331_WritePixel(SSD1331_t *ssd, uint16_t color) {
+    uint8_t buffer[2];
+    buffer[0] = color >> 8;
+    buffer[1] = color & 0xFF;
+    SPI1_ExchangeBlock(buffer, 2);
+}
+
+/**
+ * @brief Renders a simple test pattern on the LCD
+ */
+void SSD1331_TestPattern(SSD1331_t *ssd) {
+    uint8_t w, h;
+    
+    // Não precisa de SetAddrWindow quando usando GFX_DrawPixel
+    // pois cada DrawPixel configura sua própria janela
+    
+    for (h = 0; h < 64; h++) {
+        for (w = 0; w < 96; w++) {
+            uint16_t color;
+            
+            if (w > 83) {
+                color = SSD1331_WHITE;
+            } else if (w > 71) {
+                color = SSD1331_BLUE;
+            } else if (w > 59) {
+                color = SSD1331_GREEN;
+            } else if (w > 47) {
+                color = SSD1331_CYAN;
+            } else if (w > 35) {
+                color = SSD1331_RED;
+            } else if (w > 23) {
+                color = SSD1331_MAGENTA;
+            } else if (w > 11) {
+                color = SSD1331_YELLOW;
+            } else {
+                color = SSD1331_BLACK;
+            }
+            
+            // Write pixel using GFX function
+            GFX_DrawPixel(&ssd->gfx, ssd, w, h, color);
+        }
+    }
+}
+    
+    // End write transaction
+    //SSD1331_Deselect(ssd);
+}
 // TODO Insert declarations or function prototypes (right here) to leverage 
 // live documentation
 

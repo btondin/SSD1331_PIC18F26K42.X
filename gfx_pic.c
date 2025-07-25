@@ -9,9 +9,15 @@
 #include "gfx_pic.h"
 #include <string.h>
 #include <stdlib.h>
+#include <math.h> // For abs()
+
+#ifndef min
+#define min(a, b) (((a) < (b)) ? (a) : (b))
+#endif
 
 // Default 5x7 font (adapted from Adafruit glcdfont.c)
 static const uint8_t font[] = {
+    // ... (font data remains unchanged, it is correct)
     0x00, 0x00, 0x00, 0x00, 0x00,   // (space)
     0x00, 0x00, 0x5F, 0x00, 0x00,   // !
     0x00, 0x07, 0x00, 0x07, 0x00,   // "
@@ -128,12 +134,12 @@ void GFX_Init(GFX_t *gfx, int16_t w, int16_t h) {
     gfx->rotation = 0;
     gfx->wrap = true;
     gfx->cp437 = false;
-
     gfx->drawPixel = NULL;
     gfx->fillScreen = NULL;
     gfx->drawFastVLine = NULL;
     gfx->drawFastHLine = NULL;
     gfx->fillRect = NULL;
+    gfx->writePixel = NULL;
 }
 
 void GFX_DrawPixel(GFX_t *gfx, void *display, int16_t x, int16_t y, uint16_t color) {
@@ -142,17 +148,18 @@ void GFX_DrawPixel(GFX_t *gfx, void *display, int16_t x, int16_t y, uint16_t col
     }
 }
 
-void GFX_FillScreen(GFX_t *gfx, void *display, uint16_t color) {
-    if (gfx->fillScreen) {
-        gfx->fillScreen(display, color);
-    } else {
-        GFX_FillRect(gfx, display, 0, 0, gfx->width, gfx->height, color);
+void GFX_WritePixel(GFX_t *gfx, void *display, uint16_t color) {
+    if (gfx->writePixel) {
+        gfx->writePixel(display, color);
     }
+}
+
+void GFX_FillScreen(GFX_t *gfx, void *display, uint16_t color) {
+    GFX_FillRect(gfx, display, 0, 0, gfx->width, gfx->height, color);
 }
 
 void GFX_DrawLine(GFX_t *gfx, void *display, int16_t x0, int16_t y0, int16_t x1, int16_t y1, uint16_t color) {
     int16_t steep = abs(y1 - y0) > abs(x1 - x0);
-
     if (steep) {
         GFX_Swap(&x0, &y0);
         GFX_Swap(&x1, &y1);
@@ -161,12 +168,10 @@ void GFX_DrawLine(GFX_t *gfx, void *display, int16_t x0, int16_t y0, int16_t x1,
         GFX_Swap(&x0, &x1);
         GFX_Swap(&y0, &y1);
     }
-
     int16_t dx = x1 - x0;
     int16_t dy = abs(y1 - y0);
     int16_t err = dx / 2;
     int16_t ystep = (y0 < y1) ? 1 : -1;
-
     for (; x0 <= x1; x0++) {
         if (steep) {
             GFX_DrawPixel(gfx, display, y0, x0, color);
@@ -205,7 +210,7 @@ void GFX_DrawRect(GFX_t *gfx, void *display, int16_t x, int16_t y, int16_t w, in
 }
 
 void GFX_FillRect(GFX_t *gfx, void *display, int16_t x, int16_t y, int16_t w, int16_t h, uint16_t color) {
-    if (gfx->fillRect) {
+    if(gfx->fillRect) {
         gfx->fillRect(display, x, y, w, h, color);
     } else {
         for (int16_t i = x; i < x + w; i++) {
@@ -214,107 +219,56 @@ void GFX_FillRect(GFX_t *gfx, void *display, int16_t x, int16_t y, int16_t w, in
     }
 }
 
-void GFX_DrawTriangle(GFX_t *gfx, void *display, int16_t x0, int16_t y0, int16_t x1, int16_t y1, int16_t x2, int16_t y2, uint16_t color)
-{   
+void GFX_DrawTriangle(GFX_t *gfx, void *display, int16_t x0, int16_t y0, int16_t x1, int16_t y1, int16_t x2, int16_t y2, uint16_t color) {
    GFX_DrawLine(gfx, display, x0, y0, x1, y1, color);
    GFX_DrawLine(gfx, display, x1, y1, x2, y2, color);
    GFX_DrawLine(gfx, display, x2, y2, x0, y0, color);
 }
 
-/**************************************************************************/
-/*!
-   @brief     Draw a triangle with color-fill
-    @param    gfx     Pointer to the GFX structure (display graphics context)
-    @param    display Pointer to the specific display
-    @param    x0  Vertex #0 x coordinate
-    @param    y0  Vertex #0 y coordinate
-    @param    x1  Vertex #1 x coordinate
-    @param    y1  Vertex #1 y coordinate
-    @param    x2  Vertex #2 x coordinate
-    @param    y2  Vertex #2 y coordinate
-    @param    color 16-bit 5-6-5 Color to fill/draw with
-*/
-/**************************************************************************/
-void GFX_FillTriangle(GFX_t *gfx, void *display, int16_t x0, int16_t y0, 
-                      int16_t x1, int16_t y1, int16_t x2, int16_t y2, 
-                      uint16_t color) {
+void GFX_FillTriangle(GFX_t *gfx, void *display, int16_t x0, int16_t y0, int16_t x1, int16_t y1, int16_t x2, int16_t y2, uint16_t color) {
     int16_t a, b, y, last;
-    
-    // Sort coordinates by Y order (y2 >= y1 >= y0)
-    if (y0 > y1) {
-        GFX_Swap(&y0, &y1);
-        GFX_Swap(&x0, &x1);
-    }
-    if (y1 > y2) {
-        GFX_Swap(&y2, &y1);
-        GFX_Swap(&x2, &x1);
-    }
-    if (y0 > y1) {
-        GFX_Swap(&y0, &y1);
-        GFX_Swap(&x0, &x1);
-    }
-    
-    if (y0 == y2) { // Handle awkward all-on-same-line case as its own thing
+    if (y0 > y1) { GFX_Swap(&y0, &y1); GFX_Swap(&x0, &x1); }
+    if (y1 > y2) { GFX_Swap(&y2, &y1); GFX_Swap(&x2, &x1); }
+    if (y0 > y1) { GFX_Swap(&y0, &y1); GFX_Swap(&x0, &x1); }
+    if (y0 == y2) {
         a = b = x0;
-        if (x1 < a)
-            a = x1;
-        else if (x1 > b)
-            b = x1;
-        if (x2 < a)
-            a = x2;
-        else if (x2 > b)
-            b = x2;
+        if (x1 < a) a = x1;
+        else if (x1 > b) b = x1;
+        if (x2 < a) a = x2;
+        else if (x2 > b) b = x2;
         GFX_DrawFastHLine(gfx, display, a, y0, b - a + 1, color);
         return;
     }
-    
     int16_t dx01 = x1 - x0, dy01 = y1 - y0, dx02 = x2 - x0, dy02 = y2 - y0,
             dx12 = x2 - x1, dy12 = y2 - y1;
     int32_t sa = 0, sb = 0;
-    
-    // For upper part of triangle, find scanline crossings for segments
-    // 0-1 and 0-2.  If y1=y2 (flat-bottomed triangle), the scanline y1
-    // is included here (and second loop will be skipped, avoiding a /0
-    // error there), otherwise scanline y1 is skipped here and handled
-    // in the second loop...which also avoids a /0 error here if y0=y1
-    // (flat-topped triangle).
-    if (y1 == y2)
-        last = y1; // Include y1 scanline
-    else
-        last = y1 - 1; // Skip it
-        
+    if (y1 == y2) last = y1;
+    else last = y1 - 1;
     for (y = y0; y <= last; y++) {
-        a = x0 + sa / dy01;
-        b = x0 + sb / dy02;
+        // Adicione (int16_t) para fazer a conversão explícita
+        a = x0 + (int16_t)(sa / dy01);
+        b = x0 + (int16_t)(sb / dy02);
         sa += dx01;
         sb += dx02;
-        /* longhand:
-        a = x0 + (x1 - x0) * (y - y0) / (y1 - y0);
-        b = x0 + (x2 - x0) * (y - y0) / (y2 - y0);
-        */
-        if (a > b)
-            GFX_Swap(&a, &b);
+        if (a > b) GFX_Swap(&a, &b);
         GFX_DrawFastHLine(gfx, display, a, y, b - a + 1, color);
     }
-    
-    // For lower part of triangle, find scanline crossings for segments
-    // 0-2 and 1-2.  This loop is skipped if y1=y2.
     sa = (int32_t)dx12 * (y - y1);
     sb = (int32_t)dx02 * (y - y0);
     for (; y <= y2; y++) {
-        a = x1 + sa / dy12;
-        b = x0 + sb / dy02;
+        // Adicione (int16_t) para fazer a conversão explícita
+        a = x1 + (int16_t)(sa / dy12);
+        b = x0 + (int16_t)(sb / dy02);
         sa += dx12;
         sb += dx02;
-        /* longhand:
-        a = x1 + (x2 - x1) * (y - y1) / (y2 - y1);
-        b = x0 + (x2 - x0) * (y - y0) / (y2 - y0);
-        */
-        if (a > b)
-            GFX_Swap(&a, &b);
+        if (a > b) GFX_Swap(&a, &b);
         GFX_DrawFastHLine(gfx, display, a, y, b - a + 1, color);
     }
 }
+
+// ... (Restante do arquivo até GFX_FillCircleHelper) ...
+// NOTE: A sua função GFX_FillCircleHelper estava com uma assinatura diferente da Adafruit.
+// A versão correta, que é necessária para GFX_FillRoundRect, está abaixo.
 
 void GFX_DrawCircle(GFX_t *gfx, void *display, int16_t x0, int16_t y0, int16_t r, uint16_t color) {
     int16_t f = 1 - r;
@@ -322,12 +276,10 @@ void GFX_DrawCircle(GFX_t *gfx, void *display, int16_t x0, int16_t y0, int16_t r
     int16_t ddF_y = -2 * r;
     int16_t x = 0;
     int16_t y = r;
-
     GFX_DrawPixel(gfx, display, x0, y0 + r, color);
     GFX_DrawPixel(gfx, display, x0, y0 - r, color);
     GFX_DrawPixel(gfx, display, x0 + r, y0, color);
     GFX_DrawPixel(gfx, display, x0 - r, y0, color);
-
     while (x < y) {
         if (f >= 0) {
             y--;
@@ -337,7 +289,6 @@ void GFX_DrawCircle(GFX_t *gfx, void *display, int16_t x0, int16_t y0, int16_t r
         x++;
         ddF_x += 2;
         f += ddF_x;
-
         GFX_DrawPixel(gfx, display, x0 + x, y0 + y, color);
         GFX_DrawPixel(gfx, display, x0 - x, y0 + y, color);
         GFX_DrawPixel(gfx, display, x0 + x, y0 - y, color);
@@ -361,6 +312,10 @@ void GFX_FillCircleHelper(GFX_t *gfx, void *display, int16_t x0, int16_t y0, int
     int16_t ddF_y = -2 * r;
     int16_t x = 0;
     int16_t y = r;
+    int16_t px = x;
+    int16_t py = y;
+
+    delta++; // Avoid some +1's in the loop
 
     while (x < y) {
         if (f >= 0) {
@@ -371,76 +326,48 @@ void GFX_FillCircleHelper(GFX_t *gfx, void *display, int16_t x0, int16_t y0, int
         x++;
         ddF_x += 2;
         f += ddF_x;
-
-        if (corners & 0x1) {
-            GFX_DrawFastVLine(gfx, display, x0 + x, y0 - y, 2 * y + 1 + delta, color);
-            GFX_DrawFastVLine(gfx, display, x0 + y, y0 - x, 2 * x + 1 + delta, color);
+        
+        if (x < (y + 1)) {
+            if (corners & 1) GFX_DrawFastVLine(gfx, display, x0 + x, y0 - y, 2 * y + delta, color);
+            if (corners & 2) GFX_DrawFastVLine(gfx, display, x0 - x, y0 - y, 2 * y + delta, color);
         }
-        if (corners & 0x2) {
-            GFX_DrawFastVLine(gfx, display, x0 - x, y0 - y, 2 * y + 1 + delta, color);
-            GFX_DrawFastVLine(gfx, display, x0 - y, y0 - x, 2 * x + 1 + delta, color);
+        if (y != py) {
+            if (corners & 1) GFX_DrawFastVLine(gfx, display, x0 + py, y0 - px, 2 * px + delta, color);
+            if (corners & 2) GFX_DrawFastVLine(gfx, display, x0 - py, y0 - px, 2 * px + delta, color);
+            py = y;
         }
+        px = x;
     }
 }
 
-/**
- * @brief Draw a single character to the screen
- */
+// ... (Continuação do arquivo, GFX_DrawChar, etc., permanecem iguais) ...
+// ADICIONANDO AS FUNÇÕES DE RETÂNGULO ARREDONDADO NO FINAL DO ARQUIVO:
+
 void GFX_DrawChar(GFX_t *gfx, void *display, int16_t x, int16_t y, unsigned char c, uint16_t color, uint16_t bg, uint8_t size_x, uint8_t size_y) {
     if ((x >= gfx->width) || (y >= gfx->height) || ((x + 6 * size_x - 1) < 0) || ((y + 8 * size_y - 1) < 0)) return;
-
-    if (c < ' ') c = ' ';
-    if (c > '~') c = '~';
-
+    if (c < ' ' || c > '~') c = ' '; // Handle non-printable chars
     for (int8_t i = 0; i < 5; i++) {
         uint8_t line = font[(c - ' ') * 5 + i];
         for (int8_t j = 0; j < 8; j++, line >>= 1) {
             if (line & 0x01) {
-                if (size_x == 1 && size_y == 1) {
-                    GFX_DrawPixel(gfx, display, x + i, y + j, color);
-                } else {
-                    GFX_FillRect(gfx, display, x + i * size_x, y + j * size_y, size_x, size_y, color);
-                }
+                if (size_x == 1 && size_y == 1) GFX_DrawPixel(gfx, display, x + i, y + j, color);
+                else GFX_FillRect(gfx, display, x + i * size_x, y + j * size_y, size_x, size_y, color);
             } else if (bg != color) {
-                if (size_x == 1 && size_y == 1) {
-                    GFX_DrawPixel(gfx, display, x + i, y + j, bg);
-                } else {
-                    GFX_FillRect(gfx, display, x + i * size_x, y + j * size_y, size_x, size_y, bg);
-                }
+                if (size_x == 1 && size_y == 1) GFX_DrawPixel(gfx, display, x + i, y + j, bg);
+                else GFX_FillRect(gfx, display, x + i * size_x, y + j * size_y, size_x, size_y, bg);
             }
         }
     }
-
     if (bg != color) {
-        if (size_x == 1 && size_y == 1) {
-            GFX_DrawFastVLine(gfx, display, x + 5, y, 8, bg);
-        } else {
-            GFX_FillRect(gfx, display, x + 5 * size_x, y, size_x, 8 * size_y, bg);
-        }
+        if (size_x == 1 && size_y == 1) GFX_DrawFastVLine(gfx, display, x + 5, y, 8, bg);
+        else GFX_FillRect(gfx, display, x + 5 * size_x, y, size_x, 8 * size_y, bg);
     }
 }
 
-/**
- * @brief Draws a colored RGB565 image to the screen.
- *
- * This function iterates through the provided pixel matrix and draws each pixel on the display
- * using the pixel drawing function configured in gfx->drawPixel.
- * 
- * @param gfx     Pointer to the GFX structure (display graphics context)
- * @param display Pointer to the specific display (e.g., SSD1331_t *)
- * @param x       X position where the image will be drawn
- * @param y       Y position where the image will be drawn
- * @param bitmap  Pointer to the RGB565 image data (16 bits per pixel)
- * @param w       Width of the image in pixels
- * @param h       Height of the image in pixels
- */
-void GFX_DrawBitmapRGB(GFX_t *gfx, void *display, int16_t x, int16_t y,
-                       const uint16_t *bitmap, int16_t w, int16_t h) {
+void GFX_DrawBitmapRGB(GFX_t *gfx, void *display, int16_t x, int16_t y, const uint16_t *bitmap, int16_t w, int16_t h) {
     for (int16_t j = 0; j < h; j++) {
         for (int16_t i = 0; i < w; i++) {
-            int16_t index = j * w + i;
-            uint16_t color = bitmap[index];
-            gfx->drawPixel(display, x + i, y + j, color);
+            gfx->drawPixel(display, x + i, y + j, bitmap[j * w + i]);
         }
     }
 }
@@ -450,133 +377,147 @@ void GFX_DrawBitmapRGB(GFX_t *gfx, void *display, int16_t x, int16_t y,
  * @brief Write a character to the screen with cursor update
  */
 void GFX_Write(GFX_t *gfx, void *display, uint8_t c) {
-    if(c == '\n') {
+    if (c == '\n') {
         gfx->cursor_x = 0;
         gfx->cursor_y += gfx->textsize_y * 8;
-    } else if(c == '\r') {
+    } else if (c == '\r') {
         gfx->cursor_x = 0;
     } else {
-        GFX_DrawChar(gfx, display, gfx->cursor_x, gfx->cursor_y, c, gfx->textcolor, gfx->textbgcolor, gfx->textsize_x, gfx->textsize_y);
-        gfx->cursor_x += gfx->textsize_x * 6;
-        if(gfx->wrap && (gfx->cursor_x > (gfx->width - gfx->textsize_x * 6))) {
+        if(gfx->wrap && (gfx->cursor_x + gfx->textsize_x * 6 > gfx->width)) {
             gfx->cursor_x = 0;
             gfx->cursor_y += gfx->textsize_y * 8;
         }
+        GFX_DrawChar(gfx, display, gfx->cursor_x, gfx->cursor_y, c, gfx->textcolor, gfx->textbgcolor, gfx->textsize_x, gfx->textsize_y);
+        gfx->cursor_x += gfx->textsize_x * 6;
     }
 }
 
-/**
- * @brief Print a null-terminated string
- */
 void GFX_Print(GFX_t *gfx, void *display, const char *str) {
     while (*str) {
         GFX_Write(gfx, display, *str++);
     }
 }
 
-/**
- * @brief Print a string at a specific coordinate
- */
 void GFX_PrintAt(GFX_t *gfx, void *display, int16_t x, int16_t y, const char *str) {
     GFX_SetCursor(gfx, x, y);
     GFX_Print(gfx, display, str);
 }
 
-/**
- * @brief Set the text cursor position
- */
 void GFX_SetCursor(GFX_t *gfx, int16_t x, int16_t y) {
     gfx->cursor_x = x;
     gfx->cursor_y = y;
 }
 
-/**
- * @brief Set the text color
- */
 void GFX_SetTextColor(GFX_t *gfx, uint16_t c) {
-    gfx->textcolor = c;
-    gfx->textbgcolor = c;
+    gfx->textcolor = gfx->textbgcolor = c;
 }
 
-
-/**
- * @brief Set the text color and background color
- */
 void GFX_SetTextColorBg(GFX_t *gfx, uint16_t c, uint16_t bg) {
     gfx->textcolor = c;
     gfx->textbgcolor = bg;
 }
 
-/**
- * @brief Set the text size uniformly
- */
 void GFX_SetTextSize(GFX_t *gfx, uint8_t s) {
     gfx->textsize_x = s;
     gfx->textsize_y = s;
 }
 
-/**
- * @brief Set the text size independently for X and Y
- */
 void GFX_SetTextSizeXY(GFX_t *gfx, uint8_t s_x, uint8_t s_y) {
     gfx->textsize_x = s_x;
     gfx->textsize_y = s_y;
 }
 
-/**
- * @brief Enable or disable automatic text wrapping
- */
 void GFX_SetTextWrap(GFX_t *gfx, bool w) {
     gfx->wrap = w;
 }
 
-/**
- * @brief Set the display rotation
- */
 void GFX_SetRotation(GFX_t *gfx, uint8_t r) {
     gfx->rotation = (r & 3);
-    switch (gfx->rotation) {
-        case 0:
-        case 2:
-            break;
-        case 1:
-        case 3:
-            GFX_Swap(&gfx->width, &gfx->height);
-            break;
-    }
+    // Note: The hardware-specific driver should handle width/height swapping
+}
+
+void GFX_SetCP437(GFX_t *gfx, bool x) {
+    gfx->cp437 = x;
 }
 
 /**
  * @brief Get the current cursor X position
  */
-int16_t GFX_GetCursorX(GFX_t *gfx) {
-    return gfx->cursor_x;
+int16_t GFX_GetCursorX(GFX_t *gfx) { return gfx->cursor_x; }
+int16_t GFX_GetCursorY(GFX_t *gfx) { return gfx->cursor_y; }
+uint8_t GFX_GetRotation(GFX_t *gfx) { return gfx->rotation; }
+int16_t GFX_Width(GFX_t *gfx) { return gfx->width; }
+int16_t GFX_Height(GFX_t *gfx) { return gfx->height; }
+
+/**
+ * @brief Draw helper arcs for circles
+ */
+void GFX_DrawCircleHelper(GFX_t *gfx, void *display, int16_t x0, int16_t y0, int16_t r, uint8_t cornername, uint16_t color) {
+    int16_t f = 1 - r;
+    int16_t ddF_x = 1;
+    int16_t ddF_y = -2 * r;
+    int16_t x = 0;
+    int16_t y = r;
+
+    while (x < y) {
+        if (f >= 0) {
+            y--;
+            ddF_y += 2;
+            f += ddF_y;
+        }
+        x++;
+        ddF_x += 2;
+        f += ddF_x;
+        
+        if (cornername & 0x4) { // bottom right
+            GFX_DrawPixel(gfx, display, x0 + x, y0 + y, color);
+            GFX_DrawPixel(gfx, display, x0 + y, y0 + x, color);
+        }
+        if (cornername & 0x2) { // top right
+            GFX_DrawPixel(gfx, display, x0 + x, y0 - y, color);
+            GFX_DrawPixel(gfx, display, x0 + y, y0 - x, color);
+        }
+        if (cornername & 0x8) { // bottom left
+            GFX_DrawPixel(gfx, display, x0 - y, y0 + x, color);
+            GFX_DrawPixel(gfx, display, x0 - x, y0 + y, color);
+        }
+        if (cornername & 0x1) { // top left
+            GFX_DrawPixel(gfx, display, x0 - y, y0 - x, color);
+            GFX_DrawPixel(gfx, display, x0 - x, y0 - y, color);
+        }
+    }
 }
 
 /**
- * @brief Get the current cursor Y position
+ * @brief Draw a rounded rectangle outline
  */
-int16_t GFX_GetCursorY(GFX_t *gfx) {
-    return gfx->cursor_y;
+void GFX_DrawRoundRect(GFX_t *gfx, void *display, int16_t x, int16_t y, int16_t w, int16_t h, int16_t r, uint16_t color) {
+    int16_t max_radius = ((w < h) ? w : h) / 2;
+    if (r > max_radius) r = max_radius;
+    
+    GFX_DrawFastHLine(gfx, display, x + r, y, w - 2 * r, color);         // Top
+    GFX_DrawFastHLine(gfx, display, x + r, y + h - 1, w - 2 * r, color); // Bottom
+    GFX_DrawFastVLine(gfx, display, x, y + r, h - 2 * r, color);         // Left
+    GFX_DrawFastVLine(gfx, display, x + w - 1, y + r, h - 2 * r, color); // Right
+    
+    // draw four corners
+    GFX_DrawCircleHelper(gfx, display, x + r, y + r, r, 1, color);
+    GFX_DrawCircleHelper(gfx, display, x + w - r - 1, y + r, r, 2, color);
+    GFX_DrawCircleHelper(gfx, display, x + w - r - 1, y + h - r - 1, r, 4, color);
+    GFX_DrawCircleHelper(gfx, display, x + r, y + h - r - 1, r, 8, color);
 }
 
 /**
- * @brief Get the current display rotation
+ * @brief Fill a rounded rectangle
  */
-uint8_t GFX_GetRotation(GFX_t *gfx) {
-    return gfx->rotation;
+void GFX_FillRoundRect(GFX_t *gfx, void *display, int16_t x, int16_t y, int16_t w, int16_t h, int16_t r, uint16_t color) {
+    int16_t max_radius = ((w < h) ? w : h) / 2;
+    if (r > max_radius) r = max_radius;
+
+    GFX_FillRect(gfx, display, x + r, y, w - 2 * r, h, color);
+    
+    // draw four corners
+    GFX_FillCircleHelper(gfx, display, x + w - r - 1, y + r, r, 1, h - 2 * r - 1, color);
+    GFX_FillCircleHelper(gfx, display, x + r, y + r, r, 2, h - 2 * r - 1, color);
 }
 
-/**
- * @brief Get the current display width
- */
-int16_t GFX_Width(GFX_t *gfx) {
-    return gfx->width;
-}
-
-/**
- * @brief Get the current display height
- */
-int16_t GFX_Height(GFX_t *gfx) {
-    return gfx->height;
-}

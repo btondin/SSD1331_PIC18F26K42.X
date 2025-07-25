@@ -121,4 +121,28 @@ void SSD1331_SetContrast(SSD1331_t *ssd, uint8_t r, uint8_t g, uint8_t b);
 uint16_t SSD1331_Color565(uint8_t r, uint8_t g, uint8_t b);
 void SSD1331_Delay(uint16_t ms);
 
+/* Hardware-accelerated scroll functions */
+void SSD1331_StartScroll(SSD1331_t *ssd);
+void SSD1331_StopScroll(SSD1331_t *ssd);
+void SSD1331_SetupScroll(SSD1331_t *ssd, uint8_t startRow, uint8_t endRow, uint8_t startCol, uint8_t endCol, uint8_t interval);
+
+/* Hardware-accelerated copy function */
+void SSD1331_CopyArea(SSD1331_t *ssd, uint8_t x0, uint8_t y0, uint8_t x1, uint8_t y1, uint8_t x2, uint8_t y2);
+
+/* Hardware-accelerated dim function */
+void SSD1331_DimWindow(SSD1331_t *ssd, uint8_t x0, uint8_t y0, uint8_t x1, uint8_t y1);
+
+/* Hardware-accelerated clear function */
+void SSD1331_ClearWindow(SSD1331_t *ssd, uint8_t x0, uint8_t y0, uint8_t x1, uint8_t y1);
+
+/* Invert display */
+void SSD1331_InvertDisplay(SSD1331_t *ssd, bool invert);
+
+/* Arduino-style aliases */
+#define display() SSD1331_EnableDisplay(&oled, true)
+#define noDisplay() SSD1331_EnableDisplay(&oled, false)
+#define invertDisplay(x) SSD1331_InvertDisplay(&oled, x)
+#define startscroll() SSD1331_StartScroll(&oled)
+#define stopscroll() SSD1331_StopScroll(&oled)
+
 #endif // SSD1331_H

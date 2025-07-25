@@ -57,7 +57,7 @@ void main(void) {
     GFX_FillScreen(&oled.gfx, &oled, SSD1331_BLACK);
     __delay_ms(DELAY_SHORT);
 
-    
+    /*
     
     lcdTestPattern();
     __delay_ms(DELAY_MEDIUM);
@@ -69,41 +69,55 @@ void main(void) {
     GFX_Print(&oled.gfx, &oled, "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur adipiscing ante sed nibh tincidunt feugiat. Maecenas enim massa");
     __delay_ms(DELAY_MEDIUM);
     
-    /*
+ 
 
     // tft print function!
     tftPrintTest();
     __delay_ms(DELAY_LONG);
     
-    */
-
+    
+    
     // a single pixel
+    GFX_FillScreen(&oled.gfx, &oled, SSD1331_BLACK);
     GFX_DrawPixel(&oled.gfx, &oled, oled.gfx.width / 2, oled.gfx.height / 2, SSD1331_GREEN);
     __delay_ms(DELAY_SHORT);
     
-    while(1);
+     
+    
 
     // line draw test
     testlines(SSD1331_YELLOW);
     __delay_ms(DELAY_SHORT);
+    
+    
 
     // optimized lines
     testfastlines(SSD1331_RED, SSD1331_BLUE);
     __delay_ms(DELAY_SHORT);
+    
+    
 
     testdrawrects(SSD1331_GREEN);
     __delay_ms(DELAY_MEDIUM);
+    
+    
 
     testfillrects(SSD1331_YELLOW, SSD1331_MAGENTA);
     __delay_ms(DELAY_MEDIUM);
+    
+    */
 
     GFX_FillScreen(&oled.gfx, &oled, SSD1331_BLACK);
     testfillcircles(10, SSD1331_BLUE);
     testdrawcircles(10, SSD1331_WHITE);
     __delay_ms(DELAY_MEDIUM);
+    
+    
 
     testroundrects();
     __delay_ms(DELAY_SHORT);
+    
+    while(1);
 
     testtriangles();
     __delay_ms(DELAY_SHORT);
@@ -129,7 +143,7 @@ void testlines(uint16_t color) {
     for (int16_t y = 0; y < oled.gfx.height; y += 6) {
         GFX_DrawLine(&oled.gfx, &oled, 0, 0, oled.gfx.width - 1, y, color);
     }
-    __delay_ms(DELAY_SHORT);
+    //__delay_ms(DELAY_SHORT);
 
     GFX_FillScreen(&oled.gfx, &oled, SSD1331_BLACK);
     for (int16_t x = 0; x < oled.gfx.width; x += 6) {
@@ -138,7 +152,7 @@ void testlines(uint16_t color) {
     for (int16_t y = 0; y < oled.gfx.height; y += 6) {
         GFX_DrawLine(&oled.gfx, &oled, oled.gfx.width - 1, 0, 0, y, color);
     }
-    __delay_ms(DELAY_SHORT);
+    //__delay_ms(DELAY_SHORT);
 
     GFX_FillScreen(&oled.gfx, &oled, SSD1331_BLACK);
     for (int16_t x = 0; x < oled.gfx.width; x += 6) {
@@ -147,7 +161,7 @@ void testlines(uint16_t color) {
     for (int16_t y = 0; y < oled.gfx.height; y += 6) {
         GFX_DrawLine(&oled.gfx, &oled, 0, oled.gfx.height - 1, oled.gfx.width - 1, y, color);
     }
-    __delay_ms(DELAY_SHORT);
+    //__delay_ms(DELAY_SHORT);
 
     GFX_FillScreen(&oled.gfx, &oled, SSD1331_BLACK);
     for (int16_t x = 0; x < oled.gfx.width; x += 6) {
@@ -170,14 +184,18 @@ void testfastlines(uint16_t color1, uint16_t color2) {
 
 void testdrawrects(uint16_t color) {
     GFX_FillScreen(&oled.gfx, &oled, SSD1331_BLACK);
-    for (int16_t x = 0; x < oled.gfx.width; x += 6) {
+    for (int16_t x = 0; x < oled.gfx.height-1; x += 6) {
         GFX_DrawRect(&oled.gfx, &oled, (oled.gfx.width - 1) / 2 - x / 2, (oled.gfx.height - 1) / 2 - x / 2, x, x, color);
     }
 }
 
 void testfillrects(uint16_t color1, uint16_t color2) {
     GFX_FillScreen(&oled.gfx, &oled, SSD1331_BLACK);
-    for (int16_t x = oled.gfx.width - 1; x > 6; x -= 6) {
+    //for (int16_t x = oled.gfx.width - 1; x > 6; x -= 6) {
+     //   GFX_FillRect(&oled.gfx, &oled, (oled.gfx.width - 1) / 2 - x / 2, (oled.gfx.height - 1) / 2 - x / 2, x, x, color1);
+     //   GFX_DrawRect(&oled.gfx, &oled, (oled.gfx.width - 1) / 2 - x / 2, (oled.gfx.height - 1) / 2 - x / 2, x, x, color2);
+    //}
+    for (int16_t x = oled.gfx.height - 1; x > 6; x -= 6) {
         GFX_FillRect(&oled.gfx, &oled, (oled.gfx.width - 1) / 2 - x / 2, (oled.gfx.height - 1) / 2 - x / 2, x, x, color1);
         GFX_DrawRect(&oled.gfx, &oled, (oled.gfx.width - 1) / 2 - x / 2, (oled.gfx.height - 1) / 2 - x / 2, x, x, color2);
     }
@@ -201,7 +219,7 @@ void testdrawcircles(uint8_t radius, uint16_t color) {
 
 void testroundrects(void) {
     GFX_FillScreen(&oled.gfx, &oled, SSD1331_BLACK);
-    uint16_t color = 100; // Mude de 'int' para 'uint16_t'
+    uint32_t color = 100; // Mude de 'int' para 'uint16_t'
     int i;
     int t;
     for (t = 0; t <= 4; t += 1) {

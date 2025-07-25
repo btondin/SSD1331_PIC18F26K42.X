@@ -500,6 +500,8 @@ void GFX_DrawRoundRect(GFX_t *gfx, void *display, int16_t x, int16_t y, int16_t 
     GFX_DrawFastVLine(gfx, display, x, y + r, h - 2 * r, color);         // Left
     GFX_DrawFastVLine(gfx, display, x + w - 1, y + r, h - 2 * r, color); // Right
     
+    
+    
     // draw four corners
     GFX_DrawCircleHelper(gfx, display, x + r, y + r, r, 1, color);
     GFX_DrawCircleHelper(gfx, display, x + w - r - 1, y + r, r, 2, color);

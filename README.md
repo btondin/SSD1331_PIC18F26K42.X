@@ -26,7 +26,7 @@ The library is organized in a two-layer architecture:
 - Rotation and scaling support
 - Fallback implementations for maximum compatibility
 
-### SSD1331 Driver Layer (`ssd1331_pic.h/c`)
+### SSD1331 Driver Layer (`ssd1331.h/c`)
 - **Hardware-specific implementation**
 - SPI communication protocols
 - Display initialization and configuration
@@ -72,7 +72,7 @@ The main application (`main.c`) includes comprehensive tests:
 1. Include the library files in your MPLAB X project:
    ```c
    #include "gfx_pic.h"
-   #include "ssd1331_pic.h"
+   #include "ssd1331.h"
    ```
 
 2. Initialize the display:
@@ -109,8 +109,8 @@ The bitmap images (`bunmi_img` and `lena` arrays) consume significant program me
 ```
 ├── gfx_pic.h           # Graphics library header
 ├── gfx_pic.c           # Graphics library implementation  
-├── ssd1331_pic.h       # SSD1331 driver header
-├── ssd1331_pic.c       # SSD1331 driver implementation
+├── ssd1331.h       # SSD1331 driver header
+├── ssd1331.c       # SSD1331 driver implementation
 ├── main.c              # Demo application with comprehensive tests
 ├── screens.h           # Bitmap image data (optional, memory-intensive)
 └── README.md           # This documentation
@@ -132,7 +132,7 @@ SSD1331_BLUE, SSD1331_CYAN, SSD1331_MAGENTA, SSD1331_YELLOW
 ## 🔧 Configuration Options
 
 ### Color Order Selection
-Choose your display's pixel color order in `ssd1331_pic.h`:
+Choose your display's pixel color order in `ssd1331.h`:
 ```c
 #define SSD1331_COLORORDER_RGB  // Most common
 // #define SSD1331_COLORORDER_BGR  // Alternative

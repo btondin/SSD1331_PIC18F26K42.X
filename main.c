@@ -14,6 +14,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include "ssd1331.h"
+#include "screens.h"
 // #include "screens.h" // Not needed for this test
 
 // Global instance of the OLED display driver
@@ -36,6 +37,7 @@ void testtriangles(void);
 void tftPrintTest(void);
 void mediabuttons(void);
 void lcdTestPattern(void);
+void testimages(void);
 
 
 /**
@@ -57,7 +59,7 @@ void main(void) {
     GFX_FillScreen(&oled.gfx, &oled, SSD1331_BLACK);
     __delay_ms(DELAY_SHORT);
 
-    /*
+    
     
     lcdTestPattern();
     __delay_ms(DELAY_MEDIUM);
@@ -105,7 +107,7 @@ void main(void) {
     testfillrects(SSD1331_YELLOW, SSD1331_MAGENTA);
     __delay_ms(DELAY_MEDIUM);
     
-    */
+    
 
     GFX_FillScreen(&oled.gfx, &oled, SSD1331_BLACK);
     testfillcircles(10, SSD1331_BLUE);
@@ -117,15 +119,15 @@ void main(void) {
     testroundrects();
     __delay_ms(DELAY_SHORT);
     
-    while(1);
-
+    
     testtriangles();
     __delay_ms(DELAY_SHORT);
     
-    mediabuttons();
+    
+    testimages();
     __delay_ms(DELAY_MEDIUM);
-
-
+    __delay_ms(DELAY_MEDIUM);    
+    
     // Loop forever after tests are done
     while (1) {
         // The tests run only once, like in Arduino's setup()
@@ -227,7 +229,7 @@ void testroundrects(void) {
         int y = 0;
         int w = oled.gfx.width;
         int h = oled.gfx.height;
-        for (i = 0; i <= 16; i += 1) {
+        for (i = 0; i <= 8; i += 1) {
             GFX_DrawRoundRect(&oled.gfx, &oled, x, y, w, h, 5, color);
             x += 2;
             y += 3;
@@ -244,9 +246,9 @@ void testtriangles(void) {
     uint16_t color = 0xF800; // Mude de 'int' para 'uint16_t'
     int t;
     int w = oled.gfx.width / 2;
-    int x = oled.gfx.height - 1;
+    int x = oled.gfx.height;
     int y = 0;
-    int z = oled.gfx.width - 1;
+    int z = oled.gfx.width;
     for (t = 0; t <= 15; t++) {
         GFX_DrawTriangle(&oled.gfx, &oled, w, y, y, x, z, x, color);
         x -= 4;
@@ -323,25 +325,13 @@ void tftPrintTest(void) {
 }
 
 
-void mediabuttons(void) {
+void testimages(void) {
     // play
-    GFX_FillScreen(&oled.gfx, &oled, SSD1331_BLACK);
-    GFX_FillRoundRect(&oled.gfx, &oled, 25, 10, 78, 60, 8, SSD1331_WHITE);
-    GFX_FillTriangle(&oled.gfx, &oled, 42, 20, 42, 60, 90, 40, SSD1331_RED);
-    __delay_ms(DELAY_SHORT);
-    // pause
-    GFX_FillRoundRect(&oled.gfx, &oled, 25, 10, 78, 60, 8, SSD1331_WHITE);
-    GFX_FillRect(&oled.gfx, &oled, 39, 28, 20, 45, SSD1331_GREEN);
-    GFX_FillRect(&oled.gfx, &oled, 69, 28, 20, 45, SSD1331_GREEN);
-    __delay_ms(DELAY_SHORT);
-    // play color
-    GFX_FillTriangle(&oled.gfx, &oled, 42, 20, 42, 60, 90, 40, SSD1331_BLUE);
-    __delay_ms(50);
-    // pause color
-    GFX_FillRect(&oled.gfx, &oled, 39, 28, 20, 45, SSD1331_RED);
-    GFX_FillRect(&oled.gfx, &oled, 69, 28, 20, 45, SSD1331_RED);
-    // play color
-    GFX_FillTriangle(&oled.gfx, &oled, 42, 20, 42, 60, 90, 40, SSD1331_GREEN);
+     GFX_DrawBitmapRGB(&oled.gfx, &oled, 0, 0, bunmi_img, SSD1331_WIDTH, SSD1331_HEIGHT);
+    //__delay_ms(2000);
+    //__delay_ms(2000);    
+    
+    //GFX_DrawBitmapRGB(&oled.gfx, &oled, 0, 0, manas, SSD1331_WIDTH, SSD1331_HEIGHT);
 }
 
 void lcdTestPattern(void) {

@@ -15,7 +15,6 @@
       <itemPath>gfx_pic.h</itemPath>
       <itemPath>screens.h</itemPath>
       <itemPath>ssd1331.h</itemPath>
-      <itemPath>ssd1331_test.h</itemPath>
     </logicalFolder>
     <logicalFolder name="ExternalFiles"
                    displayName="Important Files"

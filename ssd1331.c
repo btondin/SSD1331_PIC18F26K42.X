@@ -1,29 +1,45 @@
 /**
- * @file    ssd1331_pic.c
- * @brief   Driver implementation for SSD1331 96x64 RGB OLED display for PIC18F26K42
- * 
- * @author  @btondin 
- * @date    2025
+ * @file ssd1331.c
+ * @brief Driver implementation for SSD1331 96x64 RGB OLED display for PIC18F26K42
+ *
+ * This implementation provides hardware-specific functions for the SSD1331 OLED controller,
+ * including SPI communication, display initialization, pixel drawing, and graphics operations.
+ * Based on Adafruit's SSD1331 library adapted for PIC microcontrollers.
+ *
+ * @author @btondin 
+ * @date 2025
  */
 
 #include "ssd1331.h"
 #include "gfx_pic.h"
 
-// Helper macro
+//==============================================================================
+// HELPER MACROS AND VARIABLES
+//==============================================================================
+
+/** @brief Macro to swap two 16-bit values */
 #define ssd1331_swap(a, b) { int16_t t = a; a = b; b = t; }
 
-// Helper variable
+/** @brief Dummy variable for SPI read operations */
 uint8_t SPI_dummy;
 
-// Private function prototypes
+//==============================================================================
+// PRIVATE FUNCTION PROTOTYPES
+//==============================================================================
+
 static void SSD1331_HardwareReset(SSD1331_t *ssd);
 static void SSD1331_Select(SSD1331_t *ssd);
 static void SSD1331_Deselect(SSD1331_t *ssd);
 static void SSD1331_SetDataMode(SSD1331_t *ssd);
 static void SSD1331_SetCommandMode(SSD1331_t *ssd);
 
+//==============================================================================
+// UTILITY FUNCTIONS
+//==============================================================================
+
 /**
- * @brief Millisecond delay (adjust to your system clock)
+ * @brief Software delay function in milliseconds
+ * @param ms Delay time in milliseconds
  */
 void SSD1331_Delay(uint16_t ms) {
     for (uint16_t i = 0; i < ms; i++) {
@@ -31,291 +47,291 @@ void SSD1331_Delay(uint16_t ms) {
     }
 }
 
+//==============================================================================
+// INITIALIZATION FUNCTIONS
+//==============================================================================
+
 /**
- * @brief Initializes SSD1331 driver structure
+ * @brief Initialize SSD1331 driver structure and GPIO pins
+ * 
+ * Sets up the graphics context, function pointers, and GPIO pin states.
+ * The GFX library will handle most drawing operations with fallback implementations.
+ * 
+ * @param ssd Pointer to SSD1331 driver structure
  */
 void SSD1331_Init(SSD1331_t *ssd) {
-    ssd->rotation = SSD1331_INIT_ROTATION;
+    // Initialize rotation
+    ssd->rotation = 0;
 
+    // Initialize graphics context with display dimensions
     GFX_Init(&ssd->gfx, SSD1331_WIDTH, SSD1331_HEIGHT);
 
-    ssd->gfx.drawPixel     = (void*)SSD1331_DrawPixel;
-    ssd->gfx.fillScreen    = (void*)SSD1331_FillScreen;
-    ssd->gfx.drawFastVLine = NULL;
-    ssd->gfx.drawFastHLine = NULL;
-    ssd->gfx.fillRect      = (void*)SSD1331_FillRect;
+    // Assign only functions that SSD1331 driver implements directly
+    // This prevents recursion by letting GFX library handle complex operations
+    ssd->gfx.drawPixel = (void*)SSD1331_DrawPixel;
+    ssd->gfx.writePixel = (void*)SSD1331_WriteData16;
+    
+    // Leave other functions as NULL to use GFX library fallbacks
+    // This avoids recursion issues:
+    // ssd->gfx.fillRect      = NULL; 
+    // ssd->gfx.drawFastVLine = NULL;
+    // ssd->gfx.drawFastHLine = NULL;
+    // ssd->gfx.fillScreen    = NULL;
 
-    SSD1331_CS_SetDigitalOutput();
-    SSD1331_DC_SetDigitalOutput();
-    SSD1331_RST_SetDigitalOutput();
-
-    SSD1331_CS_SetHigh();
-    SSD1331_DC_SetHigh();
-    SSD1331_RST_SetHigh();
+    // Initialize GPIO pins to default states
+    SSD1331_CS_SetHigh();   // Chip select inactive (high)
+    SSD1331_DC_SetHigh();   // Data mode (high)
+    SSD1331_RST_SetHigh();  // Reset inactive (high)
 }
 
 /**
- * @brief Initializes the SSD1331 display
+ * @brief Initialize SSD1331 hardware and configure display registers
+ * 
+ * Performs hardware reset, sends initialization commands, and sets up
+ * the display for operation. Uses initialization sequence from Adafruit library.
+ * 
+ * @param ssd Pointer to SSD1331 driver structure
  */
 void SSD1331_Begin(SSD1331_t *ssd) {
+    // Initialize SPI peripheral
     SPI1_Open(SPI1_DEFAULT);
+    
+    // Perform hardware reset sequence
     SSD1331_HardwareReset(ssd);
 
-    // Initialization Sequence
-    SSD1331_WriteCommand(ssd, SSD1331_CMD_DISPLAYOFF);      // 0xAE
-    SSD1331_WriteCommand(ssd, SSD1331_CMD_SETREMAP);        // 0xA0
-    SSD1331_WriteCommand(ssd, SSD1331_CMD_STARTLINE);       // 0xA1
-    SSD1331_WriteCommand(ssd, 0x00);
-    SSD1331_WriteCommand(ssd, SSD1331_CMD_DISPLAYOFFSET);   // 0xA2
-    SSD1331_WriteCommand(ssd, 0x00);
-    SSD1331_WriteCommand(ssd, SSD1331_CMD_NORMALDISPLAY);   // 0xA4
-    SSD1331_WriteCommand(ssd, SSD1331_CMD_SETMULTIPLEX);    // 0xA8
-    SSD1331_WriteCommand(ssd, 0x3F);                        // 0x3F 1/64 duty
-    SSD1331_WriteCommand(ssd, SSD1331_CMD_SETMASTER);       // 0xAD
+    // Initialization sequence from Adafruit Library
+    SSD1331_WriteCommand(ssd, SSD1331_CMD_DISPLAYOFF);      // Turn off display during init
+    
+    // Set display re-mapping and color depth
+    SSD1331_WriteCommand(ssd, SSD1331_CMD_SETREMAP);        
+    SSD1331_WriteCommand(ssd, 0x72);                        // Default remap settings
+    
+    // Set display start line
+    SSD1331_WriteCommand(ssd, SSD1331_CMD_STARTLINE);       
+    SSD1331_WriteCommand(ssd, 0x00);                        // Start from line 0
+    
+    // Set display offset
+    SSD1331_WriteCommand(ssd, SSD1331_CMD_DISPLAYOFFSET);   
+    SSD1331_WriteCommand(ssd, 0x00);                        // No offset
+    
+    // Set normal display mode
+    SSD1331_WriteCommand(ssd, SSD1331_CMD_NORMALDISPLAY);   
+    
+    // Set multiplex ratio (1/64 duty cycle)
+    SSD1331_WriteCommand(ssd, SSD1331_CMD_SETMULTIPLEX);    
+    SSD1331_WriteCommand(ssd, 0x3F);                        
+    
+    // Set master configuration
+    SSD1331_WriteCommand(ssd, SSD1331_CMD_SETMASTER);       
     SSD1331_WriteCommand(ssd, 0x8E);
-    SSD1331_WriteCommand(ssd, SSD1331_CMD_POWERMODE);       // 0xB0
+    
+    // Set power mode
+    SSD1331_WriteCommand(ssd, SSD1331_CMD_POWERMODE);       
     SSD1331_WriteCommand(ssd, 0x0B);
-    SSD1331_WriteCommand(ssd, SSD1331_CMD_PRECHARGE);       // 0xB1
+    
+    // Set pre-charge period
+    SSD1331_WriteCommand(ssd, SSD1331_CMD_PRECHARGE);       
     SSD1331_WriteCommand(ssd, 0x31);
-    SSD1331_WriteCommand(ssd, SSD1331_CMD_CLOCKDIV);        // 0xB3
-    SSD1331_WriteCommand(ssd, 0xF0);                        // 7:4 = Oscillator Frequency, 3:0 = CLK Div Ratio
-                                                            // (A[3:0]+1 = 1..16)
-    SSD1331_WriteCommand(ssd, SSD1331_CMD_PRECHARGEA);      // 0x8A
+    
+    // Set display clock divide ratio
+    SSD1331_WriteCommand(ssd, SSD1331_CMD_CLOCKDIV);        
+    SSD1331_WriteCommand(ssd, 0xF0);
+    
+    // Set second pre-charge speeds for each color
+    SSD1331_WriteCommand(ssd, SSD1331_CMD_PRECHARGEA);      // Red
     SSD1331_WriteCommand(ssd, 0x64);
-    SSD1331_WriteCommand(ssd, SSD1331_CMD_PRECHARGEB);      // 0x8B
+    SSD1331_WriteCommand(ssd, SSD1331_CMD_PRECHARGEB);      // Green
     SSD1331_WriteCommand(ssd, 0x78);
-    SSD1331_WriteCommand(ssd, SSD1331_CMD_PRECHARGEC);      // 0x8C
+    SSD1331_WriteCommand(ssd, SSD1331_CMD_PRECHARGEC);      // Blue
     SSD1331_WriteCommand(ssd, 0x64);
-    SSD1331_WriteCommand(ssd, SSD1331_CMD_PRECHARGELEVEL);  // 0xBB
+    
+    // Set pre-charge voltage level
+    SSD1331_WriteCommand(ssd, SSD1331_CMD_PRECHARGELEVEL);  
     SSD1331_WriteCommand(ssd, 0x3A);
-    SSD1331_WriteCommand(ssd, SSD1331_CMD_VCOMH);           // 0xBE
+    
+    // Set VCOMH voltage
+    SSD1331_WriteCommand(ssd, SSD1331_CMD_VCOMH);           
     SSD1331_WriteCommand(ssd, 0x3E);
-    SSD1331_WriteCommand(ssd, SSD1331_CMD_MASTERCURRENT);   // 0x87
+    
+    // Set master current control
+    SSD1331_WriteCommand(ssd, SSD1331_CMD_MASTERCURRENT);   
     SSD1331_WriteCommand(ssd, 0x06);
-    SSD1331_WriteCommand(ssd, SSD1331_CMD_CONTRASTA);       // 0x81
+    
+    // Set individual RGB contrast levels
+    SSD1331_WriteCommand(ssd, SSD1331_CMD_CONTRASTA);       // Red contrast
     SSD1331_WriteCommand(ssd, 0x91);
-    SSD1331_WriteCommand(ssd, SSD1331_CMD_CONTRASTB);       // 0x82
+    SSD1331_WriteCommand(ssd, SSD1331_CMD_CONTRASTB);       // Green contrast
     SSD1331_WriteCommand(ssd, 0x50);
-    SSD1331_WriteCommand(ssd, SSD1331_CMD_CONTRASTC);       // 0x83
+    SSD1331_WriteCommand(ssd, SSD1331_CMD_CONTRASTC);       // Blue contrast
     SSD1331_WriteCommand(ssd, 0x7D);
-    SSD1331_WriteCommand(ssd, SSD1331_CMD_DISPLAYON);       // --turn on oled panel
     
-    // Set width and height
-    ssd->gfx.width = SSD1331_WIDTH;
-    ssd->gfx.height = SSD1331_HEIGHT;
+    // Turn on display
+    SSD1331_WriteCommand(ssd, SSD1331_CMD_DISPLAYON);       
     
-    // Set rotation 0 (like Arduino does)
+    // Set initial rotation
     SSD1331_SetRotation(ssd, SSD1331_INIT_ROTATION);
 }
 
+//==============================================================================
+// DISPLAY CONFIGURATION FUNCTIONS
+//==============================================================================
+
 /**
- * @brief Sets origin of (0,0) and orientation of OLED display
- * @param ssd Pointer to SSD1331 structure
- * @param r Rotation index (0-3)
- * @note SSD1331 works differently than most other displays. With certain 
- *       rotation changes the screen contents may change immediately into a 
- *       peculiar format (mirrored, not necessarily rotated). Therefore, it's 
- *       recommended to clear the screen (fillScreen(0)) before changing rotation.
+ * @brief Set display rotation and update dimensions
+ * 
+ * Configures the display orientation by setting the appropriate re-map register.
+ * Updates the graphics context dimensions based on rotation.
+ * 
+ * @param ssd Pointer to SSD1331 driver structure
+ * @param r Rotation index (0=0°, 1=90°, 2=180°, 3=270°)
  */
 void SSD1331_SetRotation(SSD1331_t *ssd, uint8_t r) {
-    // madctl bits:
-    // 6,7 Color depth (01 = 64K)
-    // 5   Odd/even split COM (0: disable, 1: enable)
-    // 4   Scan direction (0: top-down, 1: bottom-up)
-    // 3   Left-Right swapping on COM (0: disable, 1: enable)
-    // 2   Color remap (0: A->B->C, 1: C->B->A)
-    // 1   Column remap (0: 0-95, 1: 95-0)
-    // 0   Address increment (0: horizontal, 1: vertical)
-    
+    // Set base re-map configuration based on color order
     #ifdef SSD1331_COLORORDER_RGB
-        uint8_t madctl = 0b01100000; // 64K, enable split, ABC
+        uint8_t madctl = 0b01100000; // 64K color, enable split, RGB order
     #else
-        uint8_t madctl = 0b01100100; // 64K, enable split, CBA (default)
+        uint8_t madctl = 0b01100100; // 64K color, enable split, BGR order
     #endif
     
-    ssd->rotation = r & 3;  // Clip input to valid range
+    // Limit rotation to valid range (0-3)
+    ssd->rotation = r & 3;
     ssd->gfx.rotation = ssd->rotation;
     
+    // Configure re-map bits and dimensions based on rotation
     switch (ssd->rotation) {
-        case 0:
+        case 0: // 0° rotation (normal)
             madctl |= 0b00010010;  // Scan bottom-up, column remap 95-0
             ssd->gfx.width = SSD1331_WIDTH;
             ssd->gfx.height = SSD1331_HEIGHT;
             break;
             
-        case 1:
-            madctl |= 0b00000011;  // Column remap 95-0, vertical
+        case 1: // 90° rotation (portrait)
+            madctl |= 0b00000011;  // Column remap 95-0, vertical increment
             ssd->gfx.width = SSD1331_HEIGHT;
             ssd->gfx.height = SSD1331_WIDTH;
             break;
             
-        case 2:
-            madctl |= 0b00000000;  // None
+        case 2: // 180° rotation (inverted)
+            madctl |= 0b00000000;  // No additional flags
             ssd->gfx.width = SSD1331_WIDTH;
             ssd->gfx.height = SSD1331_HEIGHT;
             break;
             
-        case 3:
-            madctl |= 0b00010001;  // Scan bottom-up, vertical
+        case 3: // 270° rotation (landscape)
+            madctl |= 0b00010001;  // Scan bottom-up, vertical increment
             ssd->gfx.width = SSD1331_HEIGHT;
             ssd->gfx.height = SSD1331_WIDTH;
             break;
     }
     
-    // Send the configuration to the display
+    // Send re-map command to display
     SSD1331_WriteCommand(ssd, SSD1331_CMD_SETREMAP);
     SSD1331_WriteCommand(ssd, madctl);
 }
 
+//==============================================================================
+// ADDRESS WINDOW AND DRAWING FUNCTIONS
+//==============================================================================
+
 /**
- * @brief Sets the address window for drawing
+ * @brief Set address window for pixel data writing
+ * 
+ * Defines the rectangular area where subsequent pixel data will be written.
+ * Automatically clips coordinates to display boundaries.
+ * 
+ * @param ssd Pointer to SSD1331 driver structure
+ * @param x Starting X coordinate
+ * @param y Starting Y coordinate
+ * @param w Window width in pixels
+ * @param h Window height in pixels
  */
 void SSD1331_SetAddrWindow(SSD1331_t *ssd, uint16_t x, uint16_t y, uint16_t w, uint16_t h) {
-    uint8_t x1 = x;
-    uint8_t y1 = y;
+    // Calculate end coordinates
+    int16_t x1 = x;
+    int16_t y1 = y;
+    int16_t x2 = x + w - 1;
+    int16_t y2 = y + h - 1;
 
+    // Clip coordinates to display boundaries
     if (x1 > ssd->gfx.width - 1) x1 = ssd->gfx.width - 1;
     if (y1 > ssd->gfx.height - 1) y1 = ssd->gfx.height - 1;
-
-    uint8_t x2 = (x + w - 1);
-    uint8_t y2 = (y + h - 1);
-
     if (x2 > ssd->gfx.width - 1) x2 = ssd->gfx.width - 1;
     if (y2 > ssd->gfx.height - 1) y2 = ssd->gfx.height - 1;
 
-    if (x1 > x2) ssd1331_swap(x1, x2);
-    if (y1 > y2) ssd1331_swap(y1, y2);
-
-    if (ssd->rotation & 1) {
-        ssd1331_swap(x1, y1);
-        ssd1331_swap(x2, y2);
-    }
-
+    // Set column address range
     SSD1331_WriteCommand(ssd, SSD1331_CMD_SETCOLUMN);
-    SSD1331_WriteCommand(ssd, x1);
-    SSD1331_WriteCommand(ssd, x2);
+    SSD1331_WriteCommand(ssd, (uint8_t)x1);
+    SSD1331_WriteCommand(ssd, (uint8_t)x2);
 
+    // Set row address range
     SSD1331_WriteCommand(ssd, SSD1331_CMD_SETROW);
-    SSD1331_WriteCommand(ssd, y1);
-    SSD1331_WriteCommand(ssd, y2);
+    SSD1331_WriteCommand(ssd, (uint8_t)y1);
+    SSD1331_WriteCommand(ssd, (uint8_t)y2);
 }
 
 /**
- * @brief Draws a single pixel
+ * @brief Draw a single pixel at specified coordinates
+ * 
+ * Sets address window to single pixel and writes color data.
+ * Automatically clips coordinates to display boundaries.
+ * 
+ * @param ssd Pointer to SSD1331 driver structure
+ * @param x X coordinate of pixel
+ * @param y Y coordinate of pixel
+ * @param color Pixel color in RGB565 format
  */
 void SSD1331_DrawPixel(SSD1331_t *ssd, int16_t x, int16_t y, uint16_t color) {
-    if ((x < 0) || (x >= ssd->gfx.width) || (y < 0) || (y >= ssd->gfx.height)) return;
-
-    switch (ssd->rotation) {
-        case 1:
-            ssd1331_swap(x, y);
-            x = SSD1331_WIDTH - 1 - x;
-            break;
-        case 2:
-            x = SSD1331_WIDTH - 1 - x;
-            y = SSD1331_HEIGHT - 1 - y;
-            break;
-        case 3:
-            ssd1331_swap(x, y);
-            y = SSD1331_HEIGHT - 1 - y;
-            break;
+    // Check bounds
+    if ((x < 0) || (x >= ssd->gfx.width) || (y < 0) || (y >= ssd->gfx.height)) {
+        return;
     }
-
-    SSD1331_SetAddrWindow(ssd, x, y, 1, 1);
+    
+    // Set address window for single pixel and write color
+    SSD1331_SetAddrWindow(ssd, (uint16_t)x, (uint16_t)y, 1, 1);
     SSD1331_WriteData16(ssd, color);
 }
 
 /**
- * @brief Fills the entire screen with a color
+ * @brief Fill entire screen with specified color
+ * 
+ * Uses GFX library's fillScreen implementation which will call
+ * the assigned drawPixel function for each pixel.
+ * 
+ * @param ssd Pointer to SSD1331 driver structure
+ * @param color Fill color in RGB565 format
  */
 void SSD1331_FillScreen(SSD1331_t *ssd, uint16_t color) {
-    SSD1331_FillRect(ssd, 0, 0, ssd->gfx.width, ssd->gfx.height, color);
+    GFX_FillScreen(&ssd->gfx, ssd, color);
 }
 
 /**
- * @brief Draws a line using hardware acceleration
- */
-void SSD1331_DrawLine(SSD1331_t *ssd, int16_t x0, int16_t y0, int16_t x1, int16_t y1, uint16_t color) {
-    if ((x0 < 0) || (y0 < 0) || (x1 < 0) || (y1 < 0)) {
-        GFX_DrawLine(&ssd->gfx, ssd, x0, y0, x1, y1, color);
-        return;
-    }
-
-    if (x0 >= ssd->gfx.width) x0 = ssd->gfx.width - 1;
-    if (y0 >= ssd->gfx.height) y0 = ssd->gfx.height - 1;
-    if (x1 >= ssd->gfx.width) x1 = ssd->gfx.width - 1;
-    if (y1 >= ssd->gfx.height) y1 = ssd->gfx.height - 1;
-
-    SSD1331_WriteCommand(ssd, SSD1331_CMD_DRAWLINE);
-    SSD1331_WriteCommand(ssd, x0);
-    SSD1331_WriteCommand(ssd, y0);
-    SSD1331_WriteCommand(ssd, x1);
-    SSD1331_WriteCommand(ssd, y1);
-    SSD1331_WriteCommand(ssd, (color >> 11) << 1);
-    SSD1331_WriteCommand(ssd, (color >> 5) & 0x3F);
-    SSD1331_WriteCommand(ssd, (color << 1) & 0x3F);
-
-    SSD1331_DELAY_HWLINE();
-}
-
-
-/**
- * @brief Draws a rectangle using hardware acceleration (no fill)
- */
-void SSD1331_DrawRect(SSD1331_t *ssd, int16_t x, int16_t y, int16_t w, int16_t h, uint16_t color) {
-    SSD1331_WriteCommand(ssd, SSD1331_CMD_FILL);
-    SSD1331_WriteCommand(ssd, 0x00); // Disable fill
-
-    SSD1331_WriteCommand(ssd, SSD1331_CMD_DRAWRECT);
-    SSD1331_WriteCommand(ssd, x);
-    SSD1331_WriteCommand(ssd, y);
-    SSD1331_WriteCommand(ssd, x + w - 1);
-    SSD1331_WriteCommand(ssd, y + h - 1);
-    SSD1331_WriteCommand(ssd, (color >> 11) << 1);
-    SSD1331_WriteCommand(ssd, (color >> 5) & 0x3F);
-    SSD1331_WriteCommand(ssd, (color << 1) & 0x3F);
-    SSD1331_WriteCommand(ssd, 0);
-    SSD1331_WriteCommand(ssd, 0);
-    SSD1331_WriteCommand(ssd, 0);
-
-    SSD1331_DELAY_HWLINE();
-}
-
-/**
- * @brief Enables or disables the display
- */
-void SSD1331_EnableDisplay(SSD1331_t *ssd, bool enable) {
-    SSD1331_WriteCommand(ssd, enable ? SSD1331_CMD_DISPLAYON : SSD1331_CMD_DISPLAYOFF);
-}
-
-/**
- * @brief Fills a rectangle using hardware acceleration
+ * @brief Fill rectangular area with specified color
+ * 
+ * Uses GFX library's fillRect implementation which will call
+ * the assigned drawPixel function for each pixel in the rectangle.
+ * 
+ * @param ssd Pointer to SSD1331 driver structure
+ * @param x X coordinate of top-left corner
+ * @param y Y coordinate of top-left corner
+ * @param w Rectangle width in pixels
+ * @param h Rectangle height in pixels
+ * @param color Fill color in RGB565 format
  */
 void SSD1331_FillRect(SSD1331_t *ssd, int16_t x, int16_t y, int16_t w, int16_t h, uint16_t color) {
-    if ((x >= ssd->gfx.width) || (y >= ssd->gfx.height)) return;
-    if ((x + w - 1) >= ssd->gfx.width) w = ssd->gfx.width - x;
-    if ((y + h - 1) >= ssd->gfx.height) h = ssd->gfx.height - y;
-
-    SSD1331_WriteCommand(ssd, SSD1331_CMD_FILL);
-    SSD1331_WriteCommand(ssd, 0x01); // Enable fill
-
-    SSD1331_WriteCommand(ssd, SSD1331_CMD_DRAWRECT);
-    SSD1331_WriteCommand(ssd, x);
-    SSD1331_WriteCommand(ssd, y);
-    SSD1331_WriteCommand(ssd, x + w - 1);
-    SSD1331_WriteCommand(ssd, y + h - 1);
-    SSD1331_WriteCommand(ssd, (color >> 11) << 1);
-    SSD1331_WriteCommand(ssd, (color >> 5) & 0x3F);
-    SSD1331_WriteCommand(ssd, (color << 1) & 0x3F);
-    SSD1331_WriteCommand(ssd, (color >> 11) << 1);
-    SSD1331_WriteCommand(ssd, (color >> 5) & 0x3F);
-    SSD1331_WriteCommand(ssd, (color << 1) & 0x3F);
-
-    SSD1331_DELAY_HWFILL();
+    GFX_FillRect(&ssd->gfx, ssd, x, y, w, h, color);
 }
 
+//==============================================================================
+// SPI COMMUNICATION FUNCTIONS
+//==============================================================================
+
 /**
- * @brief Writes a command byte to the display
+ * @brief Send command byte to SSD1331 via SPI
+ * 
+ * Sets command mode (DC low), selects chip, sends byte, then deselects.
+ * 
+ * @param ssd Pointer to SSD1331 driver structure
+ * @param cmd Command byte to send
  */
 void SSD1331_WriteCommand(SSD1331_t *ssd, uint8_t cmd) {
     SSD1331_Select(ssd);
@@ -325,71 +341,70 @@ void SSD1331_WriteCommand(SSD1331_t *ssd, uint8_t cmd) {
 }
 
 /**
- * @brief Writes a single data byte to the display
- */
-void SSD1331_WriteData(SSD1331_t *ssd, uint8_t data) {
-    SSD1331_Select(ssd);
-    SSD1331_SetDataMode(ssd);
-    SPI_dummy = SPI1_ExchangeByte(data);
-    SSD1331_Deselect(ssd);
-}
-
-/**
- * @brief Writes a 16-bit data word to the display
+ * @brief Send 16-bit data word to SSD1331 via SPI
+ * 
+ * Sets data mode (DC high), selects chip, sends high byte then low byte,
+ * then deselects. Used for RGB565 pixel data.
+ * 
+ * @param ssd Pointer to SSD1331 driver structure
+ * @param data 16-bit data word to send (RGB565 pixel data)
  */
 void SSD1331_WriteData16(SSD1331_t *ssd, uint16_t data) {
-    uint8_t buffer[2];
-    buffer[0] = data >> 8;
-    buffer[1] = data & 0xFF;
-
     SSD1331_Select(ssd);
     SSD1331_SetDataMode(ssd);
-    SPI1_ExchangeBlock(buffer, 2);
+    SPI1_ExchangeByte(data >> 8);    // Send high byte first
+    SPI1_ExchangeByte(data & 0xFF);  // Send low byte
     SSD1331_Deselect(ssd);
 }
 
-/**
- * @brief Sets contrast for each RGB channel
- */
-void SSD1331_SetContrast(SSD1331_t *ssd, uint8_t r, uint8_t g, uint8_t b) {
-    SSD1331_WriteCommand(ssd, SSD1331_CMD_CONTRASTA);
-    SSD1331_WriteCommand(ssd, r);
-    SSD1331_WriteCommand(ssd, SSD1331_CMD_CONTRASTB);
-    SSD1331_WriteCommand(ssd, g);
-    SSD1331_WriteCommand(ssd, SSD1331_CMD_CONTRASTC);
-    SSD1331_WriteCommand(ssd, b);
-}
+//==============================================================================
+// PRIVATE HELPER FUNCTIONS
+//==============================================================================
 
 /**
- * @brief Converts RGB values to RGB565 format
+ * @brief Perform hardware reset sequence on SSD1331
+ * 
+ * Toggles reset pin with appropriate delays to reset the display controller.
+ * 
+ * @param ssd Pointer to SSD1331 driver structure
  */
-uint16_t SSD1331_Color565(uint8_t r, uint8_t g, uint8_t b) {
-    return ((r & 0xF8) << 8) | ((g & 0xFC) << 3) | ((b & 0xF8) >> 3);
-}
-
-/* ==== Private Low-Level Functions ==== */
-
 static void SSD1331_HardwareReset(SSD1331_t *ssd) {
-    SSD1331_RST_SetHigh();
-    SSD1331_Delay(10);
-    SSD1331_RST_SetLow();
-    SSD1331_Delay(10);
-    SSD1331_RST_SetHigh();
-    SSD1331_Delay(10);
+    SSD1331_RST_SetHigh();  // Ensure reset is inactive
+    SSD1331_Delay(10);      // Wait for stability
+    SSD1331_RST_SetLow();   // Assert reset
+    SSD1331_Delay(10);      // Hold reset active
+    SSD1331_RST_SetHigh();  // Release reset
+    SSD1331_Delay(10);      // Wait for controller to initialize
 }
 
-static void SSD1331_Select(SSD1331_t *ssd) {
-    SSD1331_CS_SetLow();
+/**
+ * @brief Assert chip select (select SSD1331 for communication)
+ * @param ssd Pointer to SSD1331 driver structure
+ */
+static void SSD1331_Select(SSD1331_t *ssd) { 
+    SSD1331_CS_SetLow(); 
 }
 
-static void SSD1331_Deselect(SSD1331_t *ssd) {
-    SSD1331_CS_SetHigh();
+/**
+ * @brief Deassert chip select (end communication with SSD1331)
+ * @param ssd Pointer to SSD1331 driver structure
+ */
+static void SSD1331_Deselect(SSD1331_t *ssd) { 
+    SSD1331_CS_SetHigh(); 
 }
 
-static void SSD1331_SetDataMode(SSD1331_t *ssd) {
-    SSD1331_DC_SetHigh();
+/**
+ * @brief Set data mode (DC high for data transmission)
+ * @param ssd Pointer to SSD1331 driver structure
+ */
+static void SSD1331_SetDataMode(SSD1331_t *ssd) { 
+    SSD1331_DC_SetHigh(); 
 }
 
-static void SSD1331_SetCommandMode(SSD1331_t *ssd) {
-    SSD1331_DC_SetLow();
+/**
+ * @brief Set command mode (DC low for command transmission)
+ * @param ssd Pointer to SSD1331 driver structure
+ */
+static void SSD1331_SetCommandMode(SSD1331_t *ssd) { 
+    SSD1331_DC_SetLow(); 
 }

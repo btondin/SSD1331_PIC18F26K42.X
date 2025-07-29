@@ -92,7 +92,7 @@ void main(void) {
     // Main application loop - equivalent to Arduino loop() function
     while(1) {
         // Clear screen to start fresh
-        GFX_FillScreen(&oled.gfx, &oled, SSD1331_BLACK);
+        SSD1331_FillScreen(&oled, SSD1331_BLACK);
         
         
         __delay_ms(DELAY_SHORT);
@@ -102,7 +102,7 @@ void main(void) {
         __delay_ms(DELAY_MEDIUM);
 
         // Text wrapping demonstration
-        GFX_FillScreen(&oled.gfx, &oled, SSD1331_BLACK);
+        SSD1331_FillScreen(&oled, SSD1331_BLACK);
         GFX_SetCursor(&oled.gfx, 0, 0);
         GFX_SetTextColor(&oled.gfx, SSD1331_WHITE);
         GFX_SetTextWrap(&oled.gfx, true);
@@ -114,7 +114,7 @@ void main(void) {
         __delay_ms(DELAY_LONG);
         
         // Single pixel test - draw center pixel
-        GFX_FillScreen(&oled.gfx, &oled, SSD1331_BLACK);
+        SSD1331_FillScreen(&oled, SSD1331_BLACK);
         GFX_DrawPixel(&oled.gfx, &oled, oled.gfx.width / 2, oled.gfx.height / 2, SSD1331_GREEN);
         __delay_ms(DELAY_SHORT);
 
@@ -135,7 +135,7 @@ void main(void) {
         __delay_ms(DELAY_MEDIUM);
 
         // Circle tests
-        GFX_FillScreen(&oled.gfx, &oled, SSD1331_BLACK);
+        SSD1331_FillScreen(&oled, SSD1331_BLACK);
         testfillcircles(10, SSD1331_BLUE);
         testdrawcircles(10, SSD1331_WHITE);
         __delay_ms(DELAY_MEDIUM);
@@ -151,9 +151,7 @@ void main(void) {
          
         
         // Image display tests (remove if memory is limited)
-        while(1) testimages();
-        __delay_ms(DELAY_MEDIUM);
-        __delay_ms(DELAY_MEDIUM);    
+        testimages();           
         
         // Toggle LED to indicate loop completion
         LED0_Toggle();
@@ -174,7 +172,7 @@ void main(void) {
  */
 void testlines(uint16_t color) {
     // Lines from top-left corner
-    GFX_FillScreen(&oled.gfx, &oled, SSD1331_BLACK);
+    SSD1331_FillScreen(&oled, SSD1331_BLACK);
     for (int16_t x = 0; x < oled.gfx.width; x += 6) {
         GFX_DrawLine(&oled.gfx, &oled, 0, 0, x, oled.gfx.height - 1, color);
     }
@@ -183,7 +181,7 @@ void testlines(uint16_t color) {
     }
 
     // Lines from top-right corner
-    GFX_FillScreen(&oled.gfx, &oled, SSD1331_BLACK);
+    SSD1331_FillScreen(&oled, SSD1331_BLACK);
     for (int16_t x = 0; x < oled.gfx.width; x += 6) {
         GFX_DrawLine(&oled.gfx, &oled, oled.gfx.width - 1, 0, x, oled.gfx.height - 1, color);
     }
@@ -192,7 +190,7 @@ void testlines(uint16_t color) {
     }
 
     // Lines from bottom-left corner
-    GFX_FillScreen(&oled.gfx, &oled, SSD1331_BLACK);
+    SSD1331_FillScreen(&oled, SSD1331_BLACK);
     for (int16_t x = 0; x < oled.gfx.width; x += 6) {
         GFX_DrawLine(&oled.gfx, &oled, 0, oled.gfx.height - 1, x, 0, color);
     }
@@ -201,7 +199,7 @@ void testlines(uint16_t color) {
     }
 
     // Lines from bottom-right corner
-    GFX_FillScreen(&oled.gfx, &oled, SSD1331_BLACK);
+    SSD1331_FillScreen(&oled, SSD1331_BLACK);
     for (int16_t x = 0; x < oled.gfx.width; x += 6) {
         GFX_DrawLine(&oled.gfx, &oled, oled.gfx.width - 1, oled.gfx.height - 1, x, 0, color);
     }
@@ -220,7 +218,7 @@ void testlines(uint16_t color) {
  * @param color2 Color for vertical lines
  */
 void testfastlines(uint16_t color1, uint16_t color2) {
-    GFX_FillScreen(&oled.gfx, &oled, SSD1331_BLACK);
+    SSD1331_FillScreen(&oled, SSD1331_BLACK);
     
     // Draw horizontal lines
     for (int16_t y = 0; y < oled.gfx.height; y += 5) {
@@ -246,7 +244,7 @@ void testfastlines(uint16_t color1, uint16_t color2) {
  * @param color Color to use for rectangle outlines
  */
 void testdrawrects(uint16_t color) {
-    GFX_FillScreen(&oled.gfx, &oled, SSD1331_BLACK);
+    SSD1331_FillScreen(&oled, SSD1331_BLACK);
     
     for (int16_t x = 0; x < oled.gfx.height - 1; x += 6) {
         GFX_DrawRect(&oled.gfx, &oled, 
@@ -266,10 +264,11 @@ void testdrawrects(uint16_t color) {
  * @param color2 Secondary outline color
  */
 void testfillrects(uint16_t color1, uint16_t color2) {
-    GFX_FillScreen(&oled.gfx, &oled, SSD1331_BLACK);
+    SSD1331_FillScreen(&oled, SSD1331_BLACK);
     
     for (int16_t x = oled.gfx.height - 1; x > 6; x -= 6) {
-        GFX_FillRect(&oled.gfx, &oled, 
+        //GFX_FillRect(&oled.gfx, &oled, 
+        SSD1331_FillRect_Fast(&oled,
                      (oled.gfx.width - 1) / 2 - x / 2, 
                      (oled.gfx.height - 1) / 2 - x / 2, 
                      x, x, color1);
@@ -287,7 +286,7 @@ void testfillrects(uint16_t color1, uint16_t color2) {
  * colors and positions to test the rounded corner functionality.
  */
 void testroundrects(void) {
-    GFX_FillScreen(&oled.gfx, &oled, SSD1331_BLACK);
+    SSD1331_FillScreen(&oled, SSD1331_BLACK);
     uint16_t color = 100;
     int i, t;
     
@@ -358,7 +357,7 @@ void testdrawcircles(uint8_t radius, uint16_t color) {
  * and colors to test the triangle drawing algorithm.
  */
 void testtriangles(void) {
-    GFX_FillScreen(&oled.gfx, &oled, SSD1331_BLACK);
+    SSD1331_FillScreen(&oled, SSD1331_BLACK);
     uint16_t color = 0xF800; // Start with red
     int t;
     int w = oled.gfx.width / 2;
@@ -387,7 +386,7 @@ void testtriangles(void) {
  */
 void tftPrintTest(void) {
     // Test 1: Basic text with different sizes and colors
-    GFX_FillScreen(&oled.gfx, &oled, SSD1331_BLACK);
+    SSD1331_FillScreen(&oled, SSD1331_BLACK);
     GFX_SetCursor(&oled.gfx, 0, 5);
     GFX_SetTextColor(&oled.gfx, SSD1331_RED);
     GFX_SetTextSize(&oled.gfx, 1);
@@ -405,7 +404,7 @@ void tftPrintTest(void) {
     __delay_ms(DELAY_LONG);
 
     // Test 2: More text formatting options
-    GFX_FillScreen(&oled.gfx, &oled, SSD1331_BLACK);
+    SSD1331_FillScreen(&oled, SSD1331_BLACK);
     GFX_SetCursor(&oled.gfx, 0, 5);
     GFX_SetTextColor(&oled.gfx, SSD1331_WHITE);
     GFX_SetTextSize(&oled.gfx, 1);
@@ -472,13 +471,12 @@ void lcdTestPattern(void) {
  * @note Remove this function if memory resources are limited
  */
 void testimages(void) {
-    // Display first test image
-    //GFX_DrawBitmapRGB(&oled.gfx, &oled, 0, 0, bunmi_img, SSD1331_WIDTH, SSD1331_HEIGHT);
+    // Display first test image (16 bit array)       
     SSD1331_DrawFastRGBBitmap16(&oled, 0, 0, bunmi_img, SSD1331_WIDTH, SSD1331_HEIGHT);
-    __delay_ms(2000);     
+    __delay_ms(DELAY_LONG); 
     
-    // Display second test image
-    //GFX_DrawBitmapRGB(&oled.gfx, &oled, 0, 0, lena, SSD1331_WIDTH, SSD1331_HEIGHT);
+    
+    // Display second test image (8 bit array)           
     SSD1331_DrawFastRGBBitmap8(&oled, 0, 0, lena8b, SSD1331_WIDTH, SSD1331_HEIGHT);
-    __delay_ms(2000);
+    __delay_ms(DELAY_LONG);
 }

@@ -3,7 +3,7 @@
 A comprehensive graphics library for the SSD1331 96x64 RGB OLED display, designed for PIC18F26K42 microcontroller using MPLAB X and XC8 compiler. This project provides a complete port of the Adafruit GFX and SSD1331 libraries, optimized for embedded PIC applications.
 
 ## 🎥 Demo Video
-**[Watch the SSD1331 Driver in Action](https://www.youtube.com/shorts/tiLEcln2PwQ)**
+**[Watch the SSD1331 Driver in Action](https://www.youtube.com/shorts/Mq-dZ6Fl2t8)**
 
 ## 📋 Overview
 

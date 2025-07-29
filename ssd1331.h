@@ -221,6 +221,20 @@ void SSD1331_DrawRect(SSD1331_t *ssd, int16_t x, int16_t y, int16_t w, int16_t h
 void SSD1331_FillRect(SSD1331_t *ssd, int16_t x, int16_t y, int16_t w, int16_t h, uint16_t color);
 
 /**
+ * @brief Fill rectangular area with specified color, but faster
+ *  
+ * the assigned drawPixel function for each pixel in the rectangle.
+ * 
+ * @param ssd Pointer to SSD1331 driver structure
+ * @param x X coordinate of top-left corner
+ * @param y Y coordinate of top-left corner
+ * @param w Rectangle width in pixels
+ * @param h Rectangle height in pixels
+ * @param color Fill color in RGB565 format
+ */
+void SSD1331_FillRect_Fast(SSD1331_t *ssd, int16_t x, int16_t y, int16_t w, int16_t h, uint16_t color);
+
+/**
  * @brief Draw RGB565 bitmap from 16-bit data array
  * 
  * This function draws a bitmap using 16-bit RGB565 color data. Each pixel

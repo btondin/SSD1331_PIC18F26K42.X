@@ -301,7 +301,8 @@ void SSD1331_DrawPixel(SSD1331_t *ssd, int16_t x, int16_t y, uint16_t color) {
  * @param color Fill color in RGB565 format
  */
 void SSD1331_FillScreen(SSD1331_t *ssd, uint16_t color) {
-    GFX_FillScreen(&ssd->gfx, ssd, color);
+    //GFX_FillScreen(&ssd->gfx, ssd, color);
+    SSD1331_FillRect_Fast(ssd, 0, 0, 96, 64, color);
 }
 
 /**
@@ -318,7 +319,39 @@ void SSD1331_FillScreen(SSD1331_t *ssd, uint16_t color) {
  * @param color Fill color in RGB565 format
  */
 void SSD1331_FillRect(SSD1331_t *ssd, int16_t x, int16_t y, int16_t w, int16_t h, uint16_t color) {
-    GFX_FillRect(&ssd->gfx, ssd, x, y, w, h, color);
+    GFX_FillRect(&ssd->gfx, ssd, x, y, w, h, color);    
+}
+
+/**
+ * @brief Fill rectangular area with specified color, but faster
+ *  
+ * the assigned drawPixel function for each pixel in the rectangle.
+ * 
+ * @param ssd Pointer to SSD1331 driver structure
+ * @param x X coordinate of top-left corner
+ * @param y Y coordinate of top-left corner
+ * @param w Rectangle width in pixels
+ * @param h Rectangle height in pixels
+ * @param color Fill color in RGB565 format
+ */
+void SSD1331_FillRect_Fast(SSD1331_t *ssd, int16_t x, int16_t y, int16_t w, int16_t h, uint16_t color) {
+    
+    // Set address window for the bitmap area
+    SSD1331_SetAddrWindow(ssd, (uint16_t)x, (uint16_t)y, (uint16_t)w, (uint16_t)h);
+    
+    SSD1331_Select(ssd);
+    SSD1331_SetDataMode(ssd);
+    
+    // Calculate total number of pixels to transfer
+    uint32_t total_pixels = (uint32_t)w * h;
+    
+    // Send each pixel as two bytes (high byte first, then low byte)
+    for (uint32_t p = 0; p < total_pixels; p++) {
+        SPI1_ExchangeByte(color >> 8);    // Send high byte (bits 15-8)
+        SPI1_ExchangeByte(color & 0xFF);  // Send low byte (bits 7-0)
+    }    
+    
+    SSD1331_Deselect(ssd);   
 }
 
 

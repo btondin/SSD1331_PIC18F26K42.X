@@ -220,6 +220,56 @@ void SSD1331_DrawRect(SSD1331_t *ssd, int16_t x, int16_t y, int16_t w, int16_t h
  */
 void SSD1331_FillRect(SSD1331_t *ssd, int16_t x, int16_t y, int16_t w, int16_t h, uint16_t color);
 
+/**
+ * @brief Draw RGB565 bitmap from 16-bit data array
+ * 
+ * This function draws a bitmap using 16-bit RGB565 color data. Each pixel
+ * is represented as a single uint16_t value in RGB565 format (5 bits red,
+ * 6 bits green, 5 bits blue). This is the preferred format for SSD1331
+ * displays as it matches the native color format.
+ * 
+ * The function uses direct SPI byte exchanges for optimal performance,
+ * sending the high byte followed by the low byte for each pixel.
+ * 
+ * @param ssd Pointer to SSD1331 driver structure
+ * @param x Starting X coordinate for bitmap placement (top-left corner)
+ * @param y Starting Y coordinate for bitmap placement (top-left corner)
+ * @param bitmap Pointer to RGB565 bitmap data array (uint16_t per pixel)
+ * @param w Bitmap width in pixels
+ * @param h Bitmap height in pixels
+ * 
+ * @note The bitmap data should be organized row by row, left to right
+ * @note Total array size should be w * h uint16_t elements
+ * @note Function validates input parameters and returns early if invalid
+ * */
+void SSD1331_DrawFastRGBBitmap16(SSD1331_t *ssd, int16_t x, int16_t y, const uint16_t *bitmap, int16_t w, int16_t h);
+
+/**
+ * @brief Draw RGB bitmap from 8-bit data array (raw byte format)
+ * 
+ * This function draws a bitmap using raw 8-bit byte data where each pixel
+ * is represented as two consecutive bytes in the array (high byte, low byte).
+ * This format is useful when working with pre-converted image data or when
+ * interfacing with systems that provide RGB565 data in byte arrays.
+ * 
+ * The function uses SPI block transfer for maximum performance, sending
+ * the entire bitmap data in a single operation. The input data should already
+ * be in the correct RGB565 byte order (high byte, low byte per pixel).
+ * 
+ * @param ssd Pointer to SSD1331 driver structure
+ * @param x Starting X coordinate for bitmap placement (top-left corner)
+ * @param y Starting Y coordinate for bitmap placement (top-left corner)
+ * @param bitmap Pointer to raw RGB565 byte data (2 bytes per pixel)
+ * @param w Bitmap width in pixels
+ * @param h Bitmap height in pixels
+ * 
+ * @note The bitmap array should contain w * h * 2 bytes total
+ * @note Data format: [pixel0_high, pixel0_low, pixel1_high, pixel1_low, ...]
+ * @note This function assumes the byte data is already in correct RGB565 format
+ * @note Uses SPI block transfer for optimal performance
+ */
+void SSD1331_DrawFastRGBBitmap8(SSD1331_t *ssd, int16_t x, int16_t y, const uint8_t *bitmap, int16_t w, int16_t h);
+
 //==============================================================================
 // ADDRESS WINDOW CONFIGURATION
 //==============================================================================

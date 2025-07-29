@@ -58,7 +58,7 @@ typedef struct {
 
 //con0 == SPIxCON0, con1 == SPIxCON1, con2 == SPIxCON2, baud == SPIxBAUD, operation == Master/Slave
 static const spi1_configuration_t spi1_configuration[] = {   
-    { 0x2, 0x40, 0x0, 0x5, 0 }
+    { 0x2, 0x40, 0x0, 0x3, 0 }
 };
 
 void SPI1_Initialize(void)
@@ -71,8 +71,8 @@ void SPI1_Initialize(void)
     SPI1CON2 = 0x00;
     //CLKSEL FOSC; 
     SPI1CLK = 0x00;
-    //BAUD 5; 
-    SPI1BAUD = 0x05;
+    //BAUD 3; 
+    SPI1BAUD = 0x03;
     TRISCbits.TRISC3 = 0;
 }
 

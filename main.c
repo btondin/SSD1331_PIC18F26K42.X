@@ -93,6 +93,8 @@ void main(void) {
     while(1) {
         // Clear screen to start fresh
         GFX_FillScreen(&oled.gfx, &oled, SSD1331_BLACK);
+        
+        
         __delay_ms(DELAY_SHORT);
 
         // Display color test pattern
@@ -145,9 +147,11 @@ void main(void) {
         // Triangle tests
         testtriangles();
         __delay_ms(DELAY_SHORT);
+         
+         
         
         // Image display tests (remove if memory is limited)
-        testimages();
+        while(1) testimages();
         __delay_ms(DELAY_MEDIUM);
         __delay_ms(DELAY_MEDIUM);    
         
@@ -469,9 +473,12 @@ void lcdTestPattern(void) {
  */
 void testimages(void) {
     // Display first test image
-    GFX_DrawBitmapRGB(&oled.gfx, &oled, 0, 0, bunmi_img, SSD1331_WIDTH, SSD1331_HEIGHT);
+    //GFX_DrawBitmapRGB(&oled.gfx, &oled, 0, 0, bunmi_img, SSD1331_WIDTH, SSD1331_HEIGHT);
+    SSD1331_DrawFastRGBBitmap16(&oled, 0, 0, bunmi_img, SSD1331_WIDTH, SSD1331_HEIGHT);
     __delay_ms(2000);     
     
     // Display second test image
-    GFX_DrawBitmapRGB(&oled.gfx, &oled, 0, 0, lena, SSD1331_WIDTH, SSD1331_HEIGHT);
+    //GFX_DrawBitmapRGB(&oled.gfx, &oled, 0, 0, lena, SSD1331_WIDTH, SSD1331_HEIGHT);
+    SSD1331_DrawFastRGBBitmap8(&oled, 0, 0, lena8b, SSD1331_WIDTH, SSD1331_HEIGHT);
+    __delay_ms(2000);
 }

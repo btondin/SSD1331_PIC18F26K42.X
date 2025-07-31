@@ -94,6 +94,8 @@ void main(void) {
         // Clear screen to start fresh
         SSD1331_FillScreen(&oled, SSD1331_BLACK);
         
+        //while(1);
+        
         
         __delay_ms(DELAY_SHORT);
 

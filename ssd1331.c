@@ -32,6 +32,9 @@ static void SSD1331_Select(SSD1331_t *ssd);
 static void SSD1331_Deselect(SSD1331_t *ssd);
 static void SSD1331_SetDataMode(SSD1331_t *ssd);
 static void SSD1331_SetCommandMode(SSD1331_t *ssd);
+static void SSD1331_Xchange_Byte(SSD1331_t *ssd, uint8_t byte);
+static void SSD1331_Xchange_Block(SSD1331_t *ssd, void *block, size_t blockSize);
+
 
 //==============================================================================
 // UTILITY FUNCTIONS
@@ -197,8 +200,11 @@ void SSD1331_SetRotation(SSD1331_t *ssd, uint8_t r) {
     ssd->rotation = r & 3;
     ssd->gfx.rotation = ssd->rotation;
     
+    uint8_t aux = ssd->rotation;
+    
     // Configure re-map bits and dimensions based on rotation
-    switch (ssd->rotation) {
+    //switch (ssd->rotation) {
+    switch (aux) {
         case 0: // 0° rotation (normal)
             madctl |= 0b00010010;  // Scan bottom-up, column remap 95-0
             ssd->gfx.width = SSD1331_WIDTH;
@@ -302,7 +308,7 @@ void SSD1331_DrawPixel(SSD1331_t *ssd, int16_t x, int16_t y, uint16_t color) {
  */
 void SSD1331_FillScreen(SSD1331_t *ssd, uint16_t color) {
     //GFX_FillScreen(&ssd->gfx, ssd, color);
-    SSD1331_FillRect_Fast(ssd, 0, 0, 96, 64, color);
+    SSD1331_FillRect_Fast(ssd, 0, 0, ssd->gfx.width, ssd->gfx.height, color);
 }
 
 /**
@@ -347,8 +353,8 @@ void SSD1331_FillRect_Fast(SSD1331_t *ssd, int16_t x, int16_t y, int16_t w, int1
     
     // Send each pixel as two bytes (high byte first, then low byte)
     for (uint32_t p = 0; p < total_pixels; p++) {
-        SPI1_ExchangeByte(color >> 8);    // Send high byte (bits 15-8)
-        SPI1_ExchangeByte(color & 0xFF);  // Send low byte (bits 7-0)
+        SSD1331_Xchange_Byte(ssd, color >> 8);    // Send high byte (bits 15-8)
+        SSD1331_Xchange_Byte(ssd, color & 0xFF);  // Send low byte (bits 7-0)
     }    
     
     SSD1331_Deselect(ssd);   
@@ -395,8 +401,8 @@ void SSD1331_DrawFastRGBBitmap16(SSD1331_t *ssd, int16_t x, int16_t y, const uin
     
     // Send each pixel as two bytes (high byte first, then low byte)
     for (uint32_t p = 0; p < total_pixels; p++) {
-        SPI1_ExchangeByte(bitmap[p] >> 8);    // Send high byte (bits 15-8)
-        SPI1_ExchangeByte(bitmap[p] & 0xFF);  // Send low byte (bits 7-0)
+        SSD1331_Xchange_Byte(ssd, bitmap[p] >> 8);    // Send high byte (bits 15-8)
+        SSD1331_Xchange_Byte(ssd, bitmap[p] & 0xFF);  // Send low byte (bits 7-0)
     }    
     
     SSD1331_Deselect(ssd);
@@ -444,7 +450,8 @@ void SSD1331_DrawFastRGBBitmap8(SSD1331_t *ssd, int16_t x, int16_t y, const uint
     
     // Send entire bitmap data in one block transfer for maximum performance
     // The bitmap data should already be in correct byte order (high, low per pixel)
-    SPI1_ExchangeBlock(bitmap, total_bytes);
+    //SPI1_ExchangeBlock(bitmap, total_bytes);
+    SSD1331_Xchange_Block(ssd, (void *)bitmap, (size_t)total_bytes);
     
     SSD1331_Deselect(ssd);
 }
@@ -452,6 +459,19 @@ void SSD1331_DrawFastRGBBitmap8(SSD1331_t *ssd, int16_t x, int16_t y, const uint
 //==============================================================================
 // SPI COMMUNICATION FUNCTIONS
 //==============================================================================
+
+static void SSD1331_Xchange_Byte(SSD1331_t *ssd, uint8_t byte)
+{
+    SPI_dummy = SPI1_ExchangeByte(byte); // <-- CORREÇÃO
+}
+
+
+static void SSD1331_Xchange_Block(SSD1331_t *ssd, void *block, size_t blockSize)
+{
+    // O parâmetro 'ssd' não é usado aqui, mas é bom mantê-lo por consistência.
+    SPI1_ExchangeBlock(block, blockSize);
+}
+
 
 /**
  * @brief Send command byte to SSD1331 via SPI
@@ -464,7 +484,7 @@ void SSD1331_DrawFastRGBBitmap8(SSD1331_t *ssd, int16_t x, int16_t y, const uint
 void SSD1331_WriteCommand(SSD1331_t *ssd, uint8_t cmd) {
     SSD1331_Select(ssd);
     SSD1331_SetCommandMode(ssd);
-    SPI_dummy = SPI1_ExchangeByte(cmd);
+    SSD1331_Xchange_Byte(ssd, cmd); // <-- CORREÇÃO
     SSD1331_Deselect(ssd);
 }
 
@@ -480,8 +500,10 @@ void SSD1331_WriteCommand(SSD1331_t *ssd, uint8_t cmd) {
 void SSD1331_WriteData16(SSD1331_t *ssd, uint16_t data) {
     SSD1331_Select(ssd);
     SSD1331_SetDataMode(ssd);
-    SPI1_ExchangeByte(data >> 8);    // Send high byte first
-    SPI1_ExchangeByte(data & 0xFF);  // Send low byte
+    
+    SSD1331_Xchange_Byte(ssd, data >> 8);   // Envia o byte alto
+    SSD1331_Xchange_Byte(ssd, data & 0xFF);  // Envia o byte baixo
+
     SSD1331_Deselect(ssd);
 }
 

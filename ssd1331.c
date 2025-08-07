@@ -189,6 +189,16 @@ void SSD1331_Begin(SSD1331_t *ssd) {
  * @param r Rotation index (0=0°, 1=90°, 2=180°, 3=270°)
  */
 void SSD1331_SetRotation(SSD1331_t *ssd, uint8_t r) {
+    
+  // madctl bits:
+  // 6,7 Color depth (01 = 64K)
+  // 5   Odd/even split COM (0: disable, 1: enable)
+  // 4   Scan direction (0: top-down, 1: bottom-up)
+  // 3   Left-Right swapping on COM (0: disable, 1: enable)
+  // 2   Color remap (0: A->B->C, 1: C->B->A)
+  // 1   Column remap (0: 0-95, 1: 95-0)
+  // 0   Address increment (0: horizontal, 1: vertical)
+    
     // Set base re-map configuration based on color order
     #ifdef SSD1331_COLORORDER_RGB
         uint8_t madctl = 0b01100000; // 64K color, enable split, RGB order
@@ -252,6 +262,42 @@ void SSD1331_SetRotation(SSD1331_t *ssd, uint8_t r) {
  * @param h Window height in pixels
  */
 void SSD1331_SetAddrWindow(SSD1331_t *ssd, uint16_t x, uint16_t y, uint16_t w, uint16_t h) {
+    // Calcula as coordenadas finais diretamente a partir dos parâmetros de entrada.
+    uint8_t x1 = (uint8_t)x;
+    uint8_t y1 = (uint8_t)y;
+    uint8_t x2 = (uint8_t)(x + w - 1);
+    uint8_t y2 = (uint8_t)(y + h - 1);
+
+    // Envia os comandos para o hardware. O registrador MADCTL, já configurado
+    // pela função SetRotation, garantirá que o hardware interprete
+    // essas coordenadas corretamente para a orientação atual.
+    
+    uint8_t aux = ssd->rotation;    
+    
+    
+    if (aux == 0 || aux == 2)
+    {
+        SSD1331_WriteCommand(ssd, SSD1331_CMD_SETCOLUMN);
+        SSD1331_WriteCommand(ssd, x1);
+        SSD1331_WriteCommand(ssd, x2);
+
+        SSD1331_WriteCommand(ssd, SSD1331_CMD_SETROW);
+        SSD1331_WriteCommand(ssd, y1);
+        SSD1331_WriteCommand(ssd, y2);
+    }
+    else
+        {
+        SSD1331_WriteCommand(ssd, SSD1331_CMD_SETCOLUMN);
+        SSD1331_WriteCommand(ssd, y1);
+        SSD1331_WriteCommand(ssd, y2);
+
+        SSD1331_WriteCommand(ssd, SSD1331_CMD_SETROW);
+        SSD1331_WriteCommand(ssd, x1);
+        SSD1331_WriteCommand(ssd, x2);
+    }
+}
+/*
+void SSD1331_SetAddrWindow(SSD1331_t *ssd, uint16_t x, uint16_t y, uint16_t w, uint16_t h) {
     // Calculate end coordinates
     int16_t x1 = x;
     int16_t y1 = y;
@@ -274,6 +320,7 @@ void SSD1331_SetAddrWindow(SSD1331_t *ssd, uint16_t x, uint16_t y, uint16_t w, u
     SSD1331_WriteCommand(ssd, (uint8_t)y1);
     SSD1331_WriteCommand(ssd, (uint8_t)y2);
 }
+*/
 
 /**
  * @brief Draw a single pixel at specified coordinates
@@ -308,7 +355,22 @@ void SSD1331_DrawPixel(SSD1331_t *ssd, int16_t x, int16_t y, uint16_t color) {
  */
 void SSD1331_FillScreen(SSD1331_t *ssd, uint16_t color) {
     //GFX_FillScreen(&ssd->gfx, ssd, color);
-    SSD1331_FillRect_Fast(ssd, 0, 0, ssd->gfx.width, ssd->gfx.height, color);
+    
+    SSD1331_SetAddrWindow(ssd, (uint16_t)0, (uint16_t)0, (uint16_t)ssd->gfx.width, (uint16_t)ssd->gfx.height);
+    
+    SSD1331_Select(ssd);
+    SSD1331_SetDataMode(ssd);
+    
+    // Calculate total number of pixels to transfer
+    uint32_t total_pixels = (uint32_t)ssd->gfx.width * ssd->gfx.height;
+    
+    // Send each pixel as two bytes (high byte first, then low byte)
+    for (uint32_t p = 0; p < total_pixels; p++) {
+        SSD1331_Xchange_Byte(ssd, color >> 8);    // Send high byte (bits 15-8)
+        SSD1331_Xchange_Byte(ssd, color & 0xFF);  // Send low byte (bits 7-0)
+    }    
+    
+    SSD1331_Deselect(ssd);  
 }
 
 /**
@@ -462,7 +524,7 @@ void SSD1331_DrawFastRGBBitmap8(SSD1331_t *ssd, int16_t x, int16_t y, const uint
 
 static void SSD1331_Xchange_Byte(SSD1331_t *ssd, uint8_t byte)
 {
-    SPI_dummy = SPI1_ExchangeByte(byte); // <-- CORREÇÃO
+    SPI_dummy = SPI1_ExchangeByte(byte); // <-- 
 }
 
 

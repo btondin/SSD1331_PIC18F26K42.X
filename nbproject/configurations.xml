@@ -210,7 +210,7 @@
         <property key="programmerToGoImageName" value="SSD1331_PIC18F26K42_ptg"/>
         <property key="programoptions.donoteraseauxmem" value="false"/>
         <property key="programoptions.eraseb4program" value="true"/>
-        <property key="programoptions.ledbrightness" value="5"/>
+        <property key="programoptions.ledbrightness" value="10"/>
         <property key="programoptions.pgcconfig" value="pull down"/>
         <property key="programoptions.pgcresistor.value" value="4.7"/>
         <property key="programoptions.pgdconfig" value="pull down"/>
@@ -301,7 +301,7 @@
         <property key="programmerToGoImageName" value="SSD1331_PIC18F26K42_ptg"/>
         <property key="programoptions.donoteraseauxmem" value="false"/>
         <property key="programoptions.eraseb4program" value="true"/>
-        <property key="programoptions.ledbrightness" value="5"/>
+        <property key="programoptions.ledbrightness" value="10"/>
         <property key="programoptions.pgcconfig" value="pull down"/>
         <property key="programoptions.pgcresistor.value" value="4.7"/>
         <property key="programoptions.pgdconfig" value="pull down"/>

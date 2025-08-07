@@ -92,7 +92,7 @@ void main(void) {
     // Main application loop - equivalent to Arduino loop() function
     while(1) {
         // Clear screen to start fresh
-        SSD1331_FillScreen(&oled, SSD1331_BLACK);
+        SSD1331_FillScreen(&oled, SSD1331_BLUE);
         
         //while(1);
         

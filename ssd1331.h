@@ -45,7 +45,7 @@
 #define SSD1331_HEIGHT        64
 
 /** @brief Default display rotation on initialization */
-#define SSD1331_INIT_ROTATION 1
+#define SSD1331_INIT_ROTATION 0
 
 //==============================================================================
 // RGB565 COLOR DEFINITIONS

@@ -272,6 +272,17 @@ void SSD1331_SetAddrWindow(SSD1331_t *ssd, uint16_t x, uint16_t y, uint16_t w, u
     // pela função SetRotation, garantirá que o hardware interprete
     // essas coordenadas corretamente para a orientação atual.
     
+    /*
+
+    // Clip coordinates to display boundaries
+    if (x1 > ssd->gfx.width - 1) x1 = ssd->gfx.width - 1;
+    if (y1 > ssd->gfx.height - 1) y1 = ssd->gfx.height - 1;
+    if (x2 > ssd->gfx.width - 1) x2 = ssd->gfx.width - 1;
+    if (y2 > ssd->gfx.height - 1) y2 = ssd->gfx.height - 1;
+
+
+*/
+    
     uint8_t aux = ssd->rotation;    
     
     
@@ -296,31 +307,7 @@ void SSD1331_SetAddrWindow(SSD1331_t *ssd, uint16_t x, uint16_t y, uint16_t w, u
         SSD1331_WriteCommand(ssd, x2);
     }
 }
-/*
-void SSD1331_SetAddrWindow(SSD1331_t *ssd, uint16_t x, uint16_t y, uint16_t w, uint16_t h) {
-    // Calculate end coordinates
-    int16_t x1 = x;
-    int16_t y1 = y;
-    int16_t x2 = x + w - 1;
-    int16_t y2 = y + h - 1;
 
-    // Clip coordinates to display boundaries
-    if (x1 > ssd->gfx.width - 1) x1 = ssd->gfx.width - 1;
-    if (y1 > ssd->gfx.height - 1) y1 = ssd->gfx.height - 1;
-    if (x2 > ssd->gfx.width - 1) x2 = ssd->gfx.width - 1;
-    if (y2 > ssd->gfx.height - 1) y2 = ssd->gfx.height - 1;
-
-    // Set column address range
-    SSD1331_WriteCommand(ssd, SSD1331_CMD_SETCOLUMN);
-    SSD1331_WriteCommand(ssd, (uint8_t)x1);
-    SSD1331_WriteCommand(ssd, (uint8_t)x2);
-
-    // Set row address range
-    SSD1331_WriteCommand(ssd, SSD1331_CMD_SETROW);
-    SSD1331_WriteCommand(ssd, (uint8_t)y1);
-    SSD1331_WriteCommand(ssd, (uint8_t)y2);
-}
-*/
 
 /**
  * @brief Draw a single pixel at specified coordinates

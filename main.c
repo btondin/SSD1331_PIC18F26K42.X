@@ -92,11 +92,9 @@ void main(void) {
     // Main application loop - equivalent to Arduino loop() function
     while(1) {
         // Clear screen to start fresh
-        SSD1331_FillScreen(&oled, SSD1331_BLUE);
+        SSD1331_FillScreen(&oled, SSD1331_BLACK);
         
-        //while(1);
-        
-        
+                
         __delay_ms(DELAY_SHORT);
 
         // Display color test pattern
